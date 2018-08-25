@@ -17,7 +17,7 @@ CPU缓存系统中是以缓存行（cache line）为单位存储的。目前主�
 在多线程情况下，如果需要修改“共享同一个缓存行的变量”，就会无意中影响彼此的性能，这就是伪共享（False Sharing）。
 ### 4.2 cpu三级缓存结构 
 由于CPU的速度远远大于内存速度，所以CPU设计者们就给CPU加上了缓存(CPU Cache)。 以免运算被内存速度拖累。（就像我们写代码把共享数据做Cache不想被DB存取速度拖累一样），CPU Cache分成了三个级别：L1，L2，L3。越靠近CPU的缓存越快也越小。所以L1缓存很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更慢，并且被单个插槽上的所有 CPU 核共享。最后，你拥有一块主存，由全部插槽上的所有 CPU 核共享。
-当CPU执行运算的时候，它先去L1查找所需的数据，再去L2，然后是L3，最后如果这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。所以如果你在做一些很频繁的事，你要确保数据在L1缓存中。
+当CPU执行运算的时候，它先去L1查找所需的数据，再去L2，然后是L3，最后如果这些缓存中都没有，所需的数据就要去主内存拿。走得越远，运算耗费的时间就越长。所以如果你在做一些很频繁的事，你要确保数据在L1缓存中。<br>
 ![cpu缓存结构](../picture/queue/cpuCache.png)
 ### 4.3 缓存行
 由于共享变量在CPU缓存中的存储是以缓存行为单位，一个缓存行可以存储多个变量（存满当前缓存行的字节数）；而CPU对缓存的修改又是以缓存行为最小单位的，那么就会出现上诉的伪共享问题。
@@ -44,84 +44,56 @@ Cache Line可以简单的理解为CPU Cache中的最小缓存单位，今天的C
 ### 5.2 Java对于伪共享的传统解决方案
      
      import java.util.concurrent.atomic.AtomicLong;
-     
-     public final class FalseSharing
-         implements Runnable
-     {
+     public final class FalseSharing implements Runnable {
          public final static int NUM_THREADS = 4; // change
          public final static long ITERATIONS = 500L * 1000L * 1000L;
          private final int arrayIndex;
-     
          private static VolatileLong[] longs = new VolatileLong[NUM_THREADS];
-         static
-         {
-             for (int i = 0; i < longs.length; i++)
-             {
+         static {
+             for (int i = 0; i < longs.length; i++) {
                  longs[i] = new VolatileLong();
              }
          }
-     
-         public FalseSharing(final int arrayIndex)
-         {
+         public FalseSharing(final int arrayIndex) {
              this.arrayIndex = arrayIndex;
          }
-     
-         public static void main(final String[] args) throws Exception
-         {
+         public static void main(final String[] args) throws Exception {
              final long start = System.nanoTime();
              runTest();
              System.out.println("duration = " + (System.nanoTime() - start));
          }
-     
-         private static void runTest() throws InterruptedException
-         {
+         private static void runTest() throws InterruptedException {
              Thread[] threads = new Thread[NUM_THREADS];
-     
-             for (int i = 0; i < threads.length; i++)
-             {
+             for (int i = 0; i < threads.length; i++) {
                  threads[i] = new Thread(new FalseSharing(i));
              }
-     
-             for (Thread t : threads)
-             {
+             for (Thread t : threads) {
                  t.start();
              }
-     
-             for (Thread t : threads)
-             {
+             for (Thread t : threads) {
                  t.join();
              }
          }
-     
-         public void run()
-         {
+         public void run() {
              long i = ITERATIONS + 1;
-             while (0 != --i)
-             {
+             while (0 != --i){
                  longs[arrayIndex].set(i);
              }
          }
-     
-         public static long sumPaddingToPreventOptimisation(final int index)
-         {
+         public static long sumPaddingToPreventOptimisation(final int index) {
              VolatileLong v = longs[index];
              return v.p1 + v.p2 + v.p3 + v.p4 + v.p5 + v.p6;
          }
-     
          //jdk7以上使用此方法(jdk7的某个版本oracle对伪共享做了优化)
-         public final static class VolatileLong
-         {
+         public final static class VolatileLong {
              public volatile long value = 0L;
              public long p1, p2, p3, p4, p5, p6;
          }
-     
          // jdk7以下使用此方法
-         public final static class VolatileLong
-         {
+         public final static class VolatileLong {
              public long p1, p2, p3, p4, p5, p6, p7; // cache line padding
              public volatile long value = 0L;
              public long p8, p9, p10, p11, p12, p13, p14; // cache line padding
-     
          }
      }
 ### 5.3 Java8中的解决方案
@@ -145,4 +117,4 @@ Disruptor是英国外汇交易公司LMAX开发的一个高性能队列，研发�
 ![Circular Queue](../picture/queue/CircularQueue.png)
 ![Circular Queue](../picture/queue/dataFill.png)
 ### 6.4 解决为共享问题后无锁处理过程
-![多线程处理过程](../picture/queue/cpuCache.png)
+![多线程处理过程](../picture/queue/threadProcess.png)
