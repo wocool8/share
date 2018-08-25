@@ -12,12 +12,12 @@
 ## 二 阻塞队列
 ![阻塞队列](../picture/queue/blockedQueue.PNG)
 ## 三 非阻塞队列
-### ConcurrentLinkedQueue
+### 3.1 ConcurrentLinkedQueue
 ![非阻塞队列](../picture/queue/unblockedQueue.png)
-### 环形队列
+### 3.2 环形队列
 
 ## 四 伪共享
-### 4.2 什么是伪共享
+### 4.1 什么是伪共享
 CPU缓存系统中是以缓存行（cache line）为单位存储的。目前主流的CPU Cache的Cache Line大小都是64Bytes。
 在多线程情况下，如果需要修改“共享同一个缓存行的变量”，就会无意中影响彼此的性能，这就是伪共享（False Sharing）。
 ### 4.2 cpu三级缓存结构 
