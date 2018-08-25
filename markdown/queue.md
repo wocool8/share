@@ -98,6 +98,7 @@ Cache Line可以简单的理解为CPU Cache中的最小缓存单位，今天的C
      }
 ### 5.3 Java8中的解决方案
 Java8中已经提供了官方的解决方案，Java8中新增了一个注解：@sun.misc.Contended。加上这个注解的类会自动补齐缓存行，需要注意的是此注解默认是无效的，需要在jvm启动时设置-XX:-RestrictContended才会生效
+    
     @sun.misc.Contended
     public final static class VolatileLong {
         public volatile long value = 0L;
