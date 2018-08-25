@@ -10,7 +10,12 @@
 |PriorityBlockingQueue|unbounded|无锁|linkedList|
 |DelayQueue|unbounded|无锁|linkedList|
 ## 二 阻塞队列
+![阻塞队列](../picture/queue/blockedQueue.PNG)
 ## 三 非阻塞队列
+### ConcurrentLinkedQueue
+![非阻塞队列](../picture/queue/unblockedQueue.png)
+### 环形队列
+
 ## 四 伪共享
 ### 4.2 什么是伪共享
 CPU缓存系统中是以缓存行（cache line）为单位存储的。目前主流的CPU Cache的Cache Line大小都是64Bytes。
