@@ -1,6 +1,6 @@
-# 异常
+# 技术分享
 ---
-## 一 异常介绍
+## 一 异常介绍 [example link](./exception.md).
 ![exception](./exception.PNG)
 ## 二 异常处理方式
 ### 2.1 throw
