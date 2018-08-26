@@ -10,21 +10,21 @@
 简单来说就是对多个索引分别进行条件扫描，然后将它们各自的结果进行合并
 ## 三 index_merge的合并方式
 ### 3.1 intersect(取交集)    
-![index-merge](../picture/index-merge/index-merge-intersect.png) <br>
+![index-merge-intersect](../picture/index-merge/index-merge-intersect.png) <br>
 |intersect是以and连接不同的条件，并且每个条件要满足以下条件之一|
 |:-|
 |(1)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|
 |(2)范围条件(例如 < ）是主键|    
 ### 3.2 union
-![index-merge](../picture/index-merge/index-merge-union.png) <br>
+![index-merge-union](../picture/index-merge/index-merge-union.png) <br>
 |union是以or连接不同的条件,并且每个条件要满足以下条件之一|
 |:-|
 |(1)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|
 |(2)并且范围条件(例如 < ）是主键|  
 |(3)这个条件是intersect 适用的|
 ### 3.3 sort-union
-![index-merge](../picture/index-merge/index-merge-sort-union.png) <br>
-|sort-union是以or连接，并且不同的条件中使用了不同的联合索引（例如四个索引 如上图两个条件 分别为(key1 and key2) 与 (key3 and key4)的两个索引树进行取并集,并且每个条件要满足以下条件之一 |
+![index-merge-sort-union](../picture/index-merge/index-merge-sort-union.png) <br>
+|sort-union是以or连接，并且不同的条件中使用了不同的联合索引（例如四个索引 如上图两个条件 分别为(key1 and key2) 与 (key3 and key4)的两个索引树进行取并集,并且每个条件要满足以下条件之一|
 |:-|
 |(1)sort-union是以or连接，并且不同的条件中使用了不同的联合索引（例如四个索引 如上图两个条件 分别为(key1 and key2) 与 (key3 and key4)的两个索引树进行取并集,并且每个条件要满足以下条件之一|
 |(2)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|  
