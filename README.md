@@ -1,5 +1,6 @@
 # 技术分享
 ---
-## 一 [异常分享](markdown/exception.md)
-## 二 [队列分享](markdown/queue.md)
+## 一 [index-merge](markdown/index-merge.md)
+## 二 [queue](markdown/queue.md)
+## 三 [exception](markdown/exception.md)
 
