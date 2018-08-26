@@ -1,9 +1,10 @@
 # Index-merge(mysql 执行计划的type是index-merge)
 ---
 ## 一 index_merge被使用的前提条件
-|:-|
+
+|:-| 
 |(1)mysql版本5.0以上|
-|(2)查询优化器开启了（index_merge_union=on）|
+|(2)查询优化器开启了index_merge_union=on|
 ## 二 index_merge 是什么
 ![index-merge](../picture/index-merge/index-merge.png)
 简单来说就是对多个索引分别进行条件扫描，然后将它们各自的结果进行合并
