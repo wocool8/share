@@ -1,7 +1,6 @@
 # Index-merge(mysql 执行计划的type是index-merge)
 ---
-## 一 index_merge被使用的前提条件
-
+## 一 index_merge被使用的前提条件<br>
 |:-| 
 |(1)mysql版本5.0以上|
 |(2)查询优化器开启了index_merge_union=on|
