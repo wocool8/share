@@ -10,7 +10,7 @@
 ## 三 index_merge的合并方式
 ### 3.1 intersect(取交集)    
 ![index-merge](../picture/index-merge/index-merge-intersect.png)
-intersect是以and连接不同的条件，并且每个条件要满足以下条件之一
+#### intersect是以and连接不同的条件，并且每个条件要满足以下条件之一
 |:-|
 |(1)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|
 |(2)范围条件(例如 < ）是主键|    
