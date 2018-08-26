@@ -12,12 +12,14 @@
 ### 3.1 intersect(取交集)    
 ![index-merge-intersect](../picture/index-merge/index-merge-intersect.png) 
 #### intersect是以and连接不同的条件，并且每个条件要满足以下条件之一
+|条件|
 |:-|
 |(1)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|
 |(2)范围条件(例如 < ）是主键|    
 ### 3.2 union
 ![index-merge-union](../picture/index-merge/index-merge-union.png) <br>
 #### union是以or连接不同的条件,并且每个条件要满足以下条件之一
+|条件|
 |:-|
 |(1)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|
 |(2)并且范围条件(例如 < ）是主键|  
@@ -25,6 +27,7 @@
 ### 3.3 sort-union
 ![index-merge-sort-union](../picture/index-merge/index-merge-sort-union.png) <br>
 #### sort-union是以or连接，并且不同的条件中使用了不同的联合索引（例如四个索引 如上图两个条件 分别为(key1 and key2) 与 (key3 and key4)的两个索引树进行取并集,并且每个条件要满足以下条件之一
+|条件|
 |:-|
 |(1)sort-union是以or连接，并且不同的条件中使用了不同的联合索引（例如四个索引 如上图两个条件 分别为(key1 and key2) 与 (key3 and key4)的两个索引树进行取并集,并且每个条件要满足以下条件之一|
 |(2)一个N个查询条件的查询，N个条件的字段都存在索引，且都不是范围条件(例如 < ）|  
