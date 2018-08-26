@@ -4,11 +4,13 @@
 |队列|有界性|锁|数据结构|
 |:-|:-|:-|:-|
 |ArrayBlockingQueue|bounded|加锁|arrayList|
-|LinkedBlockedQueue|optionally-bounded|加锁|linkedList|
-|ConcurrentLinkedQueue|unbounded|无锁|linkedList|
+|LinkedBlockedQueue|optionally-bounded(在不指定时容量为Integer.MAX_VALUE,可以指定容量)|加锁|linkedList|
 |LinkedTransferQueue|unbounded|无锁|linkedList|
-|PriorityBlockingQueue|unbounded|无锁|linkedList|
-|DelayQueue|unbounded|无锁|linkedList|
+|PriorityBlockingQueue|unbounded|无锁|heap|
+|DelayQueue|unbounded|无锁|heap|
+|SynchronousQueue|bounded|加锁|无|
+|ConcurrentLinkedQueue|unbounded|无锁|linkedList|
+|PriorityQueue|unbounded|无锁|heap|
 ## 二 阻塞队列
 ![阻塞队列](../picture/queue/blockedQueue.PNG)
 ## 三 非阻塞队列
