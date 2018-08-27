@@ -4,15 +4,77 @@
 |队列|有界性|锁|数据结构|
 |:-|:-|:-|:-|
 |ArrayBlockingQueue|bounded|加锁|arrayList|
-|LinkedBlockedQueue|optionally-bounded(在不指定时容量为Integer.MAX_VALUE,可以指定容量)|加锁|linkedList|
+|LinkedBlockingQueue|optionally-bounded(在不指定时容量为Integer.MAX_VALUE,可以指定容量)|加锁|linkedList|
+|SynchronousQueue|bounded(1) 没有缓冲区，生产者和消费者互相等待对方，握手，然后一起离开|加锁|无|
 |LinkedTransferQueue|unbounded|无锁|linkedList|
 |PriorityBlockingQueue|unbounded|无锁|heap|
 |DelayQueue|unbounded|无锁|heap|
-|SynchronousQueue|bounded|加锁|无|
 |ConcurrentLinkedQueue|unbounded|无锁|linkedList|
 |PriorityQueue|unbounded|无锁|heap|
 ## 二 阻塞队列
 ![阻塞队列](../picture/queue/blockedQueue.PNG)
+### 2.1 SynchronousQueue 
+SynchronousQueue，实际上它不是一个真正的队列，因为它不会为队列中元素维护存储空间。与其他队列不同的是，它维护一组线程，这些线程在等待着把元素加入或移出队列， 它阻塞的是加入和移出的线程操作
+    
+        // 公平模式和不公平模式
+        public SynchronousQueue(boolean fair) {
+            transferer = fair ? new TransferQueue() : new TransferStack();
+        }
+        
+        // 一个节点即是头节点也是尾节点
+        TransferQueue() {
+            QNode h = new QNode(null, false); // initialize to dummy node.
+            head = h;
+            tail = h;
+        }
+        
+        /** Dual stack */
+        static final class TransferStack extends Transferer {
+
+            /* Modes for SNodes, ORed together in node fields */
+            /** Node represents an unfulfilled consumer */
+            static final int REQUEST    = 0;
+            /** Node represents an unfulfilled producer */
+            static final int DATA       = 1;
+            /** Node is fulfilling another unfulfilled DATA or REQUEST */
+            static final int FULFILLING = 2;
+        
+            /** Return true if m has fulfilling bit set */
+            static boolean isFulfilling(int m) { return (m & FULFILLING) != 0; }
+        
+            /** Node class for TransferStacks. */
+            static final class SNode {
+                volatile SNode next;        // next node in stack
+                volatile SNode match;       // the node matched to this
+                volatile Thread waiter;     // to control park/unpark
+                Object item;                // data; or null for REQUESTs
+                int mode;
+                // Note: item and mode fields don't need to be volatile
+                // since they are always written before, and read after,
+                // other volatile/atomic operations.
+        
+                SNode(Object item) {
+                    this.item = item;
+                }
+        
+                boolean casNext(SNode cmp, SNode val) {
+                    return cmp == next &&
+                        UNSAFE.compareAndSwapObject(this, nextOffset, cmp, val);
+                }
+            }
+        }
+        
+
+### 2.2 SynchronousQueue 在线程池中的应用
+Executors.newCachedThreadPool()就使用了SynchronousQueue，这个线程池根据需要（新任务到来时）创建新的线程，如果有空闲线程则会重复使用，线程空闲了60秒后会被回收
+    
+    // 创建newCachedThreadPool线程池使用的消息队列是：SynchronousQueue
+    ExecutorService executorService = Executors.newCachedThreadPool();
+    // 实现如下
+    public static ExecutorService newCachedThreadPool() {
+        return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+    }
+
 ## 三 非阻塞队列
 ### 3.1 ConcurrentLinkedQueue
 ![非阻塞队列](../picture/queue/unblockedQueue.png)
