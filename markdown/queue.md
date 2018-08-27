@@ -47,8 +47,7 @@ Cache Line可以简单的理解为CPU Cache中的最小缓存单位，今天的C
 下图为一个2-Way的Cache。由图中可以看到Main Memory中的Index0,2,4都映射在Way0的不同CacheLine中，Index1,3,5都映射在Way1的不同CacheLine中。
 ![2-WaySetAssociativeCache](../picture/queue/2-WaySetAssociativeCache.PNG)
 ### 4.5 MESI协议
-多核CPU都有自己的专有缓存（一般为L1，L2），以及同一个CPU插槽之间的核共享的缓存（一般为L3）。不同核心的CPU缓存中难免会加载同样的数据，那么如何保证数据的一致性呢，就是MESI协议了。 
-在MESI协议中，每个Cache line有4个状态，可用2个bit表示，如下表格
+#### 多核CPU都有自己的专有缓存（一般为L1，L2），以及同一个CPU插槽之间的核共享的缓存（一般为L3）。不同核心的CPU缓存中难免会加载同样的数据，那么如何保证数据的一致性呢，就是MESI协议了。 在MESI协议中，每个Cache line有4个状态，可用2个bit表示，如下表格
 |状态|描述|
 |:-|:-| 
 |M(Modified)|这行数据有效，数据被修改了，和内存中的数据不一致，数据只存在于本Cache中| 
