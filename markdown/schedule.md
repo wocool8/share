@@ -145,4 +145,4 @@ sigLock是线程的锁对象，用锁对象的wait()方法控制具体任务的�
 
 ## 五 tbsSchedule
 
-## 六 elasticJo
+## 六 elasticJob
