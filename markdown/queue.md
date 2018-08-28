@@ -89,9 +89,12 @@ Executors.newCachedThreadPool()就使用了SynchronousQueue，这个线程池根
         }
         return (BlockingQueue)queue;
     }
-
-### 2.3 LinkedTransferQueue
-#### 2.3.1 LinkedTransferQueue 实现 TransferQueue 接口
+    
+### 2.3 ArrayBlockingQueued
+ ![ArrayBlockingQueued](../picture/queue/threadProcess.png)
+ 如上图ArrayBlockingQueued的生产-消费过程，ArrayBlockingQueue的读写是不同步的，读会修改takeIndex，写会改putIndex<br>
+### 2.4 LinkedTransferQueue
+#### 2.4.1 LinkedTransferQueue 实现 TransferQueue 接口
 TransferQueue接口方法
 
     // 若当前存在一个正在等待获取的消费者线程，即立刻移交之；否则，会插入当前元素e到队列尾部，并且等待进入阻塞状态，到有消费者线程取走该元素
@@ -107,9 +110,9 @@ TransferQueue接口方法
     // 因为队列的异步特性，检测当前队列的元素个数需要逐一迭代，可能会得到一个不太准确的结果，尤其是在遍历时有可能队列发生更改
     size()
     
-#### 2.3.2 transfer算法    
+#### 2.4.2 transfer算法    
 transfer算法比较复杂，大致的理解是采用所谓双重数据结构(dual data structures)。之所以叫双重，其原因是方法都是通过两个步骤完成：保留与完成。比如消费者线程从一个队列中取元素，发现队列为空，他就生成一个空元素放入队列,所谓空元素就是数据项字段为空。然后消费者线程在这个字段上旅转等待。这叫保留。直到一个生产者线程意欲向队例中放入一个元素，这里他发现最前面的元素的数据项字段为NULL，他就直接把自已数据填充到这个元素中，即完成了元素的传送。
-#### 2.3.3 注意事项
+#### 2.4.3 注意事项
 |注意事项|
 |:-|
 |(1)无论是transfer还是tryTransfer方法，在>=1个消费者线程等待获取元素时（此时队列为空），都会立刻转交，这属于线程之间的元素交换。注意，这时，元素并没有进入队列|
@@ -137,8 +140,7 @@ transfer算法比较复杂，大致的理解是采用所谓双重数据结构(du
 |元素状态切换|有种很巧妙的方法，就是在队列中每个元素的头部加一个元素标示字段，标示这个元素是可读还是可写，而这个的关键就在于何时设置元素的可读可写状态，参照linux内核实现原理，当这个元素读取完之后，要设置可写状态，当这个元素写入完成之后，要设置可读状态|
 ## 四 伪共享
 ### 4.1 什么是伪共享
-![多线程处理过程](../picture/queue/threadProcess.png)
-如上图ArrayBlockingQueued的生产-消费过程，CPU缓存系统中是以缓存行（cache line）为单位存储的。目前主流的CPU Cache的Cache Line大小都是64Bytes。
+CPU缓存系统中是以缓存行（cache line）为单位存储的。目前主流的CPU Cache的Cache Line大小都是64Bytes。
 在多线程情况下，如果需要修改“共享同一个缓存行的变量”，就会无意中影响彼此的性能，这就是伪共享（False Sharing）。
 ### 4.2 cpu三级缓存结构 
 由于CPU的速度远远大于内存速度，所以CPU设计者们就给CPU加上了缓存(CPU Cache)。 以免运算被内存速度拖累。（就像我们写代码把共享数据做Cache不想被DB存取速度拖累一样），CPU Cache分成了三个级别：L1，L2，L3。越靠近CPU的缓存越快也越小。所以L1缓存很小但很快，并且紧靠着在使用它的CPU内核。L2大一些，也慢一些，并且仍然只能被一个单独的 CPU 核使用。L3在现代多核机器中更普遍，仍然更大，更慢，并且被单个插槽上的所有 CPU 核共享。最后，你拥有一块主存，由全部插槽上的所有 CPU 核共享。
