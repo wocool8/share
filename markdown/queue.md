@@ -78,16 +78,16 @@ Executors.newCachedThreadPool()就使用了SynchronousQueue，这个线程池根
     
 ### 2.2 LinkedBlockingQueue
     // LinkedBlockingQueue:线程池Executors的newFixedThreadPool和newSingleThreadExecutor的工作队列
-    public static BlockingQueue<Runnable> buildQueue(int size, boolean isPriority) {
-    	Object queue;    
-    	if (size == 0) {       
-    		queue = new SynchronousQueue();    
-    	} else if (isPriority) {        
-    		queue = size < 0 ? new PriorityBlockingQueue() : new PriorityBlockingQueue(size);    
-    	} else {        
-    		queue = size < 0 ? new LinkedBlockingQueue() : new LinkedBlockingQueue(size);    
-    	}    
-    	return (BlockingQueue)queue;
+    public static BlockingQueue<Runnable> buildQueue(int size, boolean isPriority) {
+        Object queue;
+        if (size == 0) {
+        	queue = new SynchronousQueue();  
+        } else if (isPriority) {       
+        	queue = size < 0 ? new PriorityBlockingQueue() : new PriorityBlockingQueue(size);    
+        } else {   
+        	queue = size < 0 ? new LinkedBlockingQueue() : new LinkedBlockingQueue(size);    
+        }
+        return (BlockingQueue)queue;
     }
 
 ### 2.3 LinkedTransferQueue
@@ -111,6 +111,7 @@ TransferQueue接口方法
 transfer算法比较复杂，大致的理解是采用所谓双重数据结构(dual data structures)。之所以叫双重，其原因是方法都是通过两个步骤完成：保留与完成。比如消费者线程从一个队列中取元素，发现队列为空，他就生成一个空元素放入队列,所谓空元素就是数据项字段为空。然后消费者线程在这个字段上旅转等待。这叫保留。直到一个生产者线程意欲向队例中放入一个元素，这里他发现最前面的元素的数据项字段为NULL，他就直接把自已数据填充到这个元素中，即完成了元素的传送。
 #### 2.3.3 注意事项
 |注意事项|
+|:-|
 |(1)无论是transfer还是tryTransfer方法，在>=1个消费者线程等待获取元素时（此时队列为空），都会立刻转交，这属于线程之间的元素交换。注意，这时，元素并没有进入队列|
 |(2)在队列中已有数据情况下，transfer将需要等待前面数据被消费掉，直到传递的元素e被消费线程取走为止|
 |(3)使用transfer方法，工作者线程可能会被阻塞到生产的元素被消费掉为止|
