@@ -83,9 +83,9 @@ Executors.newCachedThreadPool()就使用了SynchronousQueue，这个线程池根
         if (size == 0) {
         	queue = new SynchronousQueue();  
         } else if (isPriority) {       
-        	queue = size < 0 ? new PriorityBlockingQueue() : new PriorityBlockingQueue(size);    
+        	queue = size < 0 ? new PriorityBlockingQueue() : new PriorityBlockingQueue(size);    
         } else {   
-        	queue = size < 0 ? new LinkedBlockingQueue() : new LinkedBlockingQueue(size);    
+        	queue = size < 0 ? new LinkedBlockingQueue() : new LinkedBlockingQueue(size);
         }
         return (BlockingQueue)queue;
     }
