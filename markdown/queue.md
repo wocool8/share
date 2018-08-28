@@ -13,7 +13,7 @@
 |ConcurrentLinkedQueue|unbounded|无锁|linkedList|
 
 ## 二 阻塞队列
-![阻塞队列](../picture/queue/queueClassDiagram.PNG)
+![阻塞队列](../picture/queue/blockingQueueClassDiagram.PNG)
 ### 2.1 SynchronousQueue 
 #### 2.1.1 SynchronousQueue介绍
 SynchronousQueue，实际上它不是一个真正的队列，因为它不会为队列中元素维护存储空间。与其他队列不同的是，它维护一组线程，这些线程在等待着把元素加入或移出队列， 它阻塞的是加入和移出的线程操作
