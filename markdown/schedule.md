@@ -243,6 +243,79 @@ tbschedule框架item的分配实现了数据的不重复，又通过架构中lea
 |(5)稳定性很好|
 由于Tbschedule的实现和Elastic job很多类似，所以不详细介绍实现细节
 
-
-
 ## 六 elasticJob
+### 6.1 整体架构
+Elastic-Job是一个分布式调度解决方案，由两个相互独立的子项目Elastic-Job-Lite和Elastic-Job-Cloud组成。Elastic-Job-Lite定位为轻量级无中心化解决方案，使用jar包的形式提供分布式任务的协调服务。<br>
+Elastic-Job-Lite并无作业调度中心节点，而是基于部署作业框架的程序在到达相应时间点时各自触发调度。注册中心仅用于作业注册和监控信息存储。而主作业节点仅用于处理分片和清理等功能。elastic -job整体架构图如下图
+![springSchedule](../picture/schedule/elasticjob.png)
+### 6.2 基于Quartz实现任务调度
+以Elastic-Job-Lite为例，使用Elastic-Job-Lite在应用实例启动注册任务实例代码如下
+
+    // 注册dmlRecord处理任务
+    JobCoreConfiguration coreConfig = JobCoreConfiguration.newBuilder("DmlRecord", DEFAULT_CRON, DEFAULT_SHARDING_TOTAL_COUNT).build();
+    DataflowJobConfiguration dataflowJobConfiguration = new DataflowJobConfiguration(coreConfig,new DmlRecordDataFlowJob().getClass().getCanonicalName(),false);
+    JobScheduler jobScheduler = new JobScheduler(zookeeperRegistryCenter, LiteJobConfiguration.newBuilder(dataflowJobConfiguration).build());
+    jobScheduler.init();
+
+Init()方法如下代码
+
+    public void init() {
+        LiteJobConfiguration liteJobConfigFromRegCenter = schedulerFacade.updateJobConfiguration(liteJobConfig);
+        JobRegistry.getInstance().setCurrentShardingTotalCount(liteJobConfigFromRegCenter.getJobName(), liteJobConfigFromRegCenter.getTypeConfig().getCoreConfig().getShardingTotalCount());
+        JobScheduleController jobScheduleController = new JobScheduleController(
+                createScheduler(), createJobDetail(liteJobConfigFromRegCenter.getTypeConfig().getJobClass()), liteJobConfigFromRegCenter.getJobName());
+        JobRegistry.getInstance().registerJob(liteJobConfigFromRegCenter.getJobName(), jobScheduleController, regCenter);
+        schedulerFacade.registerStartUpInfo(!liteJobConfigFromRegCenter.isDisabled());
+        jobScheduleController.scheduleJob(liteJobConfigFromRegCenter.getTypeConfig().getCoreConfig().getCron());
+    }
+
+在JobScheduleController的scheduleJob方法的实现中使用quartz实现任务调度
+
+    import io.elasticjob.lite.exception.JobSystemException;
+    import lombok.RequiredArgsConstructor;
+    import org.quartz.CronScheduleBuilder;
+    import org.quartz.CronTrigger;
+    import org.quartz.JobDetail;
+    import org.quartz.Scheduler;
+    import org.quartz.SchedulerException;
+    import org.quartz.Trigger;
+    import org.quartz.TriggerBuilder;
+    import org.quartz.TriggerKey;
+    // 作业调度控制器
+    @RequiredArgsConstructor
+    public final class JobScheduleController {
+        private final Scheduler scheduler;
+        private final JobDetail jobDetail;
+        private final String triggerIdentity;
+        /**
+         * 调度作业.
+         * @param cron CRON表达式
+         */
+        public void scheduleJob(final String cron) {
+            try {
+                if (!scheduler.checkExists(jobDetail.getKey())) {
+                    scheduler.scheduleJob(jobDetail, createTrigger(cron));
+                }
+                scheduler.start();
+            } catch (final SchedulerException ex) {
+                throw new JobSystemException(ex);
+            }
+        }
+
+### 6.3 Sharding
+#### 6.3.1 Sharding Strategy
+##### 6.3.1.1 AverageAllocationJobShardingStrategy(基于平均分配算法的分片策略)
+|服务器数量|分片|分配结果|
+|:-|:-|:-|
+|3台服务器|分成9片|每台服务器分到的分片是: 1=[0,1,2], 2=[3,4,5], 3=[6,7,8]|
+|3台服务器|分成8片|则每台服务器分到的分片是: 1=[0,1,6], 2=[2,3,7], 3=[4,5]|
+|3台服务器|分成10片|则每台服务器分到的分片是: 1=[0,1,2,9], 2=[3,4,5], 3=[6,7,8]|
+##### 6.3.1.2 OdevitySortByNameJobShardingStrategy(根据作业名的哈希值奇偶数决定IP升降序算法的分片策略)
+|服务器数量|作业名称哈希奇偶|分配结果|
+|:-|:-|:-|
+|3台服务器|奇数|每台服务器分到的分片是: 1=[0], 2=[1], 3=[]|
+|3台服务器|偶数|每台服务器分到的分片是: 3=[0], 2=[1], 1=[]|
+
+### 6.4 Leader Election
+
+### 6.5 提供的其他功能
