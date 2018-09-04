@@ -189,6 +189,7 @@ tbschedule框架item的分配实现了数据的不重复，又通过架构中lea
 
 ### 5.3 TBschedule的概念
 #### 5.3.1 TBScheduleManager
+##### 5.3.1.1 TBScheduleManager任务调度分配器目标
 |TBScheduleManager任务调度分配器目标|
 |:-|
 |(1)调度的Manager可以动态的随意增加和停止|
@@ -196,7 +197,7 @@ tbschedule框架item的分配实现了数据的不重复，又通过架构中lea
 |(3)在不同的JVM里面可以存在处理相同任务的Manager|
 |(4)在一个JVM里面可能存在多个处理相同任务类型的Manager，也可能存在处理不同任务类型的Manager|
 |(5)一个Manager只管理一种任务类型的一组工作线程|
-<br>
+##### 5.3.1.1 TBScheduleManager主要职责
 |TBScheduleManager主要职责|
 |:-|
 |(1)定时向集中的数据配置中心更新当前调度服务器的心跳状态|
