@@ -40,7 +40,7 @@
             return toAppendTo;
         }
         
-## 二 SimpleDateFormat线程不安全 解决方按
+## 二 SimpleDateFormat线程不安全 解决方案
 ### 1.不使用 static SimpleDateFormat 每次使用都创建新的对象
 问题：并发高时 创建了太多的SimpleDateFormat对象 占用堆内存 
  
