@@ -12,4 +12,12 @@
 
 ## 三 [Schedule](markdown/schedule.md)
 
-## 四 [Cache](markdown/cache.md)
+## 四 cache
+### 4.1[使用缓存可能出现的问题](markdown/cache/cache.md)
+### 4.2[Ehcache](markdown/cache/ehcache.md)
+### 4.3[Guava](markdown/cache/cache.md)
+### 4.4[Memcached](markdown/cache/cache.md)
+### 4.5[Redis](markdown/cache/cache.md)
+### 4.5[Tair](markdown/cache/cache.md)
+### 4.6[EVCache](markdown/cache/cache.md)
+
