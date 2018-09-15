@@ -10,3 +10,5 @@ jdk队列实现及Disruptor实现原理
 开源队列的实现方式
 ## 五 [simpleDateFormat](markdown/simpleDateFormat.md)
 SimpleDateFormat线程不安全及解决方案 
+## 六 [数据库连接池参数配置](markdown/dataSourceConnectedPool.md)
+数据库连接池参数配置造成问题的案例分析
