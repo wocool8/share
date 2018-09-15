@@ -1,7 +1,7 @@
 # 异常
 ---
 ## 一 异常介绍
-![exception](../picture/exception/exception.PNG)
+![exception](../../picture/exception/exception.PNG)
 ## 二 异常处理方式
 ### 2.1 throw
     
