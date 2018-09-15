@@ -171,18 +171,48 @@ maxActive 的值的设置规则一般为：1000 / 服务器数量，但是maxAct
 
 ### 1.3 获取连接失败(active < maxActive)
 
-#### 1.1.1 异常栈
+#### 1.3.1 异常栈
     ### Cause: org.springframework.jdbc.CannotGetJdbcConnectionException: 
     Could not get JDBC Connection; nested exception is com.alibaba.druid.pool.GetConnectionTimeoutException:
      wait millis 1000, active 3, maxActive 20, creating 1 
      at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:73)
      at org.mybatis.spring.SqlSessionTemplate
-#### 1.1.2 分析过程
+#### 1.3.2 分析过程
 active < maxActive ，所以当获取连接的时候，要新建连接，此时获取连接方法需要等待，但是由于一些原因（例如网络因素），在1000ms内，新连接没有获取到造成获取连接超时
-#### 1.1.3 解决方案
+#### 1.3.3 解决方案
 调整maxWait参数值为10000ms
 
+### 1.4 socketTimeout
 
+#### 1.4.1 异常栈
+    Last packet sent to the server was 15000 ms ago.;
+    nested exception is com.mysql.jdbc.exceptions.jdbc4.CommunicationsException : Communications link failure
+    ...
+    Caused by: java.net.SocketTimeoutException: Read timed out
+
+#### 1.4.2 分析过程
+    jdbc.mysql.connectionProperties=useUnicode=true;characterEncoding=utf8;connectTimeout=3000;socketTimeout=15000;rewriteBatchedStatements=true;autoReconnectForPools=true;failOverReadOnly=false;roundRobinLoadBalance=true;allowMultiQueries=true;
+数据库参数配置了socketTimeout=15000 socket在15秒没有返回package
+#### 1.4.3 解决方案
+删除了 socketTimeout=15000 配置
+
+### 1.5 获取不到数据库连接(部分请求异常)
+
+#### 1.5.1 异常栈
+    org.springframework.jdbc.CannotGetJdbcConnectionException: Could not get JDBC Connection
+#### 1.5.2 分析过程    
+由于不是所以有都获取不到连接，所以考虑连接泄露的问题 数据库配置入下，
+
+        <property name="testWhileIdle" value="false"/>
+        <property name="testOnBorrow" value="false"/>
+由于数据库空闲连接回收参数未配置且mysql连接8小时不使用，数据库会关闭连接，在获取连接时不校验连接有效，每次都会获取到失效连接
+#### 1.5.3 解决方案
+        开启获取校验
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="true"/>
+        开启空闲连接被回收时间 mysql连接8小时不使用 数据库会关闭连接
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="30000"/>
 ## 二 druid连接池推荐配置
 
     <!-- 初始化连接数量 -->
