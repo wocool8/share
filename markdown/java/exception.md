@@ -22,7 +22,18 @@
             log.error("dmlRecord:{},save indexRecord Exception", JSON.toJSONString(dmlRecord), e);
             saveDmlRecordHandleResult(dmlRecord, DmlRecordStatusEnum.FAIL_SAVE_INDEX_RECORD.getCode());
         }
+执行顺序
 
+    try {
+        ...
+    } catch（exception e）{
+       //会执行finally
+       return ; 
+       //不会执行finally
+       System.exit() ;
+    } finally{
+        ...
+    }
 ## 三 使用异常的不良习惯
 ### 3.1 捕获异常 但不对做有意义的处理    
     catch (......) {
