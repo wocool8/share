@@ -4,9 +4,8 @@
 ## 一 java
 ### 1.1 [JDK队列及Disruptor实现原理](markdown/java/queue.md)
 ### 1.2 [Exception](markdown/java/exception.md)
-### 1.3 [SimpleDateFormat线程不安全及解决方案](markdown/java/simpleDateFormat.md)
-### 1.4 [Reference](markdown/java/reference.md)
-### 1.5 [Compare And Swap](markdown/java/cas.md)
+### 1.3 [Reference](markdown/java/reference.md)
+### 1.4 [Compare And Swap](markdown/java/cas.md)
 
 ## 二 jvm
 ### 2.1 [Class文件结构](markdown/jvm/class.md)
@@ -34,3 +33,7 @@
 ## 六 design pattern 
 
 ### 6.1 [Singleton](markdown/designpattern/singleton.md)
+
+## 七 thread
+### 7.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
+### 7.1 [线程池](markdown//threadPool.md)
