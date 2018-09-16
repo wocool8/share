@@ -11,7 +11,7 @@
 ## 二 jvm
 ### 2.1 [Class文件结构](markdown/jvm/class.md)
 ### 2.1 [ClassLoader](markdown/jvm/classLoader.md)
-### 2.1 [Garbage Collection](markdown/jvm/classLoader.md)
+### 2.1 [Garbage Collection](markdown/jvm/gc.md)
 
 ## 三 database
 ### 3.1 [Mysql的index-merge](markdown/database/index-merge.md) 
