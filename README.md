@@ -29,3 +29,6 @@
 ## 五 schedule
 ### 5.1 [分布式任务调度](markdown/schedule.md)
 
+## 六 design pattern 
+
+### 6.1 [Singleton](markdown/designpattern/singleton.md)
