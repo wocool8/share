@@ -86,6 +86,177 @@ Java虚拟机规范定义了十四种常量
 |ACC_ANNOTATION |0x2000|注解类型|注解|
 |ACC_ENUM  |0x4000|枚举类型|枚举|
 
+### 1.5 其余部分
+依次是 类索引、超类索引与接口索引 字段集合 方法集合 属性集合 
+
+## 一 Class文文件加载过程
+
+    /**
+    * 1.校验魔法数字和版本号
+    */
+    func (self *ClassFile) read(reader *ClassReader) {
+        //校验魔法数字
+        self.readAndCheckMagic(reader)
+        //校验版本号
+        self.readAndCheckVersion(reader)
+        //加载常量池
+        self.constantPool = readConstantPool(reader)
+        //加载访问标识
+        self.accessFlags = reader.readUnit16();
+        //加载当前类
+        self.thisClass = reader.readUnit16();
+        //加载父类信息
+        self.superClass = reader.readUnit16();
+        //加载接口
+        self.interfaces = reader.readUnit16s();
+        //加载字段表
+        self.fields = readMembers(reader, self.constantPool)
+        //加载方法表
+        self.methods = readMembers(reader, self.constantPool)
+        //加载属性信息
+        self.attributes = readAttributes(reader, self.constantPool)
+    }
+    
+    /**
+    * 2.读取常量池
+    */
+    func readConstantPool(reader *ClassReader) ConstantPool {
+        cpCount := int(reader.readUnit16())
+        cp := make([]ConstantInfo, cpCount)
+        //常量池的索引是从1开始的 
+        for i :=1; i < cpCount; i++ {
+            cp[i] = readConstantInfo(reader, cp)
+            //Long和double占两个索引位
+            switch cp[i].(type) {
+            case *ConstantLongInfo, *ConstantDoubleInfo:
+                i++
+            }
+        }
+        return cp
+    }
+    
+    
+    /**
+     * 3.读取常量池信息
+     */
+    func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
+        tag := reader.readUnit8()
+        c := newConstantInfo(tag, cp)
+        c.readInfo(reader)
+        return c
+    }
+    
+    
+    /**
+     * 4.根据访问标识 构建对应的常量池信息
+     */
+    func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
+        switch tag {
+        case CONSTANT_Integer:
+            return &ConstantIntegerInfo{}
+        case CONSTANT_Float:
+            return &ConstantFloatInfo{}
+        case CONSTANT_Long:
+            return &ConstantLongInfo{}
+        case CONSTANT_Double:
+            return &ConstantDoubleInfo{}
+        case CONSTANT_Utf8:
+            return &ConstantUtf8Info{}
+        case CONSTANT_String:
+            return &ConstantStringInfo{cp: cp}
+        case CONSTANT_Class:
+            return &ConstantClassInfo{cp: cp}
+        case CONSTANT_Fieldref:
+            return &ConstantFieldrefInfo{ConstantMemberrefInfo{cp: cp}}
+        case CONSTANT_Methodref:
+            return &ConstantMethodrefInfo{ConstantMemberrefInfo{cp: cp}}
+        case CONSTANT_InterfaceMethodref:
+            return &ConstantInterfaceMethodrefInfo{ConstantMemberrefInfo{cp: cp}}
+        case CONSTANT_NameAndType:
+            return &ConstantNameAndTypeInfo{}
+        case CONSTANT_MethodType:
+            return &ConstantMethodTypeInfo{}
+        case CONSTANT_MethodHandle:
+            return &ConstantMethodHandleInfo{}
+        case CONSTANT_InvokeDynamic:
+            return &ConstantInvokeDynamicInfo{}
+        default:
+            panic("java.lang.ClassFormatError: constant pool tag!")
+        }
+    }
+    
+    /**
+     * 5.常量池中读取字段表或方法表
+     */
+    func readMembers(reader *ClassReader, cp ConstantPool) []*MemberInfo {
+        memberCount := reader.readUnit16()
+        members := make([]*MemberInfo, memberCount)
+        for i := range members {
+            members[i] = readMember(reader, cp)
+        }
+        return members
+    }
+    
+    /**
+    * 6.读取字段或方法数据
+    */
+    func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
+        return &MemberInfo {
+            cp: cp,
+            accessFlags: reader.readUnit16(),
+            nameIndex: reader.readUnit16(),
+            descriptorIndex: reader.readUnit16(),
+            attributes: readAttributes(reader, cp), 
+        }
+    }
+    
+    /**
+    * 7.readAttributes方法读取属性表
+    */
+    func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
+        attributesCount := reader.readUnit16()
+        attributes := make([]AttributeInfo, attributesCount)
+        for i := range attributes {
+            attributes[i] = readAttribute(reader, cp)
+        }
+        return attributes
+    }
+    
+    /**
+    * 8.readAttribute方法读取单个属性
+    */
+    func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
+        attrNameIndex := reader.readUnit16()
+        attrName := cp.getUtf8(attrNameIndex)
+        attrLen := reader.readUnit32()
+        attrInfo := newAttributeInfo(attrName, attrLen, cp)
+        attrInfo.readInfo(reader)
+        return attrInfo
+    }
+    
+    /**
+    * 9.创建具体的属性实例java虚拟机中定义了23种属性， 先解析其中的八种
+    * 23种预定义的属性可以分成三组 
+    * 1.Java虚拟机必需的 5种
+    * 2.java类库所必需的 12种
+    * 3.提供给工具使用的 6种 (也就是说第三种属性是可选的 比如LineNumberTableshuxin)
+    */
+    func newAttributeInfo (attrName string, attrLen uint32, cp ConstantPool) AttributeInfo {
+        switch attrName {
+        case "Code": return &CodeAttribute{cp: cp} 
+        case "ConstantValue": return &ConstantValueAttribute{}
+        case "Deprecated": return &DeprecatedAttribute{}
+        case "Exceptions": return &ExceptionsAttribute{}
+        case "LineNumberTable": return &LineNumberTableAttribute{}
+        case "LocalVariableTable": return &LocalVariableTableAttribute{}
+        case "SourceFile": return &SourceFileAttribute{}
+        case "Synthetic": return &SyntheticAttribute{}
+        default: return &UnparsedAttribute{attrName, attrLen, nil}
+        }
+    }
 
 
+
+
+    
 
