@@ -89,11 +89,11 @@ Java虚拟机规范定义了十四种常量
 ### 1.5 其余部分
 依次是 类索引、超类索引与接口索引 字段集合 方法集合 属性集合 
 
-## 一 Class文文件加载过程
+## 二 Class文文件加载过程
 
     /**
-    * 1.校验魔法数字和版本号
-    */
+     * 1.校验魔法数字和版本号
+     */
     func (self *ClassFile) read(reader *ClassReader) {
         //校验魔法数字
         self.readAndCheckMagic(reader)
@@ -118,8 +118,8 @@ Java虚拟机规范定义了十四种常量
     }
     
     /**
-    * 2.读取常量池
-    */
+     * 2.读取常量池
+     */
     func readConstantPool(reader *ClassReader) ConstantPool {
         cpCount := int(reader.readUnit16())
         cp := make([]ConstantInfo, cpCount)
@@ -198,8 +198,8 @@ Java虚拟机规范定义了十四种常量
     }
     
     /**
-    * 6.读取字段或方法数据
-    */
+     * 6.读取字段或方法数据
+     */
     func readMember(reader *ClassReader, cp ConstantPool) *MemberInfo {
         return &MemberInfo {
             cp: cp,
@@ -211,8 +211,8 @@ Java虚拟机规范定义了十四种常量
     }
     
     /**
-    * 7.readAttributes方法读取属性表
-    */
+     * 7.readAttributes方法读取属性表
+     */
     func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
         attributesCount := reader.readUnit16()
         attributes := make([]AttributeInfo, attributesCount)
@@ -223,8 +223,8 @@ Java虚拟机规范定义了十四种常量
     }
     
     /**
-    * 8.readAttribute方法读取单个属性
-    */
+     * 8.readAttribute方法读取单个属性
+     */
     func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
         attrNameIndex := reader.readUnit16()
         attrName := cp.getUtf8(attrNameIndex)
@@ -235,12 +235,12 @@ Java虚拟机规范定义了十四种常量
     }
     
     /**
-    * 9.创建具体的属性实例java虚拟机中定义了23种属性， 先解析其中的八种
-    * 23种预定义的属性可以分成三组 
-    * 1.Java虚拟机必需的 5种
-    * 2.java类库所必需的 12种
-    * 3.提供给工具使用的 6种 (也就是说第三种属性是可选的 比如LineNumberTableshuxin)
-    */
+     * 9.创建具体的属性实例java虚拟机中定义了23种属性， 先解析其中的八种
+     * 23种预定义的属性可以分成三组 
+     * 1.Java虚拟机必需的 5种
+     * 2.java类库所必需的 12种
+     * 3.提供给工具使用的 6种 (也就是说第三种属性是可选的 比如LineNumberTableshuxin)
+     */
     func newAttributeInfo (attrName string, attrLen uint32, cp ConstantPool) AttributeInfo {
         switch attrName {
         case "Code": return &CodeAttribute{cp: cp} 
