@@ -36,4 +36,4 @@
 
 ## 七 thread
 ### 7.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### 7.1 [线程池](markdown//threadPool.md)
+### 7.1 [线程池](markdown/thread/threadPool.md)
