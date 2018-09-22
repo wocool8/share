@@ -18,6 +18,10 @@ elasticsearch安装目录下的config文件夹包含了配置文件elasticsearch
     # Add custom attributes to the node:
     #
     node.attr.rack: r1
+    # 指定该节点是否有资格被选举为Master节点，默认是true，如果被设置成true，自是有资格成为主节点的被选举机会，不一定会成为主节点
+    node.master: true
+    # 指定节点是否存储索引数据
+    node.data: true    
     #
     # ----------------------------------- Paths ------------------------------------
     #
@@ -72,11 +76,6 @@ elasticsearch安装目录下的config文件夹包含了配置文件elasticsearch
     # Require explicit names when deleting indices:
     #
     action.destructive_requires_name: true
-    # ---------------------------------- node -----------------------------------
-    # 指定该节点是否有资格被选举为Master节点，默认是true，如果被设置成true，自是有资格成为主节点的被选举机会，不一定会成为主节点
-    node.master: true
-    # 指定节点是否存储索引数据
-    node.data: true
     # ---------------------------------- index -----------------------------------
     # 索引数据的默认分片数
     index.number_of_shardings: 5
