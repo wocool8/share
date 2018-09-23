@@ -1,4 +1,4 @@
-# elasticsearch 参数配置
+# elasticsearch C参数配置及性能调优
 ---
 ## 一 config
 elasticsearch安装目录下的config文件夹包含了配置文件elasticsearch.yml
