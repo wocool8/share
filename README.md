@@ -39,4 +39,4 @@
 ### 7.1 [线程池](markdown/thread/threadPool.md)
 
 ## 八 elasticsearch
-### 8.1 [C参数配置及性能调优](markdown/elasticsearch/elasticsearch.md)
+### 8.1 [参数配置及性能调优](markdown/elasticsearch/elasticsearch.md)
