@@ -32,7 +32,8 @@ elasticsearch安装目录下的config文件夹包含了配置文件elasticsearch
     # Path to log files:
     #
     path.logs: /path/to/logs
-    #
+    #配置文件路径
+    path.config: /path/to/config
     # ----------------------------------- Memory -----------------------------------
     #
     # Lock the memory on startup:
@@ -81,3 +82,7 @@ elasticsearch安装目录下的config文件夹包含了配置文件elasticsearch
     index.number_of_shardings: 5
     # 默认的索引副本数
     index.number_of_replicas: 1
+    # ---------------------------------- transport -----------------------------------
+    transport.tcp.port: 9300
+    # 节点间传输数据时是否需要压缩
+    transport.tcp.compress: true
