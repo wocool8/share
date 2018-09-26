@@ -271,3 +271,20 @@ java中，所有的对象都分配在堆上，每个对象头都通过Klass Poin
 设置选举主节点时需要参与选举的节点个数
 
     discovery.zen.minimum_master_nodes: （master集群节点数/2） + 1
+
+### 2.9 遇到的问题
+#### 2.9.1 maxClauseCount is set to 1024
+    org.apache.lucene.search.BooleanQuery$TooManyClauses: maxClauseCount is set to 1024
+            at org.apache.lucene.search.BooleanQuery.add(BooleanQuery.java:165)
+            at org.apache.lucene.search.BooleanQuery.add(BooleanQuery.java:156)
+            at org.apache.lucene.search.PrefixQuery.rewrite(PrefixQuery.java:54)
+            at org.apache.lucene.search.BooleanQuery.rewrite(BooleanQuery.java:370)
+            at org.apache.lucene.search.IndexSearcher.rewrite(IndexSearcher.java:151)
+            at org.apache.lucene.search.Query.weight(Query.java:94)
+一次业务查询中 es的in查询list大小超过5000，出现如上异常。解决方式是以业务逻辑限定list大小或者设置es集群的elasticsearch.yml添加如下配置
+    
+    ES5.0 之前版本
+    index.query.bool.max_clause_count: 10240 
+    ES5.0 及之后版本
+    indices.query.bool.max_clause_count: 10240
+
