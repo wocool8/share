@@ -271,6 +271,36 @@ java中，所有的对象都分配在堆上，每个对象头都通过Klass Poin
 设置选举主节点时需要参与选举的节点个数
 
     discovery.zen.minimum_master_nodes: （master集群节点数/2） + 1
+    
+### 2.9 设置合适的分片数量
+分片数量选择2的n次幂(路由可以使用位运算)<br>
+ES的index分成若干shard对数据量有硬性限制，每个分片最大能存20亿条数据。<br>
+新建分片需要预估集群使用的数据量，建议每个分片存储5000万数据(预估数量上限计算分片数)。由于分片数量过大对分页查询性能有所影响，所以也不建议es分片数量过大
+
+### 2.10 合理使用doc_values
+倒排索引只有词对应的doc，但是并不知道每一个doc中的内容，那么如果想要排序的话每一个doc都去获取一次文档内容。倒排索引将词项映射到包含它们的文档，Doc values将文档映射到它们包含的词项，
+Doc Values 和倒排索引一样，基于Segement生成并且是不可变的，Doc Values 本质上是一个序列化的 列式存储，这个结构非常适用于聚合、排序、脚本等操作，Doc Values 默认对所有字段启用，除了 analyzed strings
+所以对于不需要排序的字段 禁用 Doc Values，可以优化性能
+
+### 2.11 mapping字段
+
+    {
+        "mappings": {
+            "mumu": {
+                "properties": {
+                    "name": {
+                        // 不需要分词字段设置not_analyzed
+                        "index": "not_analyzed",
+                        不做检索字段设置 no
+                        "index": "no",
+                        // 对于不需要排序的字段 禁用 Doc Values
+                        doc_values : false
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
 
 ## 二 问题及处理方案
 
@@ -289,20 +319,13 @@ java中，所有的对象都分配在堆上，每个对象头都通过Klass Poin
     ES5.0 及之后版本
     indices.query.bool.max_clause_count: 10240
     
-### 2.9.2 创建mapping没指定分词器导致查询失败
-在没有指定分词器情况下会使用默认分词器（standard Tokenizer），standard Tokenizer是于语法的分词器，适合欧洲语言的分词器，实现unicode算法，会将大写字母全部转换成小写，并存入倒排索引以供搜索。
+### 2.9.2 string 没指定分词器导致查询失败
+string在没有指定分词器情况下会使用默认分词器（standard Tokenizer），standard Tokenizer是于语法的分词器，适合欧洲语言的分词器，实现unicode算法，会将大写字母全部转换成小写，并存入倒排索引以供搜索。
     
     {
-        "settings": {
-            "index": {
-                "number_of_shards": "8",
-                "number_of_replicas": "1"
-            }
-        },
         "mappings": {
             "mumu": {
                 "properties": {
-    
                     "name": {
                         "type": "string"
                     }
@@ -312,6 +335,9 @@ java中，所有的对象都分配在堆上，每个对象头都通过Klass Poin
     }    
 
 如果查询条件中包含中文使用ik-analyzer Tokenizer <br>
-如果全是英文字符使用Whitespace Tokenizer(空格分词器) 或 在使用term确切查询把查询条件转换成小写字符串，
+如果全是英文字符使用Whitespace Tokenizer(空格分词器) 或 在使用term确切查询把查询条件转换成小写字符串<br>
+  
+
+
 
 
