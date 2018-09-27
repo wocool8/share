@@ -42,4 +42,3 @@
 ### 8.1 [elasticsearch.yml](markdown/elasticsearch/config.md)
 ### 8.2 [性能调优](markdown/elasticsearch/elasticsearch.md)
 ### 8.3 [FAQ](markdown/elasticsearch/faq.md)
-elasticsearch.yml
