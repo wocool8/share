@@ -272,8 +272,9 @@ java中，所有的对象都分配在堆上，每个对象头都通过Klass Poin
 
     discovery.zen.minimum_master_nodes: （master集群节点数/2） + 1
 
-### 2.9 遇到的问题
-#### 2.9.1 maxClauseCount is set to 1024
+## 二 问题及处理方案
+
+### 2.9.1 maxClauseCount is set to 1024
     org.apache.lucene.search.BooleanQuery$TooManyClauses: maxClauseCount is set to 1024
             at org.apache.lucene.search.BooleanQuery.add(BooleanQuery.java:165)
             at org.apache.lucene.search.BooleanQuery.add(BooleanQuery.java:156)
@@ -287,4 +288,30 @@ java中，所有的对象都分配在堆上，每个对象头都通过Klass Poin
     index.query.bool.max_clause_count: 10240 
     ES5.0 及之后版本
     indices.query.bool.max_clause_count: 10240
+    
+### 2.9.2 创建mapping没指定分词器导致查询失败
+在没有指定分词器情况下会使用默认分词器（standard Tokenizer），standard Tokenizer是于语法的分词器，适合欧洲语言的分词器，实现unicode算法，会将大写字母全部转换成小写，并存入倒排索引以供搜索。
+    
+    {
+        "settings": {
+            "index": {
+                "number_of_shards": "8",
+                "number_of_replicas": "1"
+            }
+        },
+        "mappings": {
+            "mumu": {
+                "properties": {
+    
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }    
+
+如果查询条件中包含中文使用ik-analyzer Tokenizer <br>
+如果全是英文字符使用Whitespace Tokenizer(空格分词器) 或 在使用term确切查询把查询条件转换成小写字符串，
+
 
