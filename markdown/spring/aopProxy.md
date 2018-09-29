@@ -1,6 +1,6 @@
-# AOP 动态代理
+# AOP Proxy 及操作字节码
 ---
-## 一 JDK代理
+## 一 JDK Proxy
 JDK动态代理是利用反射机制生成一个实现代理接口的匿名类，在调用具体方法前调用InvokeHandler来处理
 
     public class JDKProxy implements InvocationHandler {
@@ -23,7 +23,7 @@ JDK动态代理是利用反射机制生成一个实现代理接口的匿名类�
     	}
     }
         
-## 二 CGLIB代理(底层使用ASM实现)
+## 二 CGLIB Proxy
 动态生成一个要代理类的子类，子类重写要代理的类的所有不是final的方法。在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势织入横切逻辑。它比使用java反射的JDK动态代理要快，cglib底层使用字节码处理框架ASM，来转换字节码并生成新的类。不鼓励直接使用ASM，因为它要求你必须对JVM内部结构包括class文件的格式和指令集都很熟悉，由于cglib要生成子类，所以对final类是无法进行代理的
 
     public class CGLIBProxy implements MethodInterceptor {
@@ -126,10 +126,9 @@ JDK动态代理是利用反射机制生成一个实现代理接口的匿名类�
     Disconnected from the target VM, address: '127.0.0.1:50290', transport: 'socket'
 
 #### 4.1.2 优点
-以二进制的形式修改已有类或动态生成类，小巧、灵活、性能好
+以二进制的形式修改已有类或动态生成类，小巧、灵活、性能好，
 #### 4.1.3 缺点
 要很熟悉class文件结构及熟悉字节码指令，上手难度大
-
 
 ### 4.2 JAVASSIST 
 修改类 添加get方法
@@ -166,5 +165,10 @@ JDK动态代理是利用反射机制生成一个实现代理接口的匿名类�
 使用java编码的方式动态改变类的结构，简单，不需要了解虚拟机指令
 #### 4.2.3 缺点
 不够灵活，性能比ASM差一些
+
+## 五 FAQ
+### 5.1 final修饰的类为什么不能使用CGLIB代理
+由于CGLIB动态代理的底层实现是ASM，理论上是可以代理final类的，但是CGLIB实现字节码增强是使用Enhancer生成派生子类字节码
+所以才不能代理final修饰类
            
 
