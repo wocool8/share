@@ -18,7 +18,7 @@ qlExpress和groovy同属脚本语言，比较如下：
 #### 1.3.3 qlExpress和groovy性能相当
 qlExpress和groovy同属弱类型语法，比如a+b，可以在运行时支持字符串，数字等多种计算模式，相比fel，simpleExpress 等强类型语言性能会差一个数量级。
 他们都支持编译期做了缓存功能，qlExpress转化为InstructSet，groovy转化为一个特殊的groovyclass子类
-## 二 Drools
+## 二 Drools([文档连接](https://nheron.gitbooks.io/droolsonboarding/content/gettingStarted/first_rule_language_element.html))
 Drools是最活跃的开源规则引擎。基于Drools的XML框架 + Java/Groovy/Python嵌入语言，专注于规则的条件匹配和执行
 ![规则匹配](../../picture/rule/partternMatcher.PNG)
 ### 2.1 语言规则
@@ -42,5 +42,4 @@ Drools是最活跃的开源规则引擎。基于Drools的XML框架 + Java/Groovy
   
   
 
-qlExpress本身只是一个脚本语言，可以被封装成规则引擎，而drools本身是个规则引擎，专注于规则的条件匹配和执行，不具备可比性。
 
