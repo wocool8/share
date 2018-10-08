@@ -1,7 +1,55 @@
 # 字节码操作
 ---
 ## 一 JAVA AGENT
+### 1.1介绍
+在 JDK 1.5 中，Java 引入了 java.lang.Instrument 包，该包提供了一些工具帮助开发人员在 Java 程序运行时，动态修改系统中的 Class 类型。
 
+### 1.2 premain
+对于使用命令行接口的实现，可以将以下选项添加到命令行来启动代理 
+
+    -javaagent:jarpath[=options]
+JVM 首先尝试对代理类调用以下方法
+
+    public static void premain(String agentArgs, Instrumentation inst)
+如果不存在则尝试调用    
+
+    public static void premain(String agentArgs)  
+### 1.3 VM 启动后启动代理  
+#### 1.3.1 代理 JAR 的清单必须包含属性 Agent-Class。此属性的值是代理类 的名称。
+    Manifest-Version: 1.0
+    Agent-Class:com.mumu.AgentDemo
+    Created-By: Apache Maven 3.3.9
+    Build-Jdk: 1.8.0_101
+#### 1.3.2 代理类必须实现公共静态 agentmain 方法。
+JVM 首先尝试对代理类调用以下方法
+
+    public static void agentmain(String agentArgs, Instrumentation inst)
+如果不存在则尝试调用    
+
+    public static void agentmain(String agentArgs)  
+### 1.4 自定义Agent(命令行启动方式)    
+#### 1.4.1 实现公共静态premain方法
+    public class AgentDemo {
+        public static void premain(String agentArgs, Instrumentation inst) throws UnmodifiableClassException {
+            inst.addTransformer(new ClassFileTransformer() {
+                @Override
+                public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+                    return getBytesByClassPath(Application.class.getSimpleName().concat(".class"));
+                }
+            });
+            // todo 对字节码进行修改操作
+            inst.retransformClasses(Application.class);
+        }    
+    }
+#### 1.4.2 配置MAINIFEST.MF文件
+生成的jar包中的META-INF/MAINIFEST.MF必须包含Premain-Class属性，如下
+
+    Manifest-Version: 1.0
+    Premain-Class:com.mumu.AgentDemo
+    Created-By: Apache Maven 3.3.9
+    Build-Jdk: 1.8.0_101
+#### 1.4.3 使用
+    -javaagent:/export/servers/mumu-agent-1.0.0.jar 
 ## 二 ASM
 ### 2.1 使用
 生成一个类 包含打印hello word方法
