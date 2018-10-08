@@ -9,9 +9,9 @@
 
 ## 二 jvm
 ### 2.1 [Class文件结构](markdown/jvm/class.md)
-### 2.1 [ClassLoader](markdown/jvm/classLoader.md)
-### 2.1 [Garbage Collection](markdown/jvm/gc.md)
-
+### 2.2 [ClassLoader](markdown/jvm/classLoader.md)
+### 2.3 [Garbage Collection](markdown/jvm/gc.md)
+### 2,4 [字节码操作](markdown/jvm/bytecode.md)
 ## 三 database
 ### 3.1 [Mysql的index-merge](markdown/database/index-merge.md) 
 ### 3.2 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
@@ -49,7 +49,7 @@
 ### 4 不同版本api差距
 -->
 ## 九 spring
-### 9.1 [AOP Proxy 及操作字节码](markdown/spring/aopProxy.md)
+### 9.1 [AOP Proxy](markdown/spring/aopProxy.md)
 
 <!-- 
 ## 十 规则引擎
