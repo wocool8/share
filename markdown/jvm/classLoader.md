@@ -1,9 +1,8 @@
 # ClassLoader
 ---
-## 一 类加载器
+## 一 加载顺序
 ![class](../../picture/jvm/classLoader.jpg)
-## 二 类加载过程
-## 2.1 加载过程(go语言描述)
+## 二 加载过程(go语言描述)
     /**
      * 类加载器 加载流程
      * 如果用户没有提供 -classpath/-cp选项，则使用当前的目录作为用户路径
@@ -37,7 +36,10 @@
     	}
     	self.userClasspath = newEntry(cpOption)
     }
-## 2.2 类加载器双亲委派代码(jdk的类加载器源码)
+## 三 ClassLoader
+### 3.1 loadClass方法
+JVM在加载类时默认采用的是双亲委派机制。通俗的讲，就是某个特定的类加载器在接到加载类的请求时，首先将加载任务委托给父类加载器，依次递归，如果父类加载器可以完成类加载任务，就成功返回；只有父类加载器无法完成此加载任务时，才自己去加载，
+双亲委派机制的根本原因是loadClass方法的 c = parent.loadClass(name, false);
 
     protected Class<?> loadClass(String name, boolean resolve)
             throws ClassNotFoundException
@@ -77,9 +79,36 @@
             }
         }
     }
-## 三 Custom ClassLoader
-### 实现ClassLoader
-自定义不打破双亲委派机制的类加载器，只重写findClass方法
+### 3.2 defineClass方法
+将字节数组转化为类实例
+
+    /**
+     * Converts an array of bytes into an instance of class <tt>Class</tt>.
+     */
+    protected final Class<?> defineClass(String name, byte[] b, int off, int len)
+        throws ClassFormatError
+    {
+        return defineClass(name, b, off, len, null);
+    }
+
+### 3.3 findClass方法
+自定义类加载机制可以通过重写findClass方法加载自定义路径类
+
+    /**
+     * Finds the class with the specified <a href="#name">binary name</a>.
+     * This method should be overridden by class loader implementations that
+     * follow the delegation model for loading classes, and will be invoked by
+     * the {@link #loadClass <tt>loadClass</tt>} method after checking the
+     * parent class loader for the requested class.  The default implementation
+     * throws a <tt>ClassNotFoundException</tt>.
+     */
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        throw new ClassNotFoundException(name);
+    }
+
+
+## 四 Custom ClassLoader
+### 4.1 实现ClassLoader(自定义不打破双亲委派机制的类加载器，只重写findClass方法)
 
     public class MumuClassLoader extends ClassLoader {
     
