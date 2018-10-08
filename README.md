@@ -6,6 +6,7 @@
 ### 1.2 [Exception](markdown/java/exception.md)
 ### 1.3 [Reference](markdown/java/reference.md)
 ### 1.4 [Compare And Swap](markdown/java/cas.md)
+### 1.5 [Generics](markdown/java/generics.md)
 
 ## 二 jvm
 ### 2.1 [Class文件结构](markdown/jvm/class.md)
