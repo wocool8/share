@@ -3,7 +3,7 @@
 
 ## 1 减少refresh的次数
 Lucene在新增数据时为了提高写性能，采用的是延迟写入的策略，即先将数据写入内存中，当延时超过一秒时(index.refresh.interval参数配置)，会触发一次refresh，refresh会把内存中的数据以
-段德兴市刷到文件系统的缓存中
+段的形式刷新到文件系统的缓存中
 
     org.springframework.data.repository.CrudRepository得save方法
         public <S extends T> S save(S entity) {
