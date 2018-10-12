@@ -1,8 +1,7 @@
 
 # 一 redis5种结构类型
 ## 1.1 String(simple dynamic string)
-存储的值：字符串、整数、浮点数<br>
-结构的读写能力：对整个字符串或字符串中的一部分执行操作，整数和浮点数的自增(increment)、自减操作(decrement)
+存储的值是字符串、整数、浮点数
 ### 1.1.1 结构
     struct sds{
         //记录buf数组中已经使用的字节数量
@@ -22,15 +21,13 @@
     strcpy(a, "hello world"); 
 #### 1.1.2.3 减少修改字符串时带来的内存重分配次数    
 空间预分配：当对SDS修改的时候如果len的属性值小于1MB则分配两倍len长度的未使用空间，len的属性值大于1MB的时候分配1MB的未使用空间。<br>
-惰性空间释放：当SDS修改时候，减少的已使用空间被分配到未使用的部分，保留在SDS中。
+惰性空间释放：当SDS修改时候，减少的已使用空间被分配到未使用的部分，保留在SDS中。'
 #### 1.1.2.4 二进制安全  
 C语言使用’\0’作为判定字符串的结尾，如果你保存的字符串内存在’\0’，c语言自会识别前面的数据，导致后面的数据被忽略，所以是不安全的。而redis是使用了独立的len，这样可以保证即使存储的数据中有’\0’这样的字符，它也是可以支持读取的。<br>
 #### 1.1.2.5 兼容部分C的字符串函数  
 
 ## 1.2 List
-
-存储的值：存储的值是一个链表，链表上的每个值都是一个string<br>
-结构的读写能力：从链表两端推入或弹出数据、根据偏移量对链表修剪(trim)、读取单个或多个元素、根据值查找或删除元素
+存储的值是一个链表，链表上的每个值都是一个string<br>
 ### 1.2.1 结构
 		/*
 		redis中实现的链表和其他的高级语言是一样的逻辑，使用前节点和后节点的结构 
@@ -63,7 +60,7 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
             int (*match)(void *ptr, void *key)
 		}list;
 
-### 1.2.2 链表实现的特性
+### 1.2.2 LIST
 |特点|
 |:-|
 |双端|
@@ -72,6 +69,50 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
 |带有表长度的计数器|
 |可以保存各种不同类型的值|
 
-## 1.3 Set
+## 1.3 SET
+包含字符串的无序集合收集器(unordered collection)，每个字符串都是不相同的
+
+## 1.4 HASH 
+包含键值对的无序散列表
+### 1.4.1 结构
+
+	typdef struct dictionary{
+		//类型特定函数---type是指向一个dictionayType类型的指针，每个dictionaryType保存一簇用于操作特定类型键值对函数，redis会为用途不同的字典设置不同的类型特定函数
+		dictionaryType *type;
+		//私有数据---保存了需要传给那些类型函数的可选参数
+		void privateData;
+		//哈希表
+		dictionaryHashTable[2];
+		//rehash索引--不在进行rehash的时候值为-1
+		int rehashIndex;
+	}dictionary;
+
+    typdef struct dictionaryHashTable {
+        //哈希表数组
+        dictionaryEntry **table;
+        //哈希表大小
+        unsigned long size;
+        //哈希表大小掩码
+        unsigned long sizemask;
+        //哈希表已有的节点数
+        unsigned long used;
+    } dictionaryHashTable;
+
+	typdef struct dictionaryEntry{
+		//键
+		void *key;
+		//值
+		union{
+            void *val;
+            uint64_t u64;
+            int64_t s64;
+		}v;
+		struct dictionaryEntry *next
+	}dictionaryEntry;
+
+
+
+## 1.5 ZSET 
+字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定
 
 
