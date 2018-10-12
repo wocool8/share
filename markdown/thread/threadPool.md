@@ -28,9 +28,9 @@
         this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
              Executors.defaultThreadFactory(), defaultHandler);
     }
-(1)线程数量 < corePoolSize : 创建性的线程处理任务<br>
+(1)线程数量 < corePoolSize : 创建新的线程处理任务<br>
 (2)线程数量 = corePoolSize 但是 workQueue 未满 : 任务放入缓冲队列<br>
-(3)线程数量 > corePoolSize 且 workQueue : 创建新的线程处理任务<br>
+(3)线程数量 > corePoolSize 且 workQueue满了 且 线程数量 < maximumPoolSize : 创建新的线程处理任务<br>
 处理任务的优先级为：核心线程corePoolSize、任务队列workQueue、最大线程maximumPoolSize，如果三者都满了，使用handler处理被拒绝的任务。
 
 
