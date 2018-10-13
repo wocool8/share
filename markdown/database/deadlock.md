@@ -1,14 +1,45 @@
-# Deadlock
----
-## 一 死锁条件
+# 一 死锁条件
 |条件|描述|
 |:-|:-| 
 |互斥|某个资源在一段时间内只能由一个进程占有，不能同时被两个或两个以上的进程占有| 
 |不可抢占|进程所获得的资源在未使用完毕之前，资源申请者不能强行地从资源占有者手中夺取资源，而只能由该资源的占有者进程自行释放| 
 |占有且申请|进程至少已经占有一个资源，但又申请新的资源；由于该资源已被另外进程占有，此时该进程阻塞；但是，它在等待新资源之时，仍继续占用已占有的资源| 
 |循环等待|形成一个等待闭环| 
-## 二 案例及分析
+# 二 案例及分析
+## 2.1 不同表不同Update Sql造成死锁
+### 2.1.1 异常日志
+![index-merge](../../picture/deadlock/update1.PNG)
+![index-merge](../../picture/deadlock/update2.PNG)
+### 2.1.2 原因分析
+![index-merge](../../picture/deadlock/update3.png)
+ 如图A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）。1和2的更新操作都是使用聚集索引，当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，
+B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
+### 2.1.3 解决方案
+打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
+## 2.2 同表同Insert Sql 造成死锁
 
+### 2.2.1 异常日志
+![index-merge](../../picture/deadlock/insert1.png)
+### 2.2.2 原因分析
+Mysql对插入问题的描述：
+
+    INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, there is no gap
+    lock) and does not prevent other sessions from inserting into the gap before the inserted row.Prior to inserting the row, a type of gap
+    lock called an insertion intention gap lock is set. This lock signals the intent to insert in such a way that multiple transactions
+    inserting into the same index gap need not wait for each other if they are not inserting at the same position within the gap.If a
+    duplicate-key error occurs, a shared lock on the duplicate index record is set. This use of a shared lock can result in deadlock should
+    there be multiple sessions trying to insertthe same row if another session already has an exclusive lock.
+![index-merge](../../picture/deadlock/insert2.png)<br>
+
+|顺序|加锁过程|
+|:-|:-|
+|1|事务2892119902 先获得idx_parent_child的Lock record|
+|2|事务2892119903  获得dx_parent_child的Lock S|
+|3|事务2892119902 获得dx_parent_child的Lock Gap|
+
+由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
+### 2.2.3  解决方案
+以JIMDB缓存方案，解决这个要并发插入的问题
 ## 三 死锁日志
 ### 3.1 获取数据库死锁日志
 mysql命令行执行 show engine innodb status
