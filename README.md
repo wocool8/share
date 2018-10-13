@@ -23,7 +23,7 @@
 ### 4.1 [使用缓存存在的问题](markdown/cache/cache.md)
 ### 4.2 [Ehcache](markdown/cache/ehcache.md)
 ### 4.3 [Guava](markdown/cache/guava.md) 
-### 4.4 [Redis五种数据结构及指令](markdown/cache/redis.md)
+### 4.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
 ### 4.5 [缓存模型](markdown/cache/cacheModel.md) 
 <!-- 
 ### 4.4 [Memcached](markdown/cache/cache.md)
