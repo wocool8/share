@@ -23,7 +23,21 @@ redis没有使用c语言的字符串，自定义了simple dynamic string，存�
 惰性空间释放：当SDS修改时候，减少的已使用空间被分配到未使用的部分，保留在SDS中。'
 #### 1.1.2.4 二进制安全  
 C语言使用’\0’作为判定字符串的结尾，如果你保存的字符串内存在’\0’，c语言自会识别前面的数据，导致后面的数据被忽略，所以是不安全的。而redis是使用了独立的len，这样可以保证即使存储的数据中有’\0’这样的字符，它也是可以支持读取的。<br>
-#### 1.1.2.5 兼容部分C的字符串函数  
+#### 1.1.2.5 兼容部分C的字符串函数 
+
+### 1.1.3 SDS对象的命令行操作
+    Set msg "hello word"  添加msg到数据库中
+    Set msg "hello word"  当msg不存在的时候 是添加一个 存在的时候就是对键的修改
+    Del msg               删除msg
+    
+    如果字符串是整形或者浮点型的话 可以对字符串执行自增、自减、加法、减法、加浮点数的操作命令
+    set  value 1          value = 1
+    incr  value           value = 2
+    decr value            value = 1
+    incrby value 100      value = 101
+    decrby value 10       value = 91
+    
+    incrbyfloat value 10.22  value = 101.22
 
 ## 1.2 List
 list是由链表实现，链表上的每个值都是一个string
@@ -67,7 +81,13 @@ list是由链表实现，链表上的每个值都是一个string
 |带有表的头指针和尾指针|
 |带有表长度的计数器|
 |可以保存各种不同类型的值|
-
+### 1.2.3 命令行操作
+    rpush mumu "a" "b" "c"        添加一个列表到数据库 列表名是mumu  其中rpush是从链表的右侧添加
+    lpush mumu "d"                从链表的左侧添加“d”
+    lpop mumu                     从链表的左侧弹出元素
+    rpop mumu                     从链表的右侧弹出元素
+    lindex mumu                   获取链表上的指定位置的单个元素
+    Lrange mumu 0  -1             获取一个列表的数据值 从第个到最后一个(-1是最后)
 ## 1.3 HASH 
 包含键值对的无序散列表
 ### 1.3.1 结构
@@ -107,14 +127,33 @@ list是由链表实现，链表上的每个值都是一个string
 	}dictionaryEntry;
 ### 1.3.2 哈希算法及 解决哈希冲突方式
 使用[MurmurHash算法和链地址法](markdown/java/hashConflict.md)解决哈希冲突
-### 1.3.2 rehash
+### 1.3.3 rehash
 字典中维护两个哈希表(ht[0]和ht[1])，一个用于存储数据，另外一个仅在重哈希时使用，如果执行的是扩展的操作，那么ht[1]的大小大于等于ht[0].used*2的(2的次方)，如果执行的是收缩操作，那么ht[1]的大小大于等于ht[0].used*2的(2的次方)
 redis的rehash的动作不是一次性集中完成的，而是分多次，渐进式的完成的
 
+### 1.3.4
+    hset mumu name "jack"     向mumu中添加键name 对应的value是jack
+    hgetall mumu              获取散列中的所有元素
+    hget mumu name            获取散列中的指定元素
+    hdel mumu name            删除散列中的元素
 ## 1.4 SET
 包含字符串的无序集合收集器(unordered collection)，每个字符串都是不相同的
 
+
+### 1.4.3 集合的命令行操作
+    sadd mumu a           添加元素到集合
+    srem mumu a           从集合中删除元素
+    smembers mumu         获取集合中的所有元素
+    sismember mumu a      判断集合中是否存在元素a
+
 ## 1.5 ZSET 
 字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定
+
+### 1.5.3 有序集合的命令行操作
+    zadd mumu 100 a               添加元素a到有序集合，它的分值(score)是100(分值是排序的因子)
+    zrem mumu a                   从有序集合中删除元素a
+    zrange mumu 0 -1              获取有序集合中的所有元素
+    zrangebyscore mumu 100 200    获取有序集合mumu中的分值范围在100-200之间的元素
+
 
 
