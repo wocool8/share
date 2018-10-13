@@ -18,8 +18,8 @@
 ## 三 database
 ### 3.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
 ### 3.2 [Mysql的index-merge](markdown/database/index-merge.md)
-### 3.3 [DeadLock](markdown/database/index-merge.md)  
-
+### 3.3 [DeadLock](markdown/database/.md)  
+deadlock
 ## 四 cache
 ### 4.1 [使用缓存存在的问题](markdown/cache/cache.md)
 ### 4.2 [Ehcache](markdown/cache/ehcache.md)
