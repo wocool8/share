@@ -29,13 +29,12 @@ Mysql对插入问题的描述：
     inserting into the same index gap need not wait for each other if they are not inserting at the same position within the gap.If a
     duplicate-key error occurs, a shared lock on the duplicate index record is set. This use of a shared lock can result in deadlock should
     there be multiple sessions trying to insertthe same row if another session already has an exclusive lock.
-![index-merge](../../picture/deadlock/insert2.png)<br>
 
-|顺序|加锁过程|
-|:-|:-|
-|1|事务2892119902 先获得idx_parent_child的Lock record|
-|2|事务2892119903  获得dx_parent_child的Lock S|
-|3|事务2892119902 获得dx_parent_child的Lock Gap|
+1.insert会对插入成功的行加上排它锁，这个排它锁是个记录锁（如图中1 事物2892119902首先加了个 x locks record），不会阻止其他并发的事务往这条记录之前插入记录。<br>
+2.但是插入的字段中存在 unique字段索引 uniq_parent_child,2892119903在insert的时候事物出现了duplicate-key error，对duplicate index record 加共享锁（如图中的2，uniq_parent_child所锁升级成为 lock_mode S）<br>
+3.然后事物2892119902获取了（如图中3，获取了lock_mode x locks gap before rec insert）间隙锁<br>
+
+![index-merge](../../picture/deadlock/insert2.png)<br>
 
 由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
 ### 2.2.3  解决方案
