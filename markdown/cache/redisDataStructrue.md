@@ -138,17 +138,56 @@ redis的rehash的动作不是一次性集中完成的，而是分多次，渐进
     hdel mumu name            删除散列中的元素
 ## 1.4 SET
 包含字符串的无序集合收集器(unordered collection)，每个字符串都是不相同的
+### 1.4.1 结构
+整数集合是集合建的底层实现之一，当一个集合中只包含整数，且这个集合中的元素数量不多时，redis就会使用整数集合intset作为集合的底层实现。以整数集合为例介绍set结构
 
+    typedef struct intset{
+        //编码方式
+        uint32_t enconding;
+       // 集合包含的元素数量
+        uint32_t length;
+        //保存元素的数组，不包含重复项   
+        int8_t contents[];
+    }  
 
-### 1.4.3 集合的命令行操作
+### 1.4.2 集合的命令行操作
     sadd mumu a           添加元素到集合
     srem mumu a           从集合中删除元素
     smembers mumu         获取集合中的所有元素
     sismember mumu a      判断集合中是否存在元素a
 
 ## 1.5 ZSET 
-字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定
+redis使用跳表作为有序集合键的底层实现，跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。跳跃表是一种随机化的数据,跳跃表以有序的方式在层次化的链表中保存元素，效率和平衡树媲美 ——查找、删除、添加等操作都可以在对数期望时间下完成，并且比起平衡树来说，跳跃表的实现要简单直观得多。
+ZSET是字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定
+### 1.5.1 结构
+![cache](../../picture/cache/skiplist.png)
+Redis 的跳跃表主要由两部分组成：zskiplist（链表）和zskiplistNode （节点）
 
+    typedef struct zskiplist {
+         //表头节点和表尾节点
+         structz skiplistNode *header,*tail;
+         //表中节点数量
+         unsigned long length;
+         //表中层数最大的节点的层数
+         int level;
+    
+    }zskiplist; 
+ 
+     typedef struct zskiplistNode{
+     　　　//层
+          struct zskiplistLevel{
+     　　　　　//前进指针
+             struct zskiplistNode *forward;
+     　　　　//跨度
+             unsigned int span;
+         } level[];
+     　　//后退指针
+         struct zskiplistNode *backward;
+     　　//分值
+         double score;
+     　　//成员对象
+         robj *obj;
+     }
 ### 1.5.3 有序集合的命令行操作
     zadd mumu 100 a               添加元素a到有序集合，它的分值(score)是100(分值是排序的因子)
     zrem mumu a                   从有序集合中删除元素a
