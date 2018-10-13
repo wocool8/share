@@ -1,6 +1,6 @@
 
 
-# 1 String(simple dynamic string)
+# 一 String(simple dynamic string)
 redis没有使用c语言的字符串，自定义了simple dynamic string，存储的值可以是字符串、整数、浮点数
 ## 1.1 结构
     struct sds{
@@ -39,7 +39,7 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
     
     incrbyfloat value 10.22  value = 101.22
 
-# 2 List
+# 二 List
 list是由链表实现，链表上的每个值都是一个string
 ## 2.1 结构
 		/*
@@ -88,7 +88,7 @@ list是由链表实现，链表上的每个值都是一个string
     rpop mumu                     从链表的右侧弹出元素
     lindex mumu                   获取链表上的指定位置的单个元素
     Lrange mumu 0  -1             获取一个列表的数据值 从第个到最后一个(-1是最后)
-# 3 HASH 
+# 三 HASH 
 包含键值对的无序散列表
 ## 3.1 结构
 
@@ -136,7 +136,7 @@ redis的rehash的动作不是一次性集中完成的，而是分多次，渐进
     hgetall mumu              获取散列中的所有元素
     hget mumu name            获取散列中的指定元素
     hdel mumu name            删除散列中的元素
-# 4 SET
+# 四 SET
 包含字符串的无序集合收集器(unordered collection)，每个字符串都是不相同的
 ## 4.1 结构
 整数集合是集合建的底层实现之一，当一个集合中只包含整数，且这个集合中的元素数量不多时，redis就会使用整数集合intset作为集合的底层实现。以整数集合为例介绍set结构
@@ -156,7 +156,7 @@ redis的rehash的动作不是一次性集中完成的，而是分多次，渐进
     smembers mumu         获取集合中的所有元素
     sismember mumu a      判断集合中是否存在元素a
 
-# 5 ZSET 
+# 五 ZSET 
 redis使用跳表作为有序集合键的底层实现，跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其他节点的指针，从而达到快速访问节点的目的。跳跃表是一种随机化的数据,跳跃表以有序的方式在层次化的链表中保存元素，效率和平衡树媲美 ——查找、删除、添加等操作都可以在对数期望时间下完成，并且比起平衡树来说，跳跃表的实现要简单直观得多。
 ZSET是字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定
 ## 5.1 结构
