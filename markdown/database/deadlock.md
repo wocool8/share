@@ -64,8 +64,7 @@ mysql命令行执行 show engine innodb status
 |3|RECORD LOCKS space id 382 page no 9156 n bits 104 index index `PRIMARY` of table `mumu`.`table1` trx id 5122216139 lock mode S locks rec but not gap waiting 表示锁住的资源，locks rec but not gap 表示锁住的是一个索引，而不是一个范围，此处可以看到锁的索引是表table1的PRIMARY和锁它的锁类型|
 |4|WAITING FOR THIS LOCK TO BE GRANTED和HOLDS THE LOCK(S):可以看出事物获持有或等待锁的状态分别是等待获取锁和持有当前锁|
 |5|1: len 6; hex 5122216120; asc 1N， 通常1:length表示的是当前事物等待锁被占用的事物ID|
-|6|update table2 set status=7  where id =1231232 and yn=1 and status < 7 日志的事物会有等待或持有锁的sql语句，需要根据语句去判断事物要获取的锁
-   及获取顺序|
+|6|update table2 set status=7  where id =1231232 and yn=1 and status < 7 日志的事物会有等待或持有锁的sql语句，需要根据语句去判断事物要获取的锁及获取顺序|
 |7|很多时候单从日志并不能完全分析出死锁的具体原因，结合对应的代码逻辑也是很重要的|
 
 ## 四 数据库死锁检测机制
