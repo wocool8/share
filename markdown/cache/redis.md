@@ -1,11 +1,10 @@
 
-# 一 redis5种结构类型
+# 一 redis 数据结构
 ## 1.1 String(simple dynamic string)
-存储的值是字符串、整数、浮点数
+redis没有使用c语言的字符串，自定义了simple dynamic string，存储的值可以是字符串、整数、浮点数
 ### 1.1.1 结构
     struct sds{
-        //记录buf数组中已经使用的字节数量
-        //等于sds已经保存的字符串的长度
+        //记录buf数组中已经使用的字节数量，等于sds已经保存的字符串的长度
         int length;
         //记录buff中未使用的字节数量
         int free;
@@ -27,7 +26,7 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
 #### 1.1.2.5 兼容部分C的字符串函数  
 
 ## 1.2 List
-存储的值是一个链表，链表上的每个值都是一个string<br>
+list是由链表实现，链表上的每个值都是一个string
 ### 1.2.1 结构
 		/*
 		redis中实现的链表和其他的高级语言是一样的逻辑，使用前节点和后节点的结构 
@@ -60,7 +59,7 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
             int (*match)(void *ptr, void *key)
 		}list;
 
-### 1.2.2 LIST
+### 1.2.2 特点
 |特点|
 |:-|
 |双端|
@@ -69,19 +68,16 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
 |带有表长度的计数器|
 |可以保存各种不同类型的值|
 
-## 1.3 SET
-包含字符串的无序集合收集器(unordered collection)，每个字符串都是不相同的
-
-## 1.4 HASH 
+## 1.3 HASH 
 包含键值对的无序散列表
-### 1.4.1 结构
+### 1.3.1 结构
 
 	typdef struct dictionary{
 		//类型特定函数---type是指向一个dictionayType类型的指针，每个dictionaryType保存一簇用于操作特定类型键值对函数，redis会为用途不同的字典设置不同的类型特定函数
 		dictionaryType *type;
 		//私有数据---保存了需要传给那些类型函数的可选参数
 		void privateData;
-		//哈希表
+		//字典中维护两个哈希表，一个用于存储数据，另外一个仅在重哈希时使用
 		dictionaryHashTable[2];
 		//rehash索引--不在进行rehash的时候值为-1
 		int rehashIndex;
@@ -109,8 +105,14 @@ C语言使用’\0’作为判定字符串的结尾，如果你保存的字符�
 		}v;
 		struct dictionaryEntry *next
 	}dictionaryEntry;
+### 1.3.2 哈希算法及 解决哈希冲突方式
+使用[MurmurHash算法和链地址法](markdown/java/hashConflict.md)解决哈希冲突
+### 1.3.2 rehash
+字典中维护两个哈希表(ht[0]和ht[1])，一个用于存储数据，另外一个仅在重哈希时使用，如果执行的是扩展的操作，那么ht[1]的大小大于等于ht[0].used*2的(2的次方)，如果执行的是收缩操作，那么ht[1]的大小大于等于ht[0].used*2的(2的次方)
+redis的rehash的动作不是一次性集中完成的，而是分多次，渐进式的完成的
 
-
+## 1.4 SET
+包含字符串的无序集合收集器(unordered collection)，每个字符串都是不相同的
 
 ## 1.5 ZSET 
 字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定

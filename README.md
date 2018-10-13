@@ -7,6 +7,7 @@
 ### 1.3 [Reference](markdown/java/reference.md)
 ### 1.4 [Generics](markdown/java/generics.md)
 ### 1.5 [Compare And Swap](markdown/java/cas.md)
+### 1.6 [Hash](markdown/java/hashConflict.md)
 
 ## 二 jvm
 ### 2.1 [Class文件结构](markdown/jvm/class.md)
