@@ -174,19 +174,20 @@ Redis 的跳跃表主要由两部分组成：zskiplist（链表）和zskiplistNo
     }zskiplist; 
  
      typedef struct zskiplistNode{
-     　　　//层
-          struct zskiplistLevel{
-     　　　　　//前进指针
-             struct zskiplistNode *forward;
-     　　　　//跨度
-             unsigned int span;
-         } level[];
      　　//后退指针
          struct zskiplistNode *backward;
      　　//分值
          double score;
      　　//成员对象
-         robj *obj;
+         robj *obj;     
+     　　　//层
+         struct zskiplistLevel{
+     　　　　//前进指针
+             struct zskiplistNode *forward;
+     　　　　//跨度
+             unsigned int span;
+         } level[];
+
      }
 ## 5.3 有序集合的命令行操作
     zadd mumu 100 a               添加元素a到有序集合，它的分值(score)是100(分值是排序的因子)
