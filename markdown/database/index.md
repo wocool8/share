@@ -20,22 +20,24 @@
 如果一个很大的聚集索引被定义。那么所有的次级索引也会显而易见的大，因为次级索引存储了聚集索引的key。因为数据的存储方式，次级索引的查找需要两次。
 聚集索引的列的值被更改后，聚集索引会对数据重排，因此主键被更改的开销是昂贵的。插入可能比较慢，如果数据不是按照主键的顺序插入。因此我们判断插入的数据的效率决定于插入的顺序。在innodb的表中，插入行按照主键的顺序插入式是最快的方式
 ## 二 执行计划中的类型
-![index-merge](../../picture/index-merge/index-merge.png)
-
-    SYSTEM("system", 1, "only one row data in table  or null table，only happened in myisam and memory table。if using Innodb，type usually is all or index"),
-    CONST("const", 2, "using unique index or primary key，return one row data by where condition，the type is const"),
-    EQ_REF("eq_ref", 3, "Appears in the query plan to join the table, the driver table returns only one row of data，and the row data is primary key or unique index of the second table"),
-    REF("ref", 4,  "happened when Conditional retrieval"),
-    FULLTEXT("fulltext", 5,  "Full-text index search"),
-    REF_OR_NULL("ref_or_null", 6,  "like ref，add null value compare"),
-    UNIQUE_SUB_QUERY("unique_subquery", 7, "where condition  sub query contains in，sub query result is unique value"),
-    INDEX_SUB_QUERY("index_subquery", 8,  "like unique_subquery but sub query result is not unique, maybe have duplicate values"),
-    RANGE("range", 9,  "range select ，regularly happened in >,<,is null,between ,in ,like"),
-    INDEX_MERGE("index_merge", 10,  "the index optimization is on and version is over 5.0, merge result by more than one index"),
-    INDEX("index", 11, "select by index"),
-    ALL("ALL", 12, "scanning all table data"); 
+|类型|描述|
+|:-|:-|
+|system|only one row data in table  or null table，only happened in myisam and memory table。if using Innodb，type usually is all or index|
+|const|using unique index or primary key，return one row data by where condition，the type is const|
+|eq_ref|Appears in the query plan to join the table, the driver table returns only one row of data，and the row data is primary key or unique index of the second table|
+|ref|happened when Conditional retrieval|
+|fulltext|Full-text index search|
+|ref_or_null|like ref，add null value compare|
+|unique_subquery|where condition  sub query contains in，sub query result is unique value|
+|index_subquery|like unique_subquery but sub query result is not unique, maybe have duplicate values|
+|range|range select ，regularly happened in >,<,is null,between ,in ,like|
+|[index_merge](/markdown/database/index-merge.md)|the index optimization is on and version is over 5.0, merge result by more than one index|
+|index|select by index|
+|ALL|scanning all table data|
 ## 三 索引失效
-### 3.1 如果条件中有or ,即使条件中带有索引也不会被使用
-### 3.2 不匹配最左原则
-### 3.3 like是以%开头的
-### 3.4 如果列类型是字符型不使用引号
+|序号|描述|
+|:-|:-|
+|1|如果条件中有or ,即使条件中带有索引也不会被使用|
+|2|不匹配最左原则|
+|3|like是以%开头的|
+|4|如果列类型是字符型不使用引号|
