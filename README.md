@@ -22,11 +22,11 @@
 ### 3.4 [Innodb lock](markdown/database/innodblock.md)  
 ### 3.5 [DeadLock](markdown/database/deadlock.md)  
 ## 四 cache
-### 4.1 [使用缓存存在的问题](markdown/cache/cache.md)
+### 4.1 [缓存的问题](markdown/cache/cache.md)
 ### 4.2 [Ehcache](markdown/cache/ehcache.md)
 ### 4.3 [Guava](markdown/cache/guava.md) 
 ### 4.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
-### 4.5 [缓存模型](markdown/cache/cacheModel.md) 
+### 4.5 [缓存实战](markdown/cache/cacheModel.md) 
 <!-- 
 ### 4.4 [Memcached](markdown/cache/cache.md)
 ### 4.5 [Redis](markdown/cache/cache.md)
