@@ -20,14 +20,14 @@
 ### 3.2 [Index](markdown/database/index.md)
 ### 3.3 [Mysql index-merge](markdown/database/index-merge.md)
 ### 3.4 [Innodb lock](markdown/database/innodblock.md)  
-### 3.5 [DeadLock](markdown/database/deadlock.md)  
+### 3.5 [DeadLock](markdown/database/deadlock.md)
+  
 ## 四 cache
 ### 4.1 [缓存的问题](markdown/cache/cache.md)
 ### 4.2 [Ehcache](markdown/cache/ehcache.md)
 ### 4.3 [Guava](markdown/cache/guava.md) 
 ### 4.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
-### 4.5 [分布式锁](markdown/cache/distributedLock.md) 
-### 4.6 [热key及秒杀](markdown/cache/cacheModel.md) 
+### 4.5 [热key及秒杀](markdown/cache/cacheModel.md) 
 <!-- 
 ### 4.4 [Memcached](markdown/cache/cache.md)
 ### 4.5 [Redis](markdown/cache/cache.md)
@@ -37,7 +37,8 @@
 
 ## 五 Distributed
 ### 5.1 [Zookeeper节点及Watcher](markdown/distributed/zookeeper.md)
-### 5.2 [分布式任务调度](markdown/distributed/schedule.md)
+### 5.2 [分布式锁](markdown/cache/distributedLock.md) 
+### 5.3 [分布式任务调度](markdown/distributed/schedule.md)
 
 ## 六 design pattern 
 
