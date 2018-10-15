@@ -49,7 +49,7 @@ spring Schedule基于注解使用很简单如上代码使用cron表达式控制�
 （2）在bean初始化的时候进行监听onApplicationEvent(ContextRefreshedEvent event)<br>
 （3）onApplicationEvent方法中调用 finishRegistration()方法，在方法中调用ScheduleTaskRegisterar进行任务调度（scheduleAtFixedRate或scheduleWithFixedDelay）<br>
 ScheduleTaskRegister的实现逻辑如下图
-![springSchedule](../picture/schedule/springSchedule.PNG)
+![springSchedule](../../picture/schedule/springSchedule.PNG)
 ## 四 quartz
 ### 4.1 quartz使用
 Quartz是一个完全由java编写的开源作业调度框架
@@ -156,7 +156,7 @@ sigLock是线程的锁对象，用锁对象的wait()方法控制具体任务的�
 |(6)可以通过JMX控制调度服务的创建和停止|
 ### 5.1.2 整体架构
 tbschedule框架item的分配实现了数据的不重复，又通过架构中lead的选择，存活的自我保证，完成了可用性和伸缩性的保障。Tbschedule是一个完全基于分布式调度的框架，整体结构如下图
-![springSchedule](../picture/schedule/tbschedule.png)
+![springSchedule](../../picture/schedule/tbschedule.png)
 <br>
 执行机和调度机均以ZooKeeper为注册中心，所有数据以节点及节点内容的形式注册，通过定时汇报主机状态保持存活在ZooKeeper上。执行机部署启动，会在ZooKeeper上创建永久根节点schedule.zookeeper.address，其后所有的操作均在该根节点下进行。
 ### 5.2 Tbschedule基于Timer实现任务调度
@@ -247,7 +247,7 @@ tbschedule框架item的分配实现了数据的不重复，又通过架构中lea
 ### 6.1 整体架构
 Elastic-Job是一个分布式调度解决方案，由两个相互独立的子项目Elastic-Job-Lite和Elastic-Job-Cloud组成。Elastic-Job-Lite定位为轻量级无中心化解决方案，使用jar包的形式提供分布式任务的协调服务。<br>
 Elastic-Job-Lite并无作业调度中心节点，而是基于部署作业框架的程序在到达相应时间点时各自触发调度。注册中心仅用于作业注册和监控信息存储。而主作业节点仅用于处理分片和清理等功能。elastic -job整体架构图如下图
-![springSchedule](../picture/schedule/elasticjob.png)
+![springSchedule](../../picture/schedule/elasticjob.png)
 ### 6.2 基于Quartz实现任务调度
 以Elastic-Job-Lite为例，使用Elastic-Job-Lite在应用实例启动注册任务实例代码如下
 

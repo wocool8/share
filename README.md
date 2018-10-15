@@ -35,8 +35,9 @@
 ### 4.6 [EVCache](markdown/cache/cache.md) 
 -->
 
-## 五 schedule
-### 5.1 [分布式任务调度](markdown/schedule.md)
+## 五 Distributed
+### 5.1 [Zookeeper节点及Watcher](markdown/distributed/zookeeper.md)
+### 5.2 [分布式任务调度](markdown/distributed/schedule.md)
 
 ## 六 design pattern 
 
