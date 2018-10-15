@@ -26,7 +26,8 @@
 ### 4.2 [Ehcache](markdown/cache/ehcache.md)
 ### 4.3 [Guava](markdown/cache/guava.md) 
 ### 4.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
-### 4.5 [缓存实战](markdown/cache/cacheModel.md) 
+### 4.5 [分布式锁](markdown/cache/distributedLock.md) 
+### 4.6 [热key及秒杀](markdown/cache/cacheModel.md) 
 <!-- 
 ### 4.4 [Memcached](markdown/cache/cache.md)
 ### 4.5 [Redis](markdown/cache/cache.md)
