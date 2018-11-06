@@ -22,15 +22,30 @@ Zookeeper的命名空间是由一系列节点组成的节点树，每个数据�
     getChildren /path    
 ## 三 watcher
 ### 3.1 implement Watcher
+    
     public class MumuWater implements Watcher {
     
         private ZooKeeper zooKeeper;
     
+        /**
+         * 初始化ZooKeeper
+         * @throws IOException
+         */
         void initZookeeper() throws IOException {
             // sessionTimeOut 以毫秒为单位 Zookeeper与客户端5秒时间无法通行，Zookeeper就会终止客户端会话
             zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, this);
         }
     
+        /**
+         * 创建节点
+         * @param lockedPath
+         * @throws KeeperException
+         * @throws InterruptedException
+         */
+        void createNode(String lockedPath) throws KeeperException, InterruptedException {
+            zooKeeper.create(lockedPath, "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+        }
+        
         public void process(WatchedEvent watchedEvent) {
             if (watchedEvent.getType() == Event.EventType.NodeCreated) {
                 //todo
