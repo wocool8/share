@@ -30,13 +30,12 @@
 ### 4.5 [热key及秒杀](markdown/cache/cacheModel.md) 
 <!-- 
 ### 4.4 [Memcached](markdown/cache/cache.md)
-### 4.5 [Redis](markdown/cache/cache.md)
 ### 4.5 [Tair](markdown/cache/cache.md)
 ### 4.6 [EVCache](markdown/cache/cache.md) 
 -->
 
 ## 五 Distributed
-### 5.1 [Zookeeper节点及Watcher](markdown/distributed/zookeeper.md)
+### 5.1 [Zookeeper](markdown/distributed/zookeeper.md)
 ### 5.2 [分布式锁](markdown/cache/distributedLock.md) 
 ### 5.3 [分布式任务调度](markdown/distributed/schedule.md)
 
