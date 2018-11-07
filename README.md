@@ -45,8 +45,10 @@
 
 ## 七 thread
 ### 7.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### 7.2 [Thread Pool](markdown/thread/threadPool.md)
-### 7.3 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+### 7.2 [ReentrantLock](markdown/thread/ReentrantLock.md)
+### 7.3 [Thread Pool](markdown/thread/threadPool.md)
+### 7.4 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+
 
 ## 八 elasticsearch
 ### 8.1 [elasticsearch.yml](markdown/elasticsearch/config.md)
