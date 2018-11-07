@@ -58,7 +58,7 @@ maximumPoolSize为Integer.MAX_VALUE来保证可创建线程数量足够大，因
                                       new LinkedBlockingQueue<Runnable>());
     }
 设定线程池的corePoolSize和maximumPoolSize为nThreads不对空闲线程进行回收，所以keepAliveTime设置为0。使用[LinkedBlockingQueue](/markdown/java/queue.md)作为缓冲。
-### 2.3 newScheduledThreadPool
+### 2.3 newScheduledThreadPool（创建一个定长线程池，支持定时及周期性任务执行）
 
     public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) {
         return new ScheduledThreadPoolExecutor(corePoolSize);
@@ -85,7 +85,7 @@ maximumPoolSize为Integer.MAX_VALUE来保证可创建线程数量足够大，因
         }
     }, 0, 1, TimeUnit.MINUTES);    
     
-### 2.4 newSingleThreadExecutor 
+### 2.4 newSingleThreadExecutor （创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务）
     public static ExecutorService newSingleThreadExecutor() {
         return new FinalizableDelegatedExecutorService
             (new ThreadPoolExecutor(1, 
