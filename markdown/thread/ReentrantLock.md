@@ -1,6 +1,6 @@
 # ReentrantLock
 ---
-## 一 公平锁与非公平锁 
+## 1 构造方法
 ReentrantLock的构造方法默认使用非公平模式，也可以ReentrantLock(true)创建公平模式
 
     public class ReentrantLock implements Lock, java.io.Serializable {
@@ -13,7 +13,7 @@ ReentrantLock的构造方法默认使用非公平模式，也可以ReentrantLock
         }     
     }
     
-### 1.1  AbstractQueuedSynchronizer
+## 2 AbstractQueuedSynchronizer
    
 AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访问先进先出，ReentrantLock使用state作为锁的状态字段，state == 0表示锁没有被持有，state ！= 0 表示锁被持有。
   
@@ -31,7 +31,7 @@ AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访
         }    
         ...   
     }      
-### 1.2  FairSync   
+## 3 FairSync   
 就是线程按照执行顺序排成一排，依次获取锁，但是这种方式在高并发的场景下极其损耗性能
  
     static final class FairSync extends Sync {
@@ -73,7 +73,7 @@ AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访
          return h != t &&
              ((s = h.next) == null || s.thread != Thread.currentThread());
      }    
-### 1.3  NonfairSync
+## 4 NonfairSync
 
      static final class NonfairSync extends Sync {
             final void lock() {
@@ -107,7 +107,7 @@ AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访
             }            
         }
 
-### 1.4 基于CAS实现状态变更
+## 5 基于CAS实现状态变更
 无论公平锁与非公平锁都是基于[CAS](/markdown/java/cas.md)实现AbstractQueuedSynchronizer的state状态变更，实现方法为compareAndSetState
 
     protected final boolean compareAndSetState(int expect, int update) {
