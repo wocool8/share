@@ -10,7 +10,7 @@
 ### 1.6 [Hash](markdown/java/hash.md)
 
 ## 二 jvm
-### 2.1 [Class文件结构](markdown/jvm/class.md)
+### 2.1 [Class File](markdown/jvm/class.md)
 ### 2.2 [ClassLoader](markdown/jvm/classLoader.md)
 ### 2,3 [字节码操作](markdown/jvm/bytecode.md)
 ### 2.4 [Garbage Collection](markdown/jvm/gc.md)
@@ -23,7 +23,7 @@
 ### 3.5 [DeadLock](markdown/database/deadlock.md)
   
 ## 四 cache
-### 4.1 [缓存的问题](markdown/cache/cache.md)
+### 4.1 [Cache Problems](markdown/cache/cache.md)
 ### 4.2 [Ehcache](markdown/cache/ehcache.md)
 ### 4.3 [Guava](markdown/cache/guava.md) 
 ### 4.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
