@@ -2,7 +2,7 @@
 ---
 
 ## 一 java
-### 1.1 [JDK队列及Disruptor实现原理](markdown/java/queue.md)
+### 1.1 [Queue](markdown/java/queue.md)
 ### 1.2 [Exception](markdown/java/exception.md)
 ### 1.3 [Reference](markdown/java/reference.md)
 ### 1.4 [Generics](markdown/java/generics.md)
@@ -45,7 +45,8 @@
 
 ## 七 thread
 ### 7.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### 7.1 [线程池](markdown/thread/threadPool.md)
+### 7.2 [Thread Pool](markdown/thread/threadPool.md)
+### 7.3 [伪共享及解决方案](markdown/thread/pseudoShare.md)
 
 ## 八 elasticsearch
 ### 8.1 [elasticsearch.yml](markdown/elasticsearch/config.md)
