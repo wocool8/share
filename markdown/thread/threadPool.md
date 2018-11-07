@@ -33,10 +33,8 @@
                               BlockingQueue<Runnable> workQueue) {
         this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
              Executors.defaultThreadFactory(), defaultHandler);
-    }
-(1)线程数量 < corePoolSize : 创建新的线程处理任务<br>
-(2)线程数量 = corePoolSize 但是 workQueue 未满 : 任务放入缓冲队列<br>
-(3)线程数量 > corePoolSize 且 workQueue满了 且 线程数量 < maximumPoolSize : 创建新的线程处理任务<br>
+    }    
+
 处理任务的优先级为：核心线程corePoolSize、任务队列workQueue、最大线程maximumPoolSize，如果三者都满了，使用handler处理被拒绝的任务。
 ### 2.1 newCachedThreadPool（创建缓存线程池）
 这个线程池根据需要（新任务到来时）创建新的线程，如果有空闲线程则会重复使用，线程空闲了60秒后会被回收
@@ -94,6 +92,78 @@ maximumPoolSize为Integer.MAX_VALUE来保证可创建线程数量足够大，因
                                     TimeUnit.MILLISECONDS,
                                     new LinkedBlockingQueue<Runnable>()));
     }
-最大线程数量为1，缓冲池使用LinkedBlockingQueue
-## 二 线程池增长策略
-## 三 线程池排队策略
+最大线程数量为1，缓冲池使用LinkedBlockingQueue    
+## 三 线程池增长策略
+    
+    /*
+     * 基于JDK1.8 源码
+     * Proceed in 3 steps:
+     * 1. 线程数量 < corePoolSize : 创建线程
+     * 2. 线程数量 = corePoolSize 但是 workQueue 未满 : 任务放入缓冲队列
+     * 3. 线程数量 > corePoolSize 且 workQueue满了，如果 线程数量 < maximumPoolSize : 创建新的线程处理任务
+     */
+    public void execute(Runnable command) {
+        if (command == null)
+            throw new NullPointerException();
+            
+        int c = ctl.get();
+        if (workerCountOf(c) < corePoolSize) {
+            if (addWorker(command, true))
+                return;
+            c = ctl.get();
+        }
+        if (isRunning(c) && workQueue.offer(command)) {
+            int recheck = ctl.get();
+            if (! isRunning(recheck) && remove(command))
+                reject(command);
+            else if (workerCountOf(recheck) == 0)
+                addWorker(null, false);
+        }
+        else if (!addWorker(command, false))
+            reject(command);
+    }
+## 四 线程池拒绝策略
+拒绝策略积累接口方法为RejectedExecutionHandler
+
+    public interface RejectedExecutionHandler {
+        void rejectedExecution(Runnable r, ThreadPoolExecutor executor);
+    }
+### 4.1 AbortPolicy
+抛出rejectedExecution
+
+    public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+        throw new RejectedExecutionException("Task " + r.toString() +
+                                              " rejected from " +
+                                              e.toString());
+    }
+        
+### 4.2 DiscardPolicy
+舍弃任务
+
+        /**
+         * Does nothing, which has the effect of discarding task r.
+         */
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+        }
+### 4.3 DiscardOldestPolicy
+如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序
+
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+            if (!e.isShutdown()) {
+                e.getQueue().poll();
+                e.execute(r);
+            }
+        }
+### 4.4 CallerRunsPolicy 
+这个策略放弃执行任务。但是由于池中已经没有任何资源了，那么就直接使用调用该execute的线程本身来执行
+
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+            if (!e.isShutdown()) {
+                r.run();
+            }
+        }       
+
+<!--
+核心池数量如何设定
+如何根据场景选择不同的线程池
+-->
