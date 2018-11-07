@@ -38,7 +38,9 @@
 (2)线程数量 = corePoolSize 但是 workQueue 未满 : 任务放入缓冲队列<br>
 (3)线程数量 > corePoolSize 且 workQueue满了 且 线程数量 < maximumPoolSize : 创建新的线程处理任务<br>
 处理任务的优先级为：核心线程corePoolSize、任务队列workQueue、最大线程maximumPoolSize，如果三者都满了，使用handler处理被拒绝的任务。
-### 2.1 newCachedThreadPool
+### 2.1 newCachedThreadPool（创建缓存线程池）
+这个线程池根据需要（新任务到来时）创建新的线程，如果有空闲线程则会重复使用，线程空闲了60秒后会被回收
+
     public static ExecutorService newCachedThreadPool() {
         return new ThreadPoolExecutor(0, 
                                       Integer.MAX_VALUE,
@@ -47,7 +49,15 @@
                                       new SynchronousQueue<Runnable>());
     }
 maximumPoolSize为Integer.MAX_VALUE来保证可创建线程数量足够大，因此选择了[SynchronousQueue](/markdown/java/queue.md)不带缓存的队列，corePoolSize为0即不长期持有线程。
-### 2.2 newFixedThreadPool 
+### 2.2 newFixedThreadPool（创建固定线程数量的线程池） 
+    public static ExecutorService newFixedThreadPool(int nThreads) {
+        return new ThreadPoolExecutor(nThreads, 
+                                      nThreads,
+                                      0L, 
+                                      TimeUnit.MILLISECONDS,
+                                      new LinkedBlockingQueue<Runnable>());
+    }
+设定线程池的corePoolSize和maximumPoolSize为nThreads不对空闲线程进行回收，所以keepAliveTime设置为0。使用[LinkedBlockingQueue](/markdown/java/queue.md)作为缓冲。
 ### 2.3 newScheduledThreadPool
 ### 2.4 newSingleThreadExecutor 
 

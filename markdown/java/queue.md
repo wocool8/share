@@ -16,7 +16,8 @@
 ![阻塞队列](../../picture/queue/blockingQueueClassDiagram.PNG)
 ### 2.1 SynchronousQueue 
 #### 2.1.1 SynchronousQueue介绍
-SynchronousQueue，实际上它不是一个真正意义的队列，因为它不会为队列中元素维护存储空间。与其他队列不同的是，它维护一组线程，这些线程在等待着把元素加入或移出队列， 它阻塞的是加入和移出的线程操作
+SynchronousQueue，实际上它不是一个真正意义的队列，因为它不会为队列中元素维护存储空间。与其他队列不同的是，它维护一组线程，
+这些线程在等待着把元素加入或移出队列， 它阻塞的是加入和移出的线程操作。[Executors.newCachedThreadPool()](/markdown/thread/threadPool.md)使用了SynchronousQueue作为WorkerQueue   
     
         // 公平模式和不公平模式
         public SynchronousQueue(boolean fair) {
@@ -66,30 +67,81 @@ SynchronousQueue，实际上它不是一个真正意义的队列，因为它不�
             }
         }
         
-#### 2.1.2 SynchronousQueue 在线程池中的应用
-Executors.newCachedThreadPool()就使用了SynchronousQueue，这个线程池根据需要（新任务到来时）创建新的线程，如果有空闲线程则会重复使用，线程空闲了60秒后会被回收
-    
-    // 创建newCachedThreadPool线程池使用的消息队列是：SynchronousQueue
-    ExecutorService executorService = Executors.newCachedThreadPool();
-    // 实现如下
-    public static ExecutorService newCachedThreadPool() {
-        return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
-    }
-    
 ### 2.2 LinkedBlockingQueue
-    // LinkedBlockingQueue:线程池Executors的newFixedThreadPool和newSingleThreadExecutor的工作队列
-    public static BlockingQueue<Runnable> buildQueue(int size, boolean isPriority) {
-        Object queue;
-        if (size == 0) {
-        	queue = new SynchronousQueue();  
-        } else if (isPriority) {       
-        	queue = size < 0 ? new PriorityBlockingQueue() : new PriorityBlockingQueue(size);    
-        } else {   
-        	queue = size < 0 ? new LinkedBlockingQueue() : new LinkedBlockingQueue(size);
+线程池Executors的newSingleThreadExecutor()和[newFixedThreadPool](/markdown/thread/threadPool.md)的WorkerQueue，基于链表结构实现如下
+
+    //链表节点
+    static class Node<E> {
+        E item;
+        Node<E> next;
+        Node(E x) { item = x; }
+    }
+
+    //队列容量, 不设值默认使用Integer.MAX_VALUE 
+    private final int capacity;
+
+    // 头尾节点
+    transient Node<E> head;
+    private transient Node<E> last;
+
+    // 使用ReentrantLock对读写操作加锁*/
+    private final ReentrantLock takeLock = new ReentrantLock();
+    private final ReentrantLock putLock = new ReentrantLock();
+
+    /** Wait queue for waiting takes */
+    private final Condition notEmpty = takeLock.newCondition();
+    /** Wait queue for waiting puts */
+    private final Condition notFull = putLock.newCondition();
+    
+向队列中放入值    
+
+    public void put(E e) throws InterruptedException {
+        if (e == null) throw new NullPointerException();
+        // Note: convention in all put/take/etc is to preset local var
+        // holding count negative to indicate failure unless set.
+        int c = -1;
+        Node<E> node = new Node<E>(e);
+        final ReentrantLock putLock = this.putLock;
+        final AtomicInteger count = this.count;
+        putLock.lockInterruptibly();
+        try {
+            while (count.get() == capacity) {
+                notFull.await();
+            }
+            enqueue(node);
+            c = count.getAndIncrement();
+            if (c + 1 < capacity)
+                notFull.signal();
+        } finally {
+            putLock.unlock();
         }
-        return (BlockingQueue)queue;
+        if (c == 0)
+            signalNotEmpty();
     }
     
+从队列中取值
+
+    public E take() throws InterruptedException {
+        E x;
+        int c = -1;
+        final AtomicInteger count = this.count;
+        final ReentrantLock takeLock = this.takeLock;
+        takeLock.lockInterruptibly();
+        try {
+            while (count.get() == 0) {
+                notEmpty.await();
+            }
+            x = dequeue();
+            c = count.getAndDecrement();
+            if (c > 1)
+                notEmpty.signal();
+        } finally {
+            takeLock.unlock();
+        }
+        if (c == capacity)
+            signalNotFull();
+        return x;
+    }
 ### 2.3 ArrayBlockingQueued
  ![ArrayBlockingQueued](../../picture/queue/threadProcess.png)
  如上图ArrayBlockingQueued的生产-消费过程，ArrayBlockingQueue的读写是不同步的，读会修改takeIndex，写会改putIndex<br>
