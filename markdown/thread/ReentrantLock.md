@@ -10,51 +10,30 @@ ReentrantLock的构造方法默认使用非公平模式，也可以ReentrantLock
         }
         public ReentrantLock(boolean fair) {
             sync = fair ? new FairSync() : new NonfairSync();
-        }
-        abstract static class Sync extends AbstractQueuedSynchronizer {
-            abstract void lock();
-            // 由实现类实现获取锁方法
-            protected boolean tryAcquire(int arg) {
-                throw new UnsupportedOperationException();
-            }    
-            ...   
-        }       
+        }     
     }
-### 1.1  NonfairSync
-
-     static final class NonfairSync extends Sync {
-            final void lock() {
-                if (compareAndSetState(0, 1))
-                    setExclusiveOwnerThread(Thread.currentThread());
-                else
-                    acquire(1);
-            }
+    
+### 1.1  AbstractQueuedSynchronizer
+   
+AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访问先进先出，ReentrantLock使用state作为锁的状态字段，state == 0表示锁没有被持有，state ！= 0 表示锁被持有。
+  
+    abstract static class Sync extends AbstractQueuedSynchronizer {
+        
+        /**
+         * The synchronization state.
+         */
+        private volatile int state;
             
-            protected final boolean tryAcquire(int acquires) {
-                return nonfairTryAcquire(acquires);
-            }
-            
-            final boolean nonfairTryAcquire(int acquires) {
-                final Thread current = Thread.currentThread();
-                int c = getState();
-                if (c == 0) {
-                    if (compareAndSetState(0, acquires)) {
-                        setExclusiveOwnerThread(current);
-                        return true;
-                    }
-                }
-                else if (current == getExclusiveOwnerThread()) {
-                    int nextc = c + acquires;
-                    if (nextc < 0) // overflow
-                        throw new Error("Maximum lock count exceeded");
-                    setState(nextc);
-                    return true;
-                }
-                return false;
-            }            
-        }
-### 1.2  NonfairSync   
- 根据线程
+        abstract void lock();
+        // 由实现类实现获取锁方法
+        protected boolean tryAcquire(int arg) {
+            throw new UnsupportedOperationException();
+        }    
+        ...   
+    }      
+### 1.2  FairSync   
+就是线程按照执行顺序排成一排，依次获取锁，但是这种方式在高并发的场景下极其损耗性能
+ 
     static final class FairSync extends Sync {
             private static final long serialVersionUID = -3000897897090466540L;
     
@@ -93,10 +72,43 @@ ReentrantLock的构造方法默认使用非公平模式，也可以ReentrantLock
          Node s;
          return h != t &&
              ((s = h.next) == null || s.thread != Thread.currentThread());
-     }
+     }    
+### 1.3  NonfairSync
 
-### 1.3 基于CAS实现锁
-无论公平锁与非公平锁都是基于[CAS](/markdown/java/cas.md)实现 调用公共方法compareAndSetState
+     static final class NonfairSync extends Sync {
+            final void lock() {
+                if (compareAndSetState(0, 1))
+                    setExclusiveOwnerThread(Thread.currentThread());
+                else
+                    acquire(1);
+            }
+            
+            protected final boolean tryAcquire(int acquires) {
+                return nonfairTryAcquire(acquires);
+            }
+            
+            final boolean nonfairTryAcquire(int acquires) {
+                final Thread current = Thread.currentThread();
+                int c = getState();
+                if (c == 0) {
+                    if (compareAndSetState(0, acquires)) {
+                        setExclusiveOwnerThread(current);
+                        return true;
+                    }
+                }
+                else if (current == getExclusiveOwnerThread()) {
+                    int nextc = c + acquires;
+                    if (nextc < 0) // overflow
+                        throw new Error("Maximum lock count exceeded");
+                    setState(nextc);
+                    return true;
+                }
+                return false;
+            }            
+        }
+
+### 1.4 基于CAS实现状态变更
+无论公平锁与非公平锁都是基于[CAS](/markdown/java/cas.md)实现AbstractQueuedSynchronizer的state状态变更，实现方法为compareAndSetState
 
     protected final boolean compareAndSetState(int expect, int update) {
         // See below for intrinsics setup to support this
