@@ -68,7 +68,7 @@ SynchronousQueue，实际上它不是一个真正意义的队列，因为它不�
         }
         
 ### 2.2 LinkedBlockingQueue
-线程池Executors的newSingleThreadExecutor()和[newFixedThreadPool](/markdown/thread/threadPool.md)的WorkerQueue，基于链表结构实现如下
+线程池Executors的newSingleThreadExecutor()和[newFixedThreadPool](/markdown/thread/threadPool.md)的WorkerQueue，基于链表结构实现，并且使用[ReentrantLock](/markdown/thread/ReentrantLock.md)对读写操作加锁
 
     //链表节点
     static class Node<E> {
