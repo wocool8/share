@@ -55,7 +55,7 @@ JVM规范中对monitorenter描述如下：
     The thread decrements the entry count of the monitor associated with objectref. If as a result the value of the entry count is zero, 
     the thread exits the monitor and is no longer its owner. Other threads that are blocking to enter the monitor are allowed to attempt to do so.       
  
-###2.3 方法级synchronized
+### 2.3 方法级synchronized
 方法级的同步是隐式，它实现在方法调用和返回操作之中。JVM可以从方法常量池中的方法表结构(method_info Structure) 中的 [ACC_SYNCHRONIZED](/markdown/jvm/class.md) 访问标志区分一个方法是否同步方法
   
 ### 2.4 对象头
