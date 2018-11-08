@@ -15,40 +15,40 @@
 ### 2,3 [字节码操作](markdown/jvm/bytecode.md)
 ### 2.4 [Garbage Collection](markdown/jvm/gc.md)
 
-## 三 database
-### 3.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
-### 3.2 [Index](markdown/database/index.md)
-### 3.3 [Mysql index-merge](markdown/database/index-merge.md)
-### 3.4 [Innodb lock](markdown/database/innodblock.md)  
-### 3.5 [DeadLock](markdown/database/deadlock.md)
+## 三 thread
+### 3.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
+### 3.2 [Volatile](markdown/thread/volatile.md)
+### 3.3 [ReentrantLock](markdown/thread/ReentrantLock.md)
+### 3.4 [Thread Pool](markdown/thread/threadPool.md)
+### 3.5 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+
+## 四 database
+### 4.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
+### 4.2 [Index](markdown/database/index.md)
+### 4.3 [Mysql index-merge](markdown/database/index-merge.md)
+### 4.4 [Innodb lock](markdown/database/innodblock.md)  
+### 4.5 [DeadLock](markdown/database/deadlock.md)
   
-## 四 cache
-### 4.1 [Cache Problems](markdown/cache/cache.md)
-### 4.2 [Ehcache](markdown/cache/ehcache.md)
-### 4.3 [Guava](markdown/cache/guava.md) 
-### 4.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
-### 4.5 [热key及秒杀](markdown/cache/cacheModel.md) 
+## 五 cache
+### 5.1 [Cache Problems](markdown/cache/cache.md)
+### 5.2 [Ehcache](markdown/cache/ehcache.md)
+### 5.3 [Guava](markdown/cache/guava.md) 
+### 5.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
+### 5.5 [热key及秒杀](markdown/cache/cacheModel.md) 
 <!-- 
 ### 4.4 [Memcached](markdown/cache/cache.md)
 ### 4.5 [Tair](markdown/cache/cache.md)
 ### 4.6 [EVCache](markdown/cache/cache.md) 
 -->
 
-## 五 Distributed
-### 5.1 [Zookeeper](markdown/distributed/zookeeper.md)
-### 5.2 [分布式锁](markdown/cache/distributedLock.md) 
-### 5.3 [分布式任务调度](markdown/distributed/schedule.md)
+## 六 Distributed
+### 6.1 [Zookeeper](markdown/distributed/zookeeper.md)
+### 6.2 [分布式锁](markdown/cache/distributedLock.md) 
+### 6.3 [分布式任务调度](markdown/distributed/schedule.md)
 
-## 六 design pattern 
+## 七 design pattern 
 
-### 6.1 [Singleton](markdown/designpattern/singleton.md)
-
-## 七 thread
-### 7.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### 7.2 [ReentrantLock](markdown/thread/ReentrantLock.md)
-### 7.3 [Thread Pool](markdown/thread/threadPool.md)
-### 7.4 [伪共享及解决方案](markdown/thread/pseudoShare.md)
-
+### 7.1 [Singleton](markdown/designpattern/singleton.md)
 
 ## 八 elasticsearch
 ### 8.1 [elasticsearch.yml](markdown/elasticsearch/config.md)
@@ -65,4 +65,9 @@
 ### 9.1 [AOP Proxy](markdown/spring/aopProxy.md)
 ## 十 规则引擎
 ### 10.1 [规则引擎开源框架介绍](markdown/rule/rule.md)
+
+<!-- 
+
+-->
+
 
