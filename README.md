@@ -18,9 +18,10 @@
 ## 三 thread
 ### 3.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
 ### 3.2 [Volatile](markdown/thread/volatile.md)
-### 3.3 [ReentrantLock](markdown/thread/ReentrantLock.md)
-### 3.4 [Thread Pool](markdown/thread/threadPool.md)
-### 3.5 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+### 3.2 [Synchronized](markdown/thread/synchronized.md)
+### 3.4 [ReentrantLock](markdown/thread/ReentrantLock.md)
+### 3.5 [Thread Pool](markdown/thread/threadPool.md)
+### 3.6 [伪共享及解决方案](markdown/thread/pseudoShare.md)
 
 ## 四 database
 ### 4.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
