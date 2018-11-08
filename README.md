@@ -6,8 +6,7 @@
 ### 1.2 [Exception](markdown/java/exception.md)
 ### 1.3 [Reference](markdown/java/reference.md)
 ### 1.4 [Generics](markdown/java/generics.md)
-### 1.5 [Compare And Swap](markdown/java/cas.md)
-### 1.6 [Hash](markdown/java/hash.md)
+### 1.5 [Hash](markdown/java/hash.md)
 
 ## 二 jvm
 ### 2.1 [Class File](markdown/jvm/class.md)
@@ -17,11 +16,12 @@
 
 ## 三 thread
 ### 3.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### 3.2 [Volatile](markdown/thread/volatile.md)
-### 3.2 [Synchronized](markdown/thread/synchronized.md)
-### 3.4 [ReentrantLock](markdown/thread/ReentrantLock.md)
-### 3.5 [Thread Pool](markdown/thread/threadPool.md)
-### 3.6 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+### 3.2 [Compare And Swap](markdown/java/cas.md)
+### 3.3 [Volatile](markdown/thread/volatile.md)
+### 3.4 [Synchronized](markdown/thread/synchronized.md)
+### 3.5 [ReentrantLock](markdown/thread/ReentrantLock.md)
+### 3.6 [Thread Pool](markdown/thread/threadPool.md)
+### 3.7 [伪共享及解决方案](markdown/thread/pseudoShare.md)
 
 ## 四 database
 ### 4.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)

@@ -59,8 +59,7 @@ JVM规范中对monitorenter描述如下：
 方法级的同步是隐式，它实现在方法调用和返回操作之中。JVM可以从方法常量池中的方法表结构(method_info Structure) 中的 [ACC_SYNCHRONIZED](/markdown/jvm/class.md) 访问标志区分一个方法是否同步方法
   
 ### 2.4 对象头
-Java在被JVM加载时，JVM会给这个类创建一个instanceKlass，保存在方法区，用来在JVM层表示该Java类。
-当我们在Java代码中，使用new创建一个对象的时候，JVM会创建一个instanceOopDesc对象，这个对象中包含了对象头以及实例数据。
+使用new创建一个对象的时候，JVM会创建一个instanceOopDesc对象，这个对象中包含了对象头以及实例数据。
 synchronized在JVM层面实现了对临界资源的同步互斥访问，通过对对象的头文件来操作，从而达到加锁和释放锁的目的。
 
 
