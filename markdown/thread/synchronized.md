@@ -1,7 +1,7 @@
 # synchronized
 ---
 ## 一 synchronized使用
-### 1.1 修饰普通方法
+### 1.1 修饰普通方法  
     public synchronized void method() {
         // do something
     }
@@ -24,7 +24,7 @@ synchronized 代码块是对实例对象加锁
     }      
 
 ## 二 synchronized实现原理
-### 2.1 加锁过程
+### 2.1 Synchronized的语义底层是通过一个monitor的对象来完成
 
     public static synchronized void method() {
         synchronized (SyncTest.class) {
@@ -33,11 +33,34 @@ synchronized 代码块是对实例对象加锁
     }
 使用 javap -v class SyncTest.class 反编译结果如下图
 ![规则匹配](../../picture/thread/syncronized.PNG)
-执行同步代码首先要先执行monitorenter指令，退出时执行monitorexit指令。使用Synchronized进行同步，其关键就是对对象监视器monitor进行获取，
-当线程获取monitor后才能继续往下执行，否则就只能等待。执行一次monitorenter两次monitorexit是由于锁的重入性，即在同一锁程中，线程不需要再次获取同一把锁。
-Synchronized先天具有重入性。每个对象拥有一个计数器，当线程获取该对象锁后，计数器就会加一，释放锁后就会将计数器减一。
+执行同步代码首先要先执行monitorenter指令，退出时执行monitorexit指令，使用Synchronized进行同步，其关键就是对对象监视器monitor进行获取
 
-### 2.2 对象头
+#### 2.1.1 monitorenter
+JVM规范中对monitorenter描述如下：
+
+    monitorenter ：
+    Each object is associated with a monitor. A monitor is locked if and only if it has an owner. The thread that executes 
+    monitorenter attempts to gain ownership of the monitor associated with objectref, as follows:
+    • If the entry count of the monitor associated with objectref is zero, the thread enters the monitor and sets its entry count to one. 
+      The thread is then the owner of the monitor.
+    • If the thread already owns the monitor associated with objectref, it reenters the monitor, incrementing its entry count.
+    • If another thread already owns the monitor associated with objectref, the thread blocks until the monitor’s entry count is zero, 
+       then tries again to gain ownership.
+ 
+ #### 2.1.2 monitorexit
+ JVM规范中对monitorexit描述如下：      
+
+    monitorexit：　
+    The thread that executes monitorexit must be the owner of the monitor associated with the instance referenced by objectref.
+    The thread decrements the entry count of the monitor associated with objectref. If as a result the value of the entry count is zero, 
+    the thread exits the monitor and is no longer its owner. Other threads that are blocking to enter the monitor are allowed to attempt to do so.       
+ 
+###2.3 方法级synchronized
+方法级的同步是隐式，它实现在方法调用和返回操作之中。JVM可以从方法常量池中的方法表结构(method_info Structure) 中的 [ACC_SYNCHRONIZED](/markdown/jvm/class.md) 访问标志区分一个方法是否同步方法
+  
+### 2.4 对象头
 Java在被JVM加载时，JVM会给这个类创建一个instanceKlass，保存在方法区，用来在JVM层表示该Java类。
 当我们在Java代码中，使用new创建一个对象的时候，JVM会创建一个instanceOopDesc对象，这个对象中包含了对象头以及实例数据。
 synchronized在JVM层面实现了对临界资源的同步互斥访问，通过对对象的头文件来操作，从而达到加锁和释放锁的目的。
+
+
