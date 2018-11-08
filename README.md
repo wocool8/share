@@ -22,6 +22,18 @@
 ### 3.5 [ReentrantLock](markdown/thread/ReentrantLock.md)
 ### 3.6 [Thread Pool](markdown/thread/threadPool.md)
 ### 3.7 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+<!-- 
+1.Synchronized与 notify notifyAll 实现等待/通知模式
+2.RetrantLock 与 Condition 实现选择性通知
+3.ConcurrentHashMap如何实现线程安全
+4.Java多线程的五大状态，及状态图流程转换
+5.B+树和红黑树的时间复杂度
+6.频繁回收老年代怎么分析解决
+7.mysql的limit分页如何保证可靠性
+8.java IO/NIO/BIO/AIO 操作系统NIO实现原理
+-->
+
+
 
 ## 四 database
 ### 4.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
