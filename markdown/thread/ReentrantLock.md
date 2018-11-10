@@ -60,7 +60,7 @@ AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访
                     if (nextc < 0)
                         throw new Error("Maximum lock count exceeded");
                     setState(nextc);
-                    return true;
+                    return true; 
                 }
                 return false;
             }
