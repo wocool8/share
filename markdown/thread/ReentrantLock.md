@@ -29,6 +29,10 @@ AbstractQueuedSynchronizer是一个链表结构用于实现公平锁的线程访
         protected boolean tryAcquire(int arg) {
             throw new UnsupportedOperationException();
         }    
+        // 使用condition实现等待及唤醒（类似于wait/notify）
+        public Condition newCondition() {
+            return sync.newCondition();
+        }
         ...   
     }      
 ## 3 FairSync   

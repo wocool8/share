@@ -62,4 +62,19 @@ JVM规范中对monitorenter描述如下：
 使用new创建一个对象的时候，JVM会创建一个instanceOopDesc对象，这个对象中包含了对象头以及实例数据。
 synchronized在JVM层面实现了对临界资源的同步互斥访问，通过对对象的头文件来操作，从而达到加锁和释放锁的目的。
 
+### 2.5 notify/notifyAll/wait
+JDK文档对于notify/notifyAll/wait描述如下
+
+    void notify() 
+    Wakes up a single thread that is waiting on this object’s monitor. 
+    
+    void notifyAll() 
+    Wakes up all threads that are waiting on this object’s monitor. 
+    
+    void wait( ) 
+    Causes the current thread to wait until another thread invokes the notify() method or the notifyAll( ) method for this object. 
+
+由于 需要获取对象的monitor所以 必须在同步方法中使用 否则会抛出java.lang.IllegalMonitorStateException
+
+
 
