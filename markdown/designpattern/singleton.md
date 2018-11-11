@@ -1,4 +1,4 @@
-# 单利模式(Ensure a class only has one instance, and provide a global point of access to it)
+# 单利模式
 ---
 ### Ensure a class only has one instance, and provide a global point of access to it.
 ![Singleton](../../picture/designpattern/singleton.png)
