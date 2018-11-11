@@ -52,7 +52,7 @@
 ### 8.3 [FAQ](markdown/elasticsearch/faq.md)
 
 ## 九 RPC
-### 9.1 [RMI(Remote Method Invocation)](markdown/rpc/rmi.md)
+### 9.1 [Remote Method Invocation](markdown/rpc/rmi.md)
 <!--
 ### 9.2 Dubbo
 ### 9.3 Thrift
