@@ -1,5 +1,6 @@
 # 单利模式
 ---
+![Singleton](../../picture/designpattern/singleton.png)
 ## 一 EagerSingleton 
 饿汉模式 先初始化 再提供方法调用
 
