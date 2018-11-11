@@ -1,4 +1,4 @@
-# AOP Proxy 及操作字节码
+# AOP Proxy
 ---
 ## 一 JDK Proxy
 JDK动态代理是利用反射机制生成一个实现代理接口的匿名类，在调用具体方法前调用InvokeHandler来处理
