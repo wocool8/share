@@ -42,14 +42,15 @@
 ### 4.6 [EVCache](markdown/cache/cache.md) 
 -->
 
-## 六 Distributed
-### 6.1 [Zookeeper](markdown/distributed/zookeeper.md)
-### 6.2 [分布式锁](markdown/cache/distributedLock.md) 
-### 6.3 [分布式任务调度](markdown/distributed/schedule.md)
+## 六 design pattern 
 
-## 七 design pattern 
+### 6.1 [Singleton](markdown/designpattern/singleton.md)
+### 6.2 [Proxy](markdown/designpattern/proxy.md)
 
-### 7.1 [Singleton](markdown/designpattern/singleton.md)
+## 七 Distributed
+### 7.1 [Zookeeper](markdown/distributed/zookeeper.md)
+### 7.2 [分布式锁](markdown/cache/distributedLock.md) 
+### 7.3 [分布式任务调度](markdown/distributed/schedule.md)
 
 ## 八 elasticsearch
 ### 8.1 [elasticsearch.yml](markdown/elasticsearch/config.md)
