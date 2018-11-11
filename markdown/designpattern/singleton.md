@@ -1,5 +1,6 @@
 # 单利模式
 ---
+Ensure a class only has one instance, and provide a global point of access to it.
 ![Singleton](../../picture/designpattern/singleton.png)
 ## 一 EagerSingleton 
 饿汉模式 先初始化 再提供方法调用
