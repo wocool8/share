@@ -1,57 +1,54 @@
-# 技术分享
----
+# java
+##  [Queue](markdown/java/queue.md)
+##  [Exception](markdown/java/exception.md)
+##  [Reference](markdown/java/reference.md)
+##  [Generics](markdown/java/generics.md)
+##  [Hash](markdown/java/hash.md)
 
-## 一 java
-### 1.1 [Queue](markdown/java/queue.md)
-### 1.2 [Exception](markdown/java/exception.md)
-### 1.3 [Reference](markdown/java/reference.md)
-### 1.4 [Generics](markdown/java/generics.md)
-### 1.5 [Hash](markdown/java/hash.md)
+# jvm
+## [Class File](markdown/jvm/class.md)
+## [ClassLoader](markdown/jvm/classLoader.md)
+## [字节码操作](markdown/jvm/bytecode.md)
+## [Garbage Collection](markdown/jvm/gc.md)
 
-## 二 jvm
-### 2.1 [Class File](markdown/jvm/class.md)
-### 2.2 [ClassLoader](markdown/jvm/classLoader.md)
-### 2,3 [字节码操作](markdown/jvm/bytecode.md)
-### 2.4 [Garbage Collection](markdown/jvm/gc.md)
+# thread
+## [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
+## [Compare And Swap](markdown/java/cas.md)
+## [Volatile](markdown/thread/volatile.md)
+## [Synchronized](markdown/thread/synchronized.md)
+## [ReentrantLock](markdown/thread/ReentrantLock.md)
+## [Thread Pool](markdown/thread/threadPool.md)
+## [伪共享及解决方案](markdown/thread/pseudoShare.md)
 
-## 三 thread
-### 3.1 [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### 3.2 [Compare And Swap](markdown/java/cas.md)
-### 3.3 [Volatile](markdown/thread/volatile.md)
-### 3.4 [Synchronized](markdown/thread/synchronized.md)
-### 3.5 [ReentrantLock](markdown/thread/ReentrantLock.md)
-### 3.6 [Thread Pool](markdown/thread/threadPool.md)
-### 3.7 [伪共享及解决方案](markdown/thread/pseudoShare.md)
+# design pattern 
+## [Singleton](markdown/designpattern/singleton.md)
+## [Proxy](markdown/designpattern/proxy.md)
 
-## 四 design pattern 
-### 4.1 [Singleton](markdown/designpattern/singleton.md)
-### 4.2 [Proxy](markdown/designpattern/proxy.md)
+# cache
+## [Cache Problems](markdown/cache/cache.md)
+## [Ehcache](markdown/cache/ehcache.md)
+## [Guava](markdown/cache/guava.md) 
+## [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
+## [热key及秒杀](markdown/cache/cacheModel.md) 
 
-## 五 cache
-### 5.1 [Cache Problems](markdown/cache/cache.md)
-### 5.2 [Ehcache](markdown/cache/ehcache.md)
-### 5.3 [Guava](markdown/cache/guava.md) 
-### 5.4 [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
-### 5.5 [热key及秒杀](markdown/cache/cacheModel.md) 
+# database
+## [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
+## [Index](markdown/database/index.md)
+## [Mysql index-merge](markdown/database/index-merge.md)
+## [Innodb lock](markdown/database/innodblock.md)  
+## [DeadLock](markdown/database/deadlock.md)
 
-## 六 database
-### 6.1 [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
-### 6.2 [Index](markdown/database/index.md)
-### 6.3 [Mysql index-merge](markdown/database/index-merge.md)
-### 6.4 [Innodb lock](markdown/database/innodblock.md)  
-### 6.5 [DeadLock](markdown/database/deadlock.md)
+# Distributed
+## [Zookeeper](markdown/distributed/zookeeper.md)
+## [分布式锁](markdown/cache/distributedLock.md) 
+## [分布式任务调度](markdown/distributed/schedule.md)
 
-## 七 Distributed
-### 7.1 [Zookeeper](markdown/distributed/zookeeper.md)
-### 7.2 [分布式锁](markdown/cache/distributedLock.md) 
-### 7.3 [分布式任务调度](markdown/distributed/schedule.md)
+# elasticsearch
+## [elasticsearch.yml](markdown/elasticsearch/config.md)
+## [性能调优](markdown/elasticsearch/elasticsearch.md)
+## [FAQ](markdown/elasticsearch/faq.md)
 
-## 八 elasticsearch
-### 8.1 [elasticsearch.yml](markdown/elasticsearch/config.md)
-### 8.2 [性能调优](markdown/elasticsearch/elasticsearch.md)
-### 8.3 [FAQ](markdown/elasticsearch/faq.md)
-
-## 九 RPC
+# RPC
 ### 9.1 [Remote Method Invocation](markdown/rpc/rmi.md)
 <!--
 ### 9.2 Dubbo
@@ -63,8 +60,8 @@
 -->
 
 ## 其他
-### 1 [AOP Proxy](markdown/spring/aopProxy.md)
-### 2 [规则引擎开源框架介绍](markdown/rule/rule.md)
+## [AOP Proxy](markdown/spring/aopProxy.md)
+## [规则引擎开源框架介绍](markdown/rule/rule.md)
 
 
 <!-- 缓存
