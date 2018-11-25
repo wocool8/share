@@ -116,13 +116,53 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
             -H "Accept: application/vnd.github.v3.full+json"
            HTTP/1.1 200 OK
            X-GitHub-Media-Type: github.v3; param=full; format=json
-        
-
 ## restful设计优点
 - ### 统一接口
     早期的WEB项目前后端是在一起的，但是近年来移动互联网的发展，各种类型的Client层出不穷，RESTful可以通过一套统一的接口为 Web，iOS和Android提供服务
-
+- ### URL具有很强可读性的
+    具有自描述性，易于理解
+- ### 如果提供无状态的服务接口
+    可提高应用的水平扩展性
+- ### 解耦
+    使异构系统间的通信变得简单
 ## 开源框架对REST的支持
-- ### SpringMvc
+- ### SpringMvc  
+        @RequestMapping(value = "/getBooks", method = {RequestMethod.GET, RequestMethod.POST})
+      
+        public enum RequestMethod {
+            GET,
+            HEAD,
+            POST,
+            PUT,
+            PATCH,
+            DELETE,
+            OPTIONS,
+            TRACE;
+        
+            private RequestMethod() {
+            }
+        }
+        
+springMVC是提供不同的请求方式的，但是很多时候并没有被使用
 - ### Jersey
-- ### Play
+    
+        @Path("/myResource")
+        public class SomeResource {
+            @GET
+            @Consumes("text/plain")
+            @Produces({"application/xml", "application/json"})
+            public String doGetAsPlainText() {
+                ...
+            }
+         
+            @GET
+            @Produces("text/html")
+            public String doGetAsHtml() {
+                ...
+            }
+        }
+
+- #### @Path("/myResource") 指定访问路径
+- #### @Consumes 注释代表的是一个资源可以接受的 MIME 类型。
+- #### @Produces 注释代表的是一个资源可以返回的 MIME 类型
+[Jersey](https://jersey.github.io/documentation/latest/jaxrs-resources.html#d0e2129)在REST方面支持的更加友好
