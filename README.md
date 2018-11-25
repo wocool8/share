@@ -40,7 +40,7 @@
 - [DeadLock](markdown/database/deadlock.md)
 
 ## Network
-- [RESTFul](markdown/network/restful.md)
+- [RESTFul](https://github.com/NeuTemper/pool/blob/master/design/restful.md)
 
 ## Distributed
 - [Zookeeper](markdown/distributed/zookeeper.md)
