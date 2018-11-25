@@ -7,6 +7,20 @@ REST全称是Representational State Transfer，REST是[Roy Thomas Fielding](http
     software through principled use of architectural constraints, thereby obtaining the functional, performance, and 
     social properties desired of an architecture.
     写作目的是想在符合架构原理的前提下，理解和评估以网络为基础的应用软件的架构设计，得到一个功能强、性能好、适宜通信的架构。
+- ### REST架构风格的架构约束
+    - #### Client-Server
+        通信只能由客户端单方面发起，表现为请求-响应的形式
+    - #### Stateless    
+        通信的会话状态（Session State）应该全部由客户端负责维护
+    - #### Cache
+        响应内容可以在通信链的某处被缓存，以改善网络效率
+    - #### Uniform Interface    
+        通信链的组件之间通过统一的接口相互通信，以提高交互的可见性
+    - #### Layered System
+        通过限制组件的行为（即，每个组件只能“看到”与其交互的紧邻层），将架构分解为若干等级的层
+    - #### Code-On-Demand
+        支持通过下载并执行一些代码（例如Java Applet、Flash或JavaScript），对客户端的功能进行扩展         
+    
 REST的通常被译成“表现层状态转化”，听起来比较生涩，要理解REST就要理解Representational State Transfer这个词组的每一个词代表了什么涵义  
 - ### Resources(资源)
     REST省略了主语表现层指的是“资源”表现层。所谓"资源"，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，是一个具体的存在形式。可以用一个URI指向它，每种资源对应一个特定的URI(资源的唯一标识)。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符
@@ -105,6 +119,8 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
         
 
 ## restful设计优点
+- ### 统一接口
+    早期的WEB项目前后端是在一起的，但是近年来移动互联网的发展，各种类型的Client层出不穷，RESTful可以通过一套统一的接口为 Web，iOS和Android提供服务
 
 ## 开源框架对REST的支持
 - ### SpringMvc
