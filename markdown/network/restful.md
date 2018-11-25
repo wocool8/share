@@ -44,15 +44,15 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
     
 - ### 合理使用[http动词](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
-    - ### GET
+    - #### GET
         The HEAD method asks for a response identical to that of a GET request, but without the response body.
-    - ### POST
+    - #### POST
         The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.
-    - ### PUT
+    - #### PUT
         The PUT method replaces all current representations of the target resource with the request payload.
-    - ### PATCH
+    - #### PATCH
         The PATCH method is used to apply partial modifications to a resource.
-    - ### DELETE
+    - #### DELETE
         The DELETE method deletes the specified resource
         
         
@@ -63,19 +63,19 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
     
 - ### 向客户端返回[状态码](https://www.restapitutorial.com/httpstatuscodes.html)和提示信息
 
-    - ### 200 OK 
+    - #### 200 OK 
         服务器成功返回用户请求的数据，操作是幂等的
-    - ### 201 CREATED 
+    - #### 201 CREATED 
         用户新建或修改数据成功。
-    - ### 204 NO CONTENT 
+    - #### 204 NO CONTENT 
         用户删除数据成功。
-    - ### 400 INVALID REQUEST 
+    - #### 400 INVALID REQUEST 
         用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
-    - ### 401 Unauthorized 
+    - #### 401 Unauthorized 
         表示用户没有权限（令牌、用户名、密码错误）
-    - ### 403 Forbidden 
+    - #### 403 Forbidden 
         表示用户得到授权（与401错误相对），但是访问是被禁止的
-    - ### 404 NOT FOUND 
+    - #### 404 NOT FOUND 
         用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的
 
 ## restful设计误区
