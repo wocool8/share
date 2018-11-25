@@ -13,7 +13,7 @@
 - [Garbage Collection](markdown/jvm/gc.md)
 
 ## Thread
-- [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
+- [SimpleDateFormat问题](markdown/thread/simpleDateFormat.md)
 - [CAS](markdown/java/cas.md)
 - [Volatile](markdown/thread/volatile.md)
 - [Synchronized](markdown/thread/synchronized.md)
@@ -53,7 +53,7 @@
 - [FAQ](markdown/elasticsearch/faq.md)
 
 ## RPC
-- [Remote Method Invocation](markdown/rpc/rmi.md)
+- [RMI](markdown/rpc/rmi.md)
 <!--
 ### 9.2 Dubbo
 ### 9.3 Thrift
