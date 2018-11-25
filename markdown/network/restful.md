@@ -81,11 +81,10 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
 ## restful设计误区
    - ### URI包含动词
     
-    
-        https://example.com/appName/getBooks 获取所有书
-        https://example.com/appName/addBooks 添加一本书
-        https://example.com/appName/updateBooks/:bookId 修改一本书
-        https://example.com/appName/deleteBooks/:bookId 删除一本书
+            https://example.com/appName/getBooks 获取所有书
+            https://example.com/appName/addBooks 添加一本书
+            https://example.com/appName/updateBooks/:bookId 修改一本书
+            https://example.com/appName/deleteBooks/:bookId 删除一本书
    - ### 版本号放在URI中
    
             https://api.example.com/v1/
