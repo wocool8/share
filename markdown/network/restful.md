@@ -29,19 +29,20 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
 - ### Representation(表现层)
     表现层指的是资源的表现形式，HTTP的[Content-Type](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type)实体头部用于指示资源的MIME类型 [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)，常用的type如下
     
-    text/plain
-    text/html
-    image/jpeg
-    image/png
-    audio/mpeg
-    audio/ogg
-    audio/*
-    video/mp4
-    application/*
-    application/json
-    application/xml
-    application/javascript
-    application/octet-stream
+    
+        text/plain
+        text/html
+        image/jpeg
+        image/png
+        audio/mpeg
+        audio/ogg
+        audio/*
+        video/mp4
+        application/*
+        application/json
+        application/xml
+        application/javascript
+        application/octet-stream
 - ### State Transfer(状态转化)
     就是客户端和服务器互动的一个过程，由于HTTP是无状态的，资源状态是维护在服务端的，在互动过程中涉及到数据和状态的变化, 这种变化叫做状态转换。
 资源是唯一的，对资源的状态改变使用的HTTP动词的对应语义实现对资源数据的增(PUT)删(DELETE)改(PUT/PATCH)查(GET)
