@@ -5,7 +5,7 @@ URI是资源的唯一标识，根据URI对资源进行绑定，URI对应的是�
 
     /mumu/books/bookName
 ## HTTP Verbs
-[HTTP动词]((https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods))有很多，只简单介绍以下四种
+[HTTP动词](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)有很多，只简单介绍以下四种
 - ### GET
 The HEAD method asks for a response identical to that of a GET request, but without the response body.
 - ### POST
