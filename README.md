@@ -13,7 +13,7 @@
 
 # thread
 ### [SimpleDateFormat线程不安全问题](markdown/thread/simpleDateFormat.md)
-### [Compare And Swap](markdown/java/cas.md)
+### [CAS](markdown/java/cas.md)
 ### [Volatile](markdown/thread/volatile.md)
 ### [Synchronized](markdown/thread/synchronized.md)
 ### [ReentrantLock](markdown/thread/ReentrantLock.md)
