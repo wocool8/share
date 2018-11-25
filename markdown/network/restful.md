@@ -126,7 +126,7 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
 - ### 解耦
     使异构系统间的通信变得简单
 ## 开源框架对REST的支持
-- ### SpringMvc  
+- ### SpringMVC  
         @RequestMapping(value = "/getBooks", method = {RequestMethod.GET, RequestMethod.POST})
       
         public enum RequestMethod {
