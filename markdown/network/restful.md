@@ -13,19 +13,19 @@ REST省略了主语表现层指的是“资源”表现层。所谓"资源"，�
 表现层指的是资源的表现形式，HTTP的[Content-Type](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type)实体头部用于指示资源的MIME类型 [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)，常用的type如下
 
 
-    text/plain
-    text/html
-    image/jpeg
-    image/png
-    audio/mpeg
-    audio/ogg
-    audio/*
-    video/mp4
-    application/*
-    application/json
-    application/javascript
-    application/ecmascript
-    application/octet-stream
+        text/plain
+        text/html
+        image/jpeg
+        image/png
+        audio/mpeg
+        audio/ogg
+        audio/*
+        video/mp4
+        application/*
+        application/json
+        application/javascript
+        application/ecmascript
+        application/octet-stream
     
 
 - State
