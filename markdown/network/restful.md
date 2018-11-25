@@ -37,13 +37,6 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
 - ### 合理设计uri
 
 
-        GET  https://example.com/appName/getBooks 获取所有书
-        POST https://example.com/appName/addBooks 添加一本书
-        POST https://example.com/appName/updateBooks/:bookId 修改一本书
-        POST https://example.com/appName/deleteBooks/:bookId 删除一本书
-
-        在Web系统中通常会看到以上URI，在RESTful的URI中不可以包含动词，修改后URI如下
-
         https://example.com/api/books 获取所有书
         https://example.com/api/books 添加一本书
         https://example.com/api/books/bookId 修改一本书
@@ -86,6 +79,31 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
         用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的
 
 ## restful设计误区
+   - ### URI包含动词
+    
+    
+        https://example.com/appName/getBooks 获取所有书
+        https://example.com/appName/addBooks 添加一本书
+        https://example.com/appName/updateBooks/:bookId 修改一本书
+        https://example.com/appName/deleteBooks/:bookId 删除一本书
+   - ### 版本号放在URI中
+   
+            https://api.example.com/v1/
+        
+       github的开发文档吗描述了版本号要放在HTTP头部信息中
+   
+           curl https://api.github.com/users/technoweenie -I
+           HTTP/1.1 200 OK
+           X-GitHub-Media-Type: github.v3
+           curl https://api.github.com/users/technoweenie -I \
+            -H "Accept: application/vnd.github.full+json"
+           HTTP/1.1 200 OK
+           X-GitHub-Media-Type: github.v3; param=full; format=json
+           curl https://api.github.com/users/technoweenie -I \
+            -H "Accept: application/vnd.github.v3.full+json"
+           HTTP/1.1 200 OK
+           X-GitHub-Media-Type: github.v3; param=full; format=json
+        
 
 ## restful设计优点
 
