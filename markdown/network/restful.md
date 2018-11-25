@@ -4,8 +4,8 @@
 REST全称是Representational State Transfer，REST是[Roy Thomas Fielding](https://en.wikipedia.org/wiki/Roy_Fielding)在他2000年的博士论文[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)中提出的。他的设计目的如下
     
     My work is motivated by the desire to understand and evaluate the architectural design of network-based application 
-    software through principled use of architectural constraints, thereby obtaining the functional, performance, and social 
-    properties desired of an architecture.
+    software through principled use of architectural constraints, thereby obtaining the functional, performance, and 
+    social properties desired of an architecture.
     写作目的是想在符合架构原理的前提下，理解和评估以网络为基础的应用软件的架构设计，得到一个功能强、性能好、适宜通信的架构。
 REST的通常被译成“表现层状态转化”，听起来比较生涩，要理解REST就要理解Representational State Transfer这个词组的每一个词代表了什么涵义  
 - ### Resources
