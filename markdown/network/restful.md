@@ -1,5 +1,19 @@
 # REST(基于HTTP实现介绍) 
 ---
+## URI(Uniform Resource Identifier)
+URI是资源的唯一标识，根据URI对资源进行绑定，URI对应的是某个特定资源，所以在设计的URI中不能包含动词，
+
+    /mumu/books/bookName
+## HTTP Verbs
+[HTTP动词]((https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods))有很多，只简单介绍以下四种
+- ### GET
+The HEAD method asks for a response identical to that of a GET request, but without the response body.
+- ### POST
+The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.
+- ### PUT
+The PUT method replaces all current representations of the target resource with the request payload.
+- ### DELETE
+The DELETE method deletes the specified resource
 ## REST
 REST全称是Representational State Transfer，REST是[Roy Thomas Fielding](https://en.wikipedia.org/wiki/Roy_Fielding)在他2000年的博士论文[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)中提出的。他的设计目的如下
     
@@ -30,10 +44,14 @@ REST省略了主语表现层指的是“资源”表现层。所谓"资源"，�
 就是客户端和服务器互动的一个过程，由于HTTP是无状态的，资源状态是维护在服务端的，在互动过程中涉及到数据和状态的变化, 这种变化叫做状态转换。
 ## RESTful
 REST是一种软件架构风格，RESTful是遵循REST架构风格的(一种实现)
-## URI
 
-## HTTP动词
+
 
 ## 如何设计restful API
 
 ## restful设计误区
+
+## 开源框架对REST的支持
+- ### SpringMvc
+- ### Jersey
+- ### Play
