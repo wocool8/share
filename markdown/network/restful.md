@@ -52,37 +52,37 @@ REST是一种软件架构风格，RESTful是遵循REST架构风格的(一种实�
 - ### 合理设计uri
 
 
-    GET  https://example.com/appName/getBooks 获取所有书
-    POST https://example.com/appName/addBooks 添加一本书
-    POST https://example.com/appName/updateBooks/:bookId 修改一本书
-    POST https://example.com/appName/deleteBooks/:bookId 删除一本书
+        GET  https://example.com/appName/getBooks 获取所有书
+        POST https://example.com/appName/addBooks 添加一本书
+        POST https://example.com/appName/updateBooks/:bookId 修改一本书
+        POST https://example.com/appName/deleteBooks/:bookId 删除一本书
 
 在Web系统中通常会看到以上URI，在RESTful的URI中不可以包含动词，修改后URI如下
 
-    https://example.com/api/books 获取所有书
-    https://example.com/api/books 添加一本书
-    https://example.com/api/books/bookId 修改一本书
-    https://example.com/api/books/bookId 删除一本书    
+        https://example.com/api/books 获取所有书
+        https://example.com/api/books 添加一本书
+        https://example.com/api/books/bookId 修改一本书
+        https://example.com/api/books/bookId 删除一本书    
     
 - ### 合理使用http动词
 
 
-    GET（SELECT）：从服务器取出资源（一项或多项）
-    POST（CREATE）：在服务器新建一个资源
-    PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）
-    PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）
-    DELETE（DELETE）：从服务器删除资源
+        GET（SELECT）：从服务器取出资源（一项或多项）
+        POST（CREATE）：在服务器新建一个资源
+        PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）
+        PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）
+        DELETE（DELETE）：从服务器删除资源
     
 - ### 向客户端返回状态码和提示信息
 
 
-    200 OK ：服务器成功返回用户请求的数据，操作是幂等的
-    201 CREATED ：用户新建或修改数据成功。
-    204 NO CONTENT ：用户删除数据成功。
-    400 INVALID REQUEST ：用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
-    401 Unauthorized ：表示用户没有权限（令牌、用户名、密码错误）
-    403 Forbidden ： 表示用户得到授权（与401错误相对），但是访问是被禁止的
-    404 NOT FOUND ：用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的
+        200 OK ：服务器成功返回用户请求的数据，操作是幂等的
+        201 CREATED ：用户新建或修改数据成功。
+        204 NO CONTENT ：用户删除数据成功。
+        400 INVALID REQUEST ：用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
+        401 Unauthorized ：表示用户没有权限（令牌、用户名、密码错误）
+        403 Forbidden ： 表示用户得到授权（与401错误相对），但是访问是被禁止的
+        404 NOT FOUND ：用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的
 
 其他[状态码](https://www.restapitutorial.com/httpstatuscodes.html)
     
