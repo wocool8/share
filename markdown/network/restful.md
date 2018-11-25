@@ -8,9 +8,9 @@ REST全称是Representational State Transfer，REST是[Roy Thomas Fielding](http
     social properties desired of an architecture.
     写作目的是想在符合架构原理的前提下，理解和评估以网络为基础的应用软件的架构设计，得到一个功能强、性能好、适宜通信的架构。
 REST的通常被译成“表现层状态转化”，听起来比较生涩，要理解REST就要理解Representational State Transfer这个词组的每一个词代表了什么涵义  
-- ### Resources
+- ### Resources(资源)
 REST省略了主语表现层指的是“资源”表现层。所谓"资源"，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的实在。你可以用一个URI（统一资源定位符）指向它，每种资源对应一个特定的URI。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符
-- ### Representation
+- ### Representation(表现层)
 表现层指的是资源的表现形式，HTTP的[Content-Type](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type)实体头部用于指示资源的MIME类型 [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)，常用的type如下
     
     text/plain
@@ -26,13 +26,11 @@ REST省略了主语表现层指的是“资源”表现层。所谓"资源"，�
     application/xml
     application/javascript
     application/octet-stream
-- ### State 
-- ### Transfer 
-
+- ### State Transfer(状态转化)
+就是客户端和服务器互动的一个过程，由于HTTP是无状态的，资源状态是维护在服务端的，在互动过程中涉及到数据和状态的变化, 这种变化叫做状态转换。
 - ## RESTful
-
-
-- ## 资源与URI
+REST是一种软件架构风格，RESTful是遵循REST架构风格的(一种实现)
+- ## URI
 
 - ## HTTP动词
 
