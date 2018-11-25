@@ -57,12 +57,12 @@ REST是一种软件架构风格，RESTful是遵循REST架构风格的(一种实�
         POST https://example.com/appName/updateBooks/:bookId 修改一本书
         POST https://example.com/appName/deleteBooks/:bookId 删除一本书
 
-在Web系统中通常会看到以上URI，在RESTful的URI中不可以包含动词，修改后URI如下
+        在Web系统中通常会看到以上URI，在RESTful的URI中不可以包含动词，修改后URI如下
 
-            https://example.com/api/books 获取所有书
-            https://example.com/api/books 添加一本书
-            https://example.com/api/books/bookId 修改一本书
-            https://example.com/api/books/bookId 删除一本书    
+        https://example.com/api/books 获取所有书
+        https://example.com/api/books 添加一本书
+        https://example.com/api/books/bookId 修改一本书
+        https://example.com/api/books/bookId 删除一本书    
     
 - ### 合理使用http动词
 
