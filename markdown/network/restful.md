@@ -1,21 +1,5 @@
 # REST(基于HTTP实现介绍) 
 ---
-## URI(Uniform Resource Identifier)
-URI是资源的唯一标识，根据URI对资源进行绑定，URI对应的是某个特定资源，所以在设计的URI中不能包含动词，
-
-    /mumu/books/bookName
-## HTTP Verbs
-[HTTP动词](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)有很多，只简单介绍以下四种
-- ### GET
-    The HEAD method asks for a response identical to that of a GET request, but without the response body.
-- ### POST
-    The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.
-- ### PUT
-    The PUT method replaces all current representations of the target resource with the request payload.
-- ### PATCH
-    The PATCH method is used to apply partial modifications to a resource.
-- ### DELETE
-    The DELETE method deletes the specified resource
 ## REST
 REST全称是Representational State Transfer，REST是[Roy Thomas Fielding](https://en.wikipedia.org/wiki/Roy_Fielding)在他2000年的博士论文[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)中提出的。他的设计目的如下
     
@@ -25,7 +9,7 @@ REST全称是Representational State Transfer，REST是[Roy Thomas Fielding](http
     写作目的是想在符合架构原理的前提下，理解和评估以网络为基础的应用软件的架构设计，得到一个功能强、性能好、适宜通信的架构。
 REST的通常被译成“表现层状态转化”，听起来比较生涩，要理解REST就要理解Representational State Transfer这个词组的每一个词代表了什么涵义  
 - ### Resources(资源)
-    REST省略了主语表现层指的是“资源”表现层。所谓"资源"，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，是一个具体的存在形式。可以用一个URI指向它，每种资源对应一个特定的URI。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符
+    REST省略了主语表现层指的是“资源”表现层。所谓"资源"，就是网络上的一个实体，或者说是网络上的一个具体信息。它可以是一段文本、一张图片、一首歌曲、一种服务，是一个具体的存在形式。可以用一个URI指向它，每种资源对应一个特定的URI(资源的唯一标识)。要获取这个资源，访问它的URI就可以，因此URI就成了每一个资源的地址或独一无二的识别符
 - ### Representation(表现层)
     表现层指的是资源的表现形式，HTTP的[Content-Type](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type)实体头部用于指示资源的MIME类型 [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)，常用的type如下
     
@@ -65,14 +49,18 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
         https://example.com/api/books/bookId 修改一本书
         https://example.com/api/books/bookId 删除一本书    
     
-- ### 合理使用http动词
+- ### 合理使用[http动词](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
-
-        GET（SELECT）：从服务器取出资源（一项或多项）
-        POST（CREATE）：在服务器新建一个资源
-        PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）
-        PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）
-        DELETE（DELETE）：从服务器删除资源
+    - ### GET
+        The HEAD method asks for a response identical to that of a GET request, but without the response body.
+    - ### POST
+        The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.
+    - ### PUT
+        The PUT method replaces all current representations of the target resource with the request payload.
+    - ### PATCH
+        The PATCH method is used to apply partial modifications to a resource.
+    - ### DELETE
+        The DELETE method deletes the specified resource
     
 - ### 向客户端返回[状态码](https://www.restapitutorial.com/httpstatuscodes.html)和提示信息
 
