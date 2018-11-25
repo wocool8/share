@@ -61,26 +61,29 @@ REST的通常被译成“表现层状态转化”，听起来比较生涩，要�
         The PATCH method is used to apply partial modifications to a resource.
     - ### DELETE
         The DELETE method deletes the specified resource
+        
+        
+            GET    https://example.com/api/books 获取所有书
+            POST   https://example.com/api/books 添加一本书
+            PUT    https://example.com/api/books/bookId 修改一本书
+            DELETE https://example.com/api/books/bookId 删除一本书       
     
 - ### 向客户端返回[状态码](https://www.restapitutorial.com/httpstatuscodes.html)和提示信息
 
-
-        200 OK ：服务器成功返回用户请求的数据，操作是幂等的
-        201 CREATED ：用户新建或修改数据成功。
-        204 NO CONTENT ：用户删除数据成功。
-        400 INVALID REQUEST ：用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
-        401 Unauthorized ：表示用户没有权限（令牌、用户名、密码错误）
-        403 Forbidden ： 表示用户得到授权（与401错误相对），但是访问是被禁止的
-        404 NOT FOUND ：用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的
-
-    
-   
-    
-
-
-
-
-
+    - ### 200 OK 
+        服务器成功返回用户请求的数据，操作是幂等的
+    - ### 201 CREATED 
+        用户新建或修改数据成功。
+    - ### 204 NO CONTENT 
+        用户删除数据成功。
+    - ### 400 INVALID REQUEST 
+        用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的
+    - ### 401 Unauthorized 
+        表示用户没有权限（令牌、用户名、密码错误）
+    - ### 403 Forbidden 
+        表示用户得到授权（与401错误相对），但是访问是被禁止的
+    - ### 404 NOT FOUND 
+        用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的
 
 ## restful设计误区
 
