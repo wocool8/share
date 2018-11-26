@@ -1,34 +1,38 @@
-# 一 死锁条件
-|条件|描述|
-|:-|:-| 
-|互斥|某个资源在一段时间内只能由一个进程占有，不能同时被两个或两个以上的进程占有| 
-|不可抢占|进程所获得的资源在未使用完毕之前，资源申请者不能强行地从资源占有者手中夺取资源，而只能由该资源的占有者进程自行释放| 
-|占有且申请|进程至少已经占有一个资源，但又申请新的资源；由于该资源已被另外进程占有，此时该进程阻塞；但是，它在等待新资源之时，仍继续占用已占有的资源| 
-|循环等待|形成一个等待闭环| 
-# 二 案例及分析
-## 2.1 不同表不同Update Sql造成死锁
-### 2.1.1 异常日志
+## 死锁条件
+- 互斥 <br> 
+某个资源在一段时间内只能由一个进程占有，不能同时被两个或两个以上的进程占有
+- 不可抢占 <br>
+进程所获得的资源在未使用完毕之前，资源申请者不能强行地从资源占有者手中夺取资源，而只能由该资源的占有者进程自行释放
+- 占有并等待 <br> 
+进程至少已经占有一个资源，但又申请新的资源；由于该资源已被另外进程占有，此时该进程阻塞；但是，它在等待新资源之时，仍继续占用已占有的资源
+- 循环等待 <br> 形成一个等待闭环
+## 案例分析
+#### 不同表不同Update造成死锁
+- 异常日志
 ![index-merge](../../picture/deadlock/update1.PNG)
 ![index-merge](../../picture/deadlock/update2.PNG)
-### 2.1.2 原因分析
+- 原因分析
 ![index-merge](../../picture/deadlock/update3.png)
  如图A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）。1和2的更新操作都是使用聚集索引，当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，
 B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
-### 2.1.3 解决方案
+- 解决方案 <br>
 打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
-## 2.2 同表同Insert Sql 造成死锁
+#### 同表同Insert Sql 造成死锁
 
-### 2.2.1 异常日志
+- 异常日志
 ![index-merge](../../picture/deadlock/insert1.png)
-### 2.2.2 原因分析
+- 原因分析
 Mysql对插入问题的描述：
+`
+    INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, 
+    there is no gap lock) and does not prevent other sessions from inserting into the gap before the inserted row.
+    Prior to inserting the row, a type of gap lock called an insertion intention gap lock is set. This lock signals the 
+    intent to insert in such a way that multiple transactions inserting into the same index gap need not wait for each 
+    other if they are not inserting at the same position within the gap.If a duplicate-key error occurs, a shared lock 
+    on the duplicate index record is set. This use of a shared lock can result in deadlock should there be multiple 
+    sessions trying to insertthe same row if another session already has an exclusive lock.
+`
 
-    INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, there is no gap
-    lock) and does not prevent other sessions from inserting into the gap before the inserted row.Prior to inserting the row, a type of gap
-    lock called an insertion intention gap lock is set. This lock signals the intent to insert in such a way that multiple transactions
-    inserting into the same index gap need not wait for each other if they are not inserting at the same position within the gap.If a
-    duplicate-key error occurs, a shared lock on the duplicate index record is set. This use of a shared lock can result in deadlock should
-    there be multiple sessions trying to insertthe same row if another session already has an exclusive lock.
 
 1.insert会对插入成功的行加上排它锁，这个排它锁是个记录锁（如图中1 事物2892119902首先加了个 x locks record），不会阻止其他并发的事务往这条记录之前插入记录。<br>
 2.但是插入的字段中存在 unique字段索引 uniq_parent_child,2892119903在insert的时候事物出现了duplicate-key error，对duplicate index record 加共享锁（如图中的2，uniq_parent_child所锁升级成为 lock_mode S）<br>
