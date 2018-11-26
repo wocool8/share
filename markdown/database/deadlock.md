@@ -19,7 +19,7 @@ B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
 打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
 #### 同表同Insert Sql 造成死锁
 - Mysql对插入问题的描述
-`
+```text
     INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, 
     there is no gap lock) and does not prevent other sessions from inserting into the gap before the inserted row.Prior 
     to inserting the row, a type of gap lock called an insertion intention gap lock is set. This lock signals the intent 
@@ -27,7 +27,7 @@ B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
     they are not inserting at the same position within the gap.If a duplicate-key error occurs, a shared lock on the
     duplicate index record is set. This use of a shared lock can result in deadlock should there be multiple sessions 
     trying to insertthe same row if another session already has an exclusive lock.
-`
+```
 - 异常日志
 ![index-merge](../../picture/deadlock/insert1.png)
 - 原因分析
@@ -36,7 +36,7 @@ B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
     - 然后事物2892119902获取了（如图中3，获取了lock_mode x locks gap before rec insert）间隙锁
 ![index-merge](../../picture/deadlock/insert2.png)<br>
 由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
-- 解决方案
+- 解决方案<br>
 以Redis缓存方案，解决这个要并发插入的问题
 ## 死锁日志分析
  
