@@ -41,7 +41,7 @@ INSERT INTENTION锁是GAP锁的一种，如果有多个session插入同一个GAP
 
 ## 死锁日志分析
 #### 获取数据库死锁日志
-mysql命令行执行 show engine innodb status，死锁日志如下(数据库相关信息删除了敏感信息，可能导致信息不对应) 
+`mysql`命令行执行`show engine innodb status`获取日志如下(数据库相关信息删除了敏感信息，可能导致信息不对应)
 ```sql
     ------------------------
     LATEST DETECTED DEADLOCK
@@ -87,12 +87,13 @@ mysql命令行执行 show engine innodb status，死锁日志如下(数据库相
     *** WE ROLL BACK TRANSACTION (1)
 ```
 #### 死锁日志分析
-- TRANSACTION 5122216139，根据事物ID的大小 可以判定事物相关代码的执行顺序等相关信息（使用 select * from information_schema.INNODB_RX\G/获取事物的详细信息）
-- mysql tables in use 3, locked 3  表示当前事物使用了三张表且锁了三张表
-- RECORD LOCKS space id 382 page no 9156 n bits 104 index index `PRIMARY` of table `mumu`.`table1` trx id 5122216139 lock mode S locks rec but not gap waiting 表示锁住的资源，locks rec but not gap 表示锁住的是一个索引，而不是一个范围，此处可以看到锁的索引是表table1的PRIMARY和锁它的锁类型
-- WAITING FOR THIS LOCK TO BE GRANTED和HOLDS THE LOCK(S):可以看出事物获持有或等待锁的状态分别是等待获取锁和持有当前锁
-- 1: len 6; hex 5122216120; asc 1N， 通常1:length表示的是当前事物等待锁被占用的事物ID
-- update table2 set status=7  where id =1231232 and yn=1 and status < 7 日志的事物会有等待或持有锁的sql语句，需要根据语句去判断事物要获取的锁及获取顺序
+- `TRANSACTION 5122216139` 根据事物ID的大小 可以判定事物相关代码的执行顺序等相关信息（使用 `select * from information_schema.INNODB_RX`获取事物的详细信息）
+- `mysql tables in use 3, locked 3`  表示当前事物使用了三张表且锁了三张表
+- `RECORD LOCKS space id 382 page no 9156 n bits 104 index index PRIMARY of table mumu.table1 trx id 5122216139` 表示锁住的资源
+- `locks rec but not gap` 表示锁住的是一个索引，而不是一个范围，此处可以看到锁的索引是表table1的PRIMARY和锁它的锁类型
+- `WAITING FOR THIS LOCK TO BE GRANTED`和`HOLDS THE LOCK(S)` 可以看出事物获持有或等待锁的状态分别是等待获取锁和持有当前锁
+- `1: len 6; hex 5122216120; asc 1N` 通常`1: len`表示的是当前事物等待锁被占用的事物ID
+- `update table2 set status=7  where id =1231232 and yn=1 and status < 7` 日志的事物会有等待或持有锁的sql语句，需要根据语句去判断事物要获取的锁及获取顺序
 - 很多时候单从日志并不能完全分析出死锁的具体原因，结合对应的代码逻辑也是很重要的
     
 ## 案例分析
@@ -102,8 +103,9 @@ mysql命令行执行 show engine innodb status，死锁日志如下(数据库相
 ![index-merge](../../picture/deadlock/update2.PNG)
 - 原因分析
 ![index-merge](../../picture/deadlock/update3.png)
- 如图A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）。1和2的更新操作都是使用聚集索引，当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，
-B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
+    - A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）
+    - 1和2的更新操作都是使用聚集索引
+    - 当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，B持有2的主键索引锁，竞争1的主键索引锁，造成死锁
 - 解决方案 <br>
 打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
 #### 同表同Insert Sql 造成死锁
