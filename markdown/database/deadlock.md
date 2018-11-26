@@ -24,10 +24,10 @@
 #### 排他锁（LOCK_X/行级)
 允许获得排他锁的事务更新数据，阻止其他事务取得相同数据集的共享读锁和排他写锁
 - 执行`SQL`（通过二级索引查询）
-    - `RC`隔离级别：首先锁住二级索引记录，为`NOT GAP X`锁；然后锁住对应的聚集索引记录，也是`NOT GAP X`
-    - `RR`隔离级别下：首先锁住二级索引记录，为`LOCK_ORDINARY`|`LOCK_X`锁；然后锁住聚集索引记录，为`NOT GAP X`
-- 执行`SQL`（通过聚集索引检索，更新二级索引数据）
-    - 对聚集索引记录加 `LOCK_REC_NOT_GAP` | `LOCK_X`锁;
+    - `RC`隔离级别：首先锁住二级索引记录，为`NOT GAP X`锁；然后锁住对应的聚簇索引记录，也是`NOT GAP X`
+    - `RR`隔离级别下：首先锁住二级索引记录，为`LOCK_ORDINARY`|`LOCK_X`锁；然后锁住聚簇索引记录，为`NOT GAP X`
+- 执行`SQL`（通过聚簇索引检索，更新二级索引数据）
+    - 对聚簇索引记录加 `LOCK_REC_NOT_GAP` | `LOCK_X`锁;
     - 在标记删除二级索引时，检查二级索引记录上的锁，如果存在和`LOCK_X` | `LOCK_REC_NOT_GAP`冲突的锁对象，则创建锁对象并返回等待错误码；否则无需创建锁对象；
 #### 间隙锁（LOCK_GAP/行级）
 表示只锁住一段范围，不锁记录本身，通常表示两个索引记录之间，或者索引上的第一条记录之前，或者最后一条记录之后的锁。可以理解为一种区间锁，一般在RR隔离级别下会使用到`GAP`锁。你可以通过切换到RC隔离级别，或者开启选项`innodb_locks_unsafe_for_binlog`来避免`GAP`锁
@@ -90,7 +90,7 @@ MySQL 默认情况下使用`RR`的隔离级别，而`NEXT-KEY LOCK`正是为了�
 - `TRANSACTION 5122216139` 根据事物ID的大小 可以判定事物相关代码的执行顺序等相关信息（使用 `select * from information_schema.INNODB_RX`获取事物的详细信息）
 - `mysql tables in use 3, locked 3`  表示当前事物使用了三张表且锁了三张表
 - `RECORD LOCKS space id 382 page no 9156 n bits 104 index index PRIMARY of table mumu.table1 trx id 5122216139` 表示锁住的资源
-- `locks rec but not gap` 表示锁住的是一个索引，而不是一个范围，此处可以看到锁的索引是表table1的PRIMARY和锁它的锁类型
+- `locks rec but not gap` 表示锁住的是一个索引，而不是一个范围，此处可以看到锁的索引是表`table1`的`PRIMARY`和锁它的锁类型
 - `WAITING FOR THIS LOCK TO BE GRANTED`和`HOLDS THE LOCK(S)` 可以看出事物获持有或等待锁的状态分别是等待获取锁和持有当前锁
 - `1: len 6; hex 5122216120; asc 1N` 通常`1: len`表示的是当前事物等待锁被占用的事物ID
 - `update table2 set status=7  where id =1231232 and yn=1 and status < 7` 日志的事物会有等待或持有锁的sql语句，需要根据语句去判断事物要获取的锁及获取顺序
@@ -106,8 +106,8 @@ MySQL 默认情况下使用`RR`的隔离级别，而`NEXT-KEY LOCK`正是为了�
     - A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）
     - 1和2的更新操作都是使用聚簇索引
     - 当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，B持有2的主键索引锁，竞争1的主键索引锁，造成死锁
-- 解决方案 <br>
-打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
+- 解决方案
+    - 打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
 #### 同表同Insert Sql 造成死锁
 - Mysql对插入问题的描述
 ```text
@@ -125,11 +125,13 @@ MySQL 默认情况下使用`RR`的隔离级别，而`NEXT-KEY LOCK`正是为了�
 - 原因分析
 ![index-merge](../../picture/deadlock/insert2.png)
     - insert会对插入成功的行加上排它锁，这个排它锁是个记录锁（如图中1 事物2892119902首先加了个 x locks record），不会阻止其他并发的事务往这条记录之前插入记录。<br>
-    - 但是插入的字段中存在 unique字段索引 uniq_parent_child,2892119903在insert的时候事物出现了duplicate-key error，对duplicate index record 加共享锁（如图中的2，uniq_parent_child所锁升级成为 lock_mode S）
-    - 然后事物2892119902获取了（如图中3，获取了lock_mode x locks gap before rec insert）间隙锁
-    - 由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
+    - 但是插入的字段中存在 `unique`字段索引 `uniq_parent_child,2892119903`在`insert`的时候事物出现了`duplicate-key error`，对`duplicate index record` 加共享锁（
+    如图中的2，`uniq_parent_child`所锁升级成为 `lock_mode S`）
+    - 然后事物2892119902获取了（如图中3，获取了`lock_mode x locks gap before rec insert`）间隙锁
+    - 由于 `Lock record`、`Lock S`、`Lock Gap`按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁
+    - 事务2892119903 回滚影响最小，所以回滚了事务2892119903  
 - 解决方案<br>
-以Redis缓存方案，解决这个要并发插入的问题
+    - 以Redis缓存方案，解决这个要并发插入的问题
 
 ## 数据库死锁检测机制
 #### wait timeout
