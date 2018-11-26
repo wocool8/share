@@ -29,14 +29,15 @@ B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
     duplicate index record is set. This use of a shared lock can result in deadlock should there be multiple sessions 
     trying to insertthe same row if another session already has an exclusive lock.
 ```
+简单来说就是 mysql在插入前不会直接加Lock X，会在插入时做唯一性校验，如果冲突会给两个插入加Lock S
 - 异常日志
 ![index-merge](../../picture/deadlock/insert1.png)
 - 原因分析
+![index-merge](../../picture/deadlock/insert2.png)
     - insert会对插入成功的行加上排它锁，这个排它锁是个记录锁（如图中1 事物2892119902首先加了个 x locks record），不会阻止其他并发的事务往这条记录之前插入记录。<br>
     - 但是插入的字段中存在 unique字段索引 uniq_parent_child,2892119903在insert的时候事物出现了duplicate-key error，对duplicate index record 加共享锁（如图中的2，uniq_parent_child所锁升级成为 lock_mode S）
     - 然后事物2892119902获取了（如图中3，获取了lock_mode x locks gap before rec insert）间隙锁
-![index-merge](../../picture/deadlock/insert2.png)<br>
-由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
+    - 由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
 - 解决方案<br>
 以Redis缓存方案，解决这个要并发插入的问题
 ## 死锁日志分析
