@@ -1,3 +1,4 @@
+# Dead Lock(基于Innodb 事物隔离级别RR)
 ## 死锁条件
 - 互斥
     - 某个资源在一段时间内只能由一个进程占有，不能同时被两个或两个以上的进程占有
@@ -7,41 +8,40 @@
     - 进程至少已经占有一个资源，但又申请新的资源；由于该资源已被另外进程占有，此时该进程阻塞；但是，它在等待新资源之时，仍继续占用已占有的资源
 - 循环等待 
     - 形成一个等待闭环
-## 案例分析
-#### 不同表不同Update造成死锁
-- 异常日志
-![index-merge](../../picture/deadlock/update1.PNG)
-![index-merge](../../picture/deadlock/update2.PNG)
-- 原因分析
-![index-merge](../../picture/deadlock/update3.png)
- 如图A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）。1和2的更新操作都是使用聚集索引，当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，
-B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
-- 解决方案 <br>
-打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
-#### 同表同Insert Sql 造成死锁
-- Mysql对插入问题的描述
-```text
-    INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, 
-    there is no gap lock) and does not prevent other sessions from inserting into the gap before the inserted row.Prior 
-    to inserting the row, a type of gap lock called an insertion intention gap lock is set. This lock signals the intent 
-    to insert in such a way that multiple transactions inserting into the same index gap need not wait for each other if 
-    they are not inserting at the same position within the gap.If a duplicate-key error occurs, a shared lock on the
-    duplicate index record is set. This use of a shared lock can result in deadlock should there be multiple sessions 
-    trying to insertthe same row if another session already has an exclusive lock.
-```
-简单来说就是 mysql在插入前不会直接加Lock X，会在插入时做唯一性校验，如果冲突会给两个插入加Lock S
-- 异常日志
-![index-merge](../../picture/deadlock/insert1.png)
-- 原因分析
-![index-merge](../../picture/deadlock/insert2.png)
-    - insert会对插入成功的行加上排它锁，这个排它锁是个记录锁（如图中1 事物2892119902首先加了个 x locks record），不会阻止其他并发的事务往这条记录之前插入记录。<br>
-    - 但是插入的字段中存在 unique字段索引 uniq_parent_child,2892119903在insert的时候事物出现了duplicate-key error，对duplicate index record 加共享锁（如图中的2，uniq_parent_child所锁升级成为 lock_mode S）
-    - 然后事物2892119902获取了（如图中3，获取了lock_mode x locks gap before rec insert）间隙锁
-    - 由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
-- 解决方案<br>
-以Redis缓存方案，解决这个要并发插入的问题
+## Innodb Lock
+#### 隐式锁
+InnoDB 通常对插入操作无需加锁，而是通过一种“隐式锁”的方式来解决冲突。聚集索引记录中存储了事务id，如果另外有个session查询到了这条记录，会去判断该记录对应的事务id是否属于一个活跃的事务，并协助这个事务创建一个记录锁，然后将自己置于等待队列中
+#### 间隙锁（LOCK_GAP/行级）
+表示只锁住一段范围，不锁记录本身，通常表示两个索引记录之间，或者索引上的第一条记录之前，或者最后一条记录之后的锁。可以理解为一种区间锁，一般在RR隔离级别下会使用到GAP锁。你可以通过切换到RC隔离级别，或者开启选项innodb_locks_unsafe_for_binlog来避免GAP锁
+#### 记录锁（LOCK_REC_NOT_GAP/行级）
+锁对象只是单纯的锁在记录上，不会锁记录之前的 GAP。在 RC 隔离级别下一般加的都是该类型的记录锁
+#### 插入意向锁（LOCK_INSERT_INTENTION/行级）
+INSERT INTENTION锁是GAP锁的一种，如果有多个session插入同一个GAP时，他们无需互相等待，例如当前索引上有记录4和8，两个并发session同时插入记录6，7。他们会分别为(4,8)加上GAP锁，但相互之间并不冲突（因为插入的记录不冲突）。当向某个数据页中插入一条记录时，总是会进行锁检查（构建索引时的数据插入除外），会去检查当前插入位置的下一条记录上是否存在锁对象，这里的下一条记录不是指的物理连续，而是按照逻辑顺序的下一条记录。 如果下一条记录上不存在锁对象：若记录是二级索引上的，先更新二级索引页上的最大事务ID为当前事务的ID；直接返回成功。如果下一条记录上存在锁对象，就需要判断该锁对象是否锁住了GAP。如果GAP被锁住了，并判定和插入意向GAP锁冲突，当前操作就需要等待，加的锁类型为LOCK_X | LOCK_GAP | LOCK_INSERT_INTENTION，并进入等待状态。但是插入意向锁之间并不互斥
+#### 排他锁（LOCK_X/行级)
+允许获得排他锁的事务更新数据，阻止其他事务取得相同数据集的共享读锁和排他写锁
+- 执行SQL（通过二级索引查询）
+    - RC隔离级别：首先锁住二级索引记录，为NOT GAP X锁；然后锁住对应的聚集索引记录，也是NOT GAP X锁
+    - RR隔离级别下：首先锁住二级索引记录，为LOCK_ORDINARY|LOCK_X锁；然后锁住聚集索引记录，为NOT GAP X锁
+- 执行SQL（通过聚集索引检索，更新二级索引数据）
+    - 对聚集索引记录加 LOCK_REC_NOT_GAP | LOCK_X锁;
+    - 在标记删除二级索引时，检查二级索引记录上的锁，如果存在和LOCK_X | LOCK_REC_NOT_GAP冲突的锁对象，则创建锁对象并返回等待错误码；否则无需创建锁对象；
+#### 意向 共享锁/排他锁（LOCK_IS/LOCK_IX/表级）
+事务打算给数据行加行共享锁/行排他锁，事务在给一个数据行加共享锁前必须先取得该表的IS/IX锁
+#### 共享锁（LOCK_S/行级）
+共享锁的作用通常用于在事务中读取一条行记录后，不希望它被别的事务锁修改，但所有的读请求产生的LOCK_S锁是不冲突的。
+- 普通查询在隔离级别为 SERIALIZABLE 会给记录加 LOCK_S 锁
+- 类似 SQL SELECT … IN SHARE MODE
+    - 基于不同的隔离级别，行为有所不同
+    - RC隔离级别： LOCK_REC_NOT_GAP | LOCK_S
+    - RR隔离级别：如果查询条件为唯一索引且是唯一等值查询时，加的是 LOCK_REC_NOT_GAP | LOCK_S
+    - 对于非唯一条件查询，或者查询会扫描到多条记录时，加的是LOCK_ORDINARY | LOCK_S锁
+- insert duplicate key
+    - 通常INSERT操作是不加锁的，但如果在插入或更新记录时，检查到 duplicate key（或者有一个被标记删除的duplicate key），对于普通的INSERT/UPDATE，会加LOCK_S锁
+#### LOCK_ORDINARY(Next-Key Lock/行级)
+MySQL 默认情况下使用RR的隔离级别，而NEXT-KEY LOCK正是为了解决RR隔离级别下的幻读问题。所谓幻读就是一个事务内执行相同的查询，会看到不同的行记录。
+在RR隔离级别下这是不允许的。    
+    
 ## 死锁日志分析
- 
 #### 获取数据库死锁日志
 mysql命令行执行 show engine innodb status，死锁日志如下(数据库相关信息删除了敏感信息，可能导致信息不对应) 
 ```sql
@@ -96,6 +96,40 @@ mysql命令行执行 show engine innodb status，死锁日志如下(数据库相
 - 1: len 6; hex 5122216120; asc 1N， 通常1:length表示的是当前事物等待锁被占用的事物ID
 - update table2 set status=7  where id =1231232 and yn=1 and status < 7 日志的事物会有等待或持有锁的sql语句，需要根据语句去判断事物要获取的锁及获取顺序
 - 很多时候单从日志并不能完全分析出死锁的具体原因，结合对应的代码逻辑也是很重要的
+    
+## 案例分析
+#### 不同表不同Update造成死锁
+- 异常日志
+![index-merge](../../picture/deadlock/update1.PNG)
+![index-merge](../../picture/deadlock/update2.PNG)
+- 原因分析
+![index-merge](../../picture/deadlock/update3.png)
+ 如图A，B两事物同时执行更新表1，2，顺序分别位A（1，2），B（2，1）。1和2的更新操作都是使用聚集索引，当执行到竞争线的时候A持有1的主键索引锁，竞争2的主键索引锁，
+B持有2的主键索引锁，竞争1的主键索引锁，造成死锁。
+- 解决方案 <br>
+打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
+#### 同表同Insert Sql 造成死锁
+- Mysql对插入问题的描述
+```text
+    INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, 
+    there is no gap lock) and does not prevent other sessions from inserting into the gap before the inserted row.Prior 
+    to inserting the row, a type of gap lock called an insertion intention gap lock is set. This lock signals the intent 
+    to insert in such a way that multiple transactions inserting into the same index gap need not wait for each other if 
+    they are not inserting at the same position within the gap.If a duplicate-key error occurs, a shared lock on the
+    duplicate index record is set. This use of a shared lock can result in deadlock should there be multiple sessions 
+    trying to insertthe same row if another session already has an exclusive lock.
+```
+简单来说就是 mysql在插入前不会直接加Lock X，会在插入时做唯一性校验，如果冲突会给两个插入加Lock S
+- 异常日志
+![index-merge](../../picture/deadlock/insert1.png)
+- 原因分析
+![index-merge](../../picture/deadlock/insert2.png)
+    - insert会对插入成功的行加上排它锁，这个排它锁是个记录锁（如图中1 事物2892119902首先加了个 x locks record），不会阻止其他并发的事务往这条记录之前插入记录。<br>
+    - 但是插入的字段中存在 unique字段索引 uniq_parent_child,2892119903在insert的时候事物出现了duplicate-key error，对duplicate index record 加共享锁（如图中的2，uniq_parent_child所锁升级成为 lock_mode S）
+    - 然后事物2892119902获取了（如图中3，获取了lock_mode x locks gap before rec insert）间隙锁
+    - 由于 Lock record、Lock S、Lock Gap按顺序冲突，所以 2等待1释放，3等待2释放，但是1和3是一个事物，造成死锁，事务2892119903 回滚影响最小，所以回滚了事务2892119903  
+- 解决方案<br>
+以Redis缓存方案，解决这个要并发插入的问题
 
 ## 数据库死锁检测机制
 #### wait timeout
