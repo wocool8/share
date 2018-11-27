@@ -109,7 +109,7 @@ MySQL 默认情况下使用`RR`的隔离级别，而`NEXT-KEY LOCK`正是为了�
 - 解决方案
     - 打破死锁的四个必要条件都可以解决死锁问题，调整程序逻辑，使事物A，B的执行逻辑（更新1，2的顺序）一致，避免循环等待
 #### 同表同Insert Sql 造成死锁
-- Mysql对插入问题的描述
+- Mysql官方文档对插入问题的描述
 ```text
     INSERT sets an exclusive lock on the inserted row. This lock is an index-record lock, not a next-key lock (that is, 
     there is no gap lock) and does not prevent other sessions from inserting into the gap before the inserted row.Prior 

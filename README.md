@@ -36,8 +36,7 @@
 - [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
 - [Index](markdown/database/index.md)
 - [Mysql index-merge](markdown/database/index-merge.md)
-- [Innodb lock](markdown/database/innodblock.md)  
-- [DeadLock](markdown/database/deadlock.md)
+- [DeadLock](https://github.com/NeuTemper/pool/blob/master/Database/deadlock.md)
 
 ## Network
 - [RESTFul](https://github.com/NeuTemper/pool/blob/master/design/restful.md)
