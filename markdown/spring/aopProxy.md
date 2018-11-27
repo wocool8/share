@@ -53,6 +53,7 @@ JDK动态代理是利用反射机制生成一个实现代理接口的匿名类�
 ```    
 ## 三 Spring proxy
 ### 3.1 代理方式选择规则(默认JDK Proxy)
+
 ```java
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
@@ -73,11 +74,67 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 1. 如果目标对象实现了接口，默认情况下会采用JDK的动态代理实现AOP
 2. 如果目标对象实现了接口，可以强制使用CGLIB实现AOP|
 3. 如果目标对象没有实现了接口，必须采用CGLIB库，spring会自动在JDK动态代理和CGLIB之间转换|
+### 3.2 使用ProxyFactoryBean实现
+```java
+public class ProxyFactoryBean extends ProxyCreatorSupport implements FactoryBean<Object>, BeanClassLoaderAware, BeanFactoryAware {
+    public Object getObject() throws BeansException {
+        this.initializeAdvisorChain();
+        if (this.isSingleton()) {
+            return this.getSingletonInstance();
+        } else {
+            if (this.targetName == null) {
+                this.logger.warn("Using non-singleton proxies with singleton targets is often undesirable. Enable prototype proxies by setting the 'targetName' property.");
+            }
+
+            return this.newPrototypeInstance();
+        }
+    }    
+    private synchronized Object getSingletonInstance() {
+        if (this.singletonInstance == null) {
+            this.targetSource = this.freshTargetSource();
+            if (this.autodetectInterfaces && this.getProxiedInterfaces().length == 0 && !this.isProxyTargetClass()) {
+                Class targetClass = this.getTargetClass();
+                if (targetClass == null) {
+                    throw new FactoryBeanNotInitializedException("Cannot determine target class for proxy");
+                }
+
+                this.setInterfaces(ClassUtils.getAllInterfacesForClass(targetClass, this.proxyClassLoader));
+            }
+
+            super.setFrozen(this.freezeProxy);
+            this.singletonInstance = this.getProxy(this.createAopProxy());
+        }
+
+        return this.singletonInstance;
+    }    
+    
+    private synchronized Object newPrototypeInstance() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace("Creating copy of prototype ProxyFactoryBean config: " + this);
+        }
+
+        ProxyCreatorSupport copy = new ProxyCreatorSupport(this.getAopProxyFactory());
+        TargetSource targetSource = this.freshTargetSource();
+        copy.copyConfigurationFrom(this, targetSource, this.freshAdvisorChain());
+        if (this.autodetectInterfaces && this.getProxiedInterfaces().length == 0 && !this.isProxyTargetClass()) {
+            copy.setInterfaces(ClassUtils.getAllInterfacesForClass(targetSource.getTargetClass(), this.proxyClassLoader));
+        }
+
+        copy.setFrozen(this.freezeProxy);
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace("Using ProxyCreatorSupport copy: " + copy);
+        }
+
+        return this.getProxy(copy.createAopProxy());
+    }    
+}
+```
+
 ### 3.2 CGLIB代理方式配置
 #### 3.2.1 xml
 在xml中配置如下标签
 ```xml
-<aop:aspectj-autoproxy proxy-target-class="true">
+<aop:aspectj-autoproxy proxy-target-class="true"> 
 ```    
 #### 3.2.1 springboot
 在application.properties或者application.yml去设置如下属性
