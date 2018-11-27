@@ -75,19 +75,22 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 3. 如果目标对象没有实现了接口，必须采用CGLIB库，spring会自动在JDK动态代理和CGLIB之间转换|
 ### 3.2 CGLIB代理方式配置
 #### 3.2.1 xml
-在xml中配置如下标签    
-    <aop:aspectj-autoproxy proxy-target-class="true">
+在xml中配置如下标签
+```xml
+<aop:aspectj-autoproxy proxy-target-class="true">
+```    
 #### 3.2.1 springboot
 在application.properties或者application.yml去设置如下属性
-
-    // application.properties
-    spring.aop.proxy-target-class=true
-    
-    // application.yml
-    spring：
-        aop：
-            proxy-target-class：true
-            
+```yaml
+// application.yml
+spring:
+     aop:
+         proxy-target-class: true
+```           
+```properties
+# application.properties
+spring.aop.proxy-target-class=true
+``` 
 ## 四 FAQ
 ### 4.1 final修饰的类为什么不能使用CGLIB代理
 由于CGLIB动态代理的底层实现是ASM，理论上是可以代理final类的，但是CGLIB实现[字节码增强](/markdown/jvm/bytecode.md)是使用Enhancer生成派生子类字节码
