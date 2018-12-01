@@ -19,22 +19,22 @@
 ### 2.命令执行
 hystrix一共有四种命令执行的方式，其中HystrixCommand实现了下面两个执行方式
 - execute():同步执行，从依赖的服务返回一个单一的结果对象，或是在发生错误的时候抛出异常
-        ```java
-        R value = command.execute()
-        ```
+```java
+R value = command.execute()
+```
 - queue():异步执行，直接返回一个Feature对象其中包含了服务请求结束时返回的单一结果对象
-        ```java
-            Future<R>  fValue = command.queue()
-        ```
+ ```java
+Future<R>  fValue = command.queue()
+```
 HystrixObservableCommand实现了另外两种执行方式
 - observe():返回Observable对象，它代表了操作的多个结果，它是一个Hot Observable
-        ```java
-            Observable<R>  ohValue = commond.observe()
-        ```
+```java
+Observable<R>  ohValue = commond.observe()
+```
 - toObservable():同样是Observable对象，也代表了操作的多个结果，但是是一个cold Observable
-        ```java
-        Observable<R>  ocValue = commond.toObservable()
-        ```
+```java
+Observable<R>  ocValue = commond.toObservable()
+```
 ##### Observable   
 - Hot Observable: 无论事件源有没有订阅者，都会在创建后对事件进行发布，所以对于Hot Observable的每个订阅者都有可能是从事件源的中途开始的，并有可能只看见了整个操作的局部过程<br>
 - Cold Observable : 没有订阅者的时候不会发布事件，而是进行等待，直到有订阅者的之后才发布事件，对于Cold Observable的订阅者，它可以保证从一开始看到整个操作的全过程
