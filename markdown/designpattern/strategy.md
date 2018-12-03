@@ -3,7 +3,6 @@
 ### Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
 ![Proxy](../../picture/designpattern/strategy.png)
 ### 以[eslatic-job](http://elasticjob.io/docs/elastic-job-lite/00-overview/)中的分片策略为例介绍
-针对一组算法， 将每一个算法封装到具有共同接口的独立的类中，满足里氏替换原则，策略模式可以使得算法可以在不影响客户端的情况下发生变化
 ```java
 /**
  * 作业分片策略.
