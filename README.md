@@ -23,6 +23,7 @@
 
 ## Design pattern 
 #### Creational Patterns
+- [Builder](markdown/designpattern/builder.md)
 - [Singleton](markdown/designpattern/singleton.md)
 #### Structural Patterns
 - [Proxy](markdown/designpattern/proxy.md)
