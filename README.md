@@ -22,9 +22,12 @@
 - [伪共享及解决方案](markdown/thread/pseudoShare.md)
 
 ## Design pattern 
+### Creational Patterns(创建型)
 - [Singleton](markdown/designpattern/singleton.md)
+### Structural Patterns(结构型)
 - [Proxy](markdown/designpattern/proxy.md)
-
+### Behavioral Patterns(行为型)
+- [Strategy](markdown/designpattern/strategy.md)
 ## Cache
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)

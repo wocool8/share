@@ -48,7 +48,6 @@ JDK动态代理是利用反射机制生成一个实现代理接口的匿名类�
         private void checkPopedom() {
             System.out.println(".:检查权限 checkPopedom()!");
         }
-    
     }
 ```    
 ## 三 Spring proxy
