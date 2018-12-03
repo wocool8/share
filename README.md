@@ -29,6 +29,7 @@
 - [Proxy](markdown/designpattern/proxy.md)
 #### Behavioral Patterns
 - [Strategy](markdown/designpattern/strategy.md)
+- [Template](markdown/designpattern/template.md)
 ## Cache
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)
