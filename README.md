@@ -24,6 +24,7 @@
 #### Creational Patterns
 - [Builder](markdown/designpattern/builder.md)
 - [Singleton](markdown/designpattern/singleton.md)
+- [Prototype](markdown/designpattern/prototype.md)
 #### Structural Patterns
 - [Proxy](markdown/designpattern/proxy.md)
 #### Behavioral Patterns
