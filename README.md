@@ -29,7 +29,7 @@
 #### Behavioral Patterns
 - [Strategy](markdown/designpattern/strategy.md)
 - [Template Method](markdown/designpattern/template.md)
-- [Chain of Responsibility](/markdown/designpattern/chainOfResponsibility.md)
+- [Chain of Responsibility](markdown/designpattern/chainOfResponsibility.md)
 ## Cache
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)
