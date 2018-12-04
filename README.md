@@ -20,7 +20,6 @@
 - [ReentrantLock](markdown/thread/ReentrantLock.md)
 - [Thread Pool](markdown/thread/threadPool.md)
 - [伪共享及解决方案](markdown/thread/pseudoShare.md)
-
 ## Design pattern 
 #### Creational Patterns
 - [Builder](markdown/designpattern/builder.md)
@@ -30,6 +29,7 @@
 #### Behavioral Patterns
 - [Strategy](markdown/designpattern/strategy.md)
 - [Template Method](markdown/designpattern/template.md)
+- [Chain of Responsibility](markdown/designpattern/ChainOfResponsibility.md)
 ## Cache
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)
