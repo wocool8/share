@@ -23,7 +23,7 @@
         }
     }
     ```
-    使用搜Spring的事件需要继承ApplicationEvent，ApplicationContext是可以发布ApplicationEvent的，因为它实现了ApplicationEventPublisherAware
+    使用Spring的事件需要继承ApplicationEvent，ApplicationContext是可以发布ApplicationEvent的，因为它实现了ApplicationEventPublisherAware
     ```java
     public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory, MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
         String getId();
