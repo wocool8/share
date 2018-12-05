@@ -66,4 +66,4 @@
         }
     }
     ```
-    可以定义多个tListerner去获取StudentEvent事件变化
+    可以定义多个Listerner去监听StudentEvent事件
