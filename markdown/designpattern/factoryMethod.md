@@ -8,7 +8,7 @@
 - Creator(declares the factory method, which returns an object of type Product)
 - ConcreteCreator(overrides the factory method to return an instance of a ConcreteProduct, referred by Product)
 ### 以工厂使用模具生产塑料玩具场景介绍
-![Factory Method](../../picture/designpattern/factoryMethodDemo.png)
+![Factory Method](../../picture/designpattern/factoryMethodDemo.PNG)
 - Product&ConcreteProduct
     ```java
     public interface PlasticToyProduct {
