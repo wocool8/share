@@ -1,4 +1,5 @@
 # 原型模式
+---
 Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.
 ![Singleton](../../picture/designpattern/prototype.png)
 ### Shallow Copy(`Object.clone()`)

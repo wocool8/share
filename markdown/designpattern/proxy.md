@@ -2,6 +2,7 @@
 ---
 Provide a surrogate or placeholder for another object to control access to it.
 ![Proxy](../../picture/designpattern/proxy.png)
+### 以买书为场景的简单代理
 ```java
 public interface Book {
     void buyBook();
