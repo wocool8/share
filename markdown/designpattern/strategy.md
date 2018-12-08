@@ -1,6 +1,6 @@
 # 策略模式
 ---
-### Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
+Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
 ![Strategy](../../picture/designpattern/strategy.png)
 ### 以[eslatic-job](http://elasticjob.io/docs/elastic-job-lite/00-overview/)中的分片策略为例介绍
 ```java
