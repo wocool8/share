@@ -1,5 +1,4 @@
-# 单利模式
----
+# 单例模式
 确保一个类只被实例化一次，并且提供一个全局的访问方式
 ![Singleton](../../picture/designpattern/singleton.png)
 ##  EagerSingleton 

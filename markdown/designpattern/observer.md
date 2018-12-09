@@ -1,5 +1,4 @@
 # Observer
----
 观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某，一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己
 ![Template](../../picture/designpattern/observer.png)
 ### 以spring的ApplicationEventPublisher和ApplicationListener为例介绍

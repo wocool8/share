@@ -1,5 +1,4 @@
 # 模板方法
----
 准备一个抽象类，将部分逻辑以具体方法以及具体子构造的形式实现，然后声明一些抽象方法来迫使子类实现剩余的逻辑不同的子类可以以不同的形式实现这些抽象方法，从而对剩余的逻辑有不同的实现
 ![Template](../../picture/designpattern/template.png)
 ### 以spring-data-eslaticSearch为例介绍
