@@ -13,7 +13,7 @@
 ```
 ##  LazySingleton
 懒汉模式 调用时验证 再赋值 在多线程下有隐患
-### 1 单利习语
+### 1 单例习语
 ```java
 	public static LazySingleton getInstance(){
 	    if(null == uniqueInstance){
@@ -23,7 +23,7 @@
     }
 ```
 线程不安全
-### 2 线程安全的单利 锁方法 
+### 2 线程安全的单例 锁方法 
 ```java
 	public static synchronized LazySingleton getInstance2(){
 		if(null == uniqueInstance){
@@ -33,7 +33,7 @@
 	}
 ```
 但是每次获取实例的时候都要承受方法锁的开销
-###  3 线程安全的单利 锁第一次初始化
+###  3 线程安全的单例 锁第一次初始化
 ```java
 	public static LazySingleton getInstance3(){
 		if(null == uniqueInstance){
@@ -47,7 +47,7 @@
 当 instance 为 null 时，两个线程可以并发地进入 if 语句内部。然后，一个线程进入 synchronized 块来初始化 instance，
 而另一个线程则被阻断。当第一个线程退出 synchronized 块时，等待着的线程进入并创建另一个 Singleton 对象。
 注意：当第二个线程进入 synchronized 块时，它并没有检查 instance 是否非 null
-### 4 线程安全的单利 双重检验
+### 4 线程安全的单例双重检验
 ```java
 	public static LazySingleton getInstance4(){
 		if(null == uniqueInstance){ //1
