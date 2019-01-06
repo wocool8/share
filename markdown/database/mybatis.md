@@ -3,8 +3,9 @@
 ![mybatis层次结构](../../picture/mybatis/mybatis.png)
 ![mybatis层次结构](../../picture/mybatis/level.png)
 
-## 一 Mybatis插件实现原理
-### 1.1 插件是拦截四大对象的执行方法，然后重写执行方法最终实现自定义代码嵌入执行流程
+## 一 Mybatis插件
+### 1.1 实现原理
+拦截四大对象的执行方法，然后重写执行方法最终实现自定义代码嵌入执行流程
 - Executor
 - StatementHandler
 - ParameterHandler
@@ -73,6 +74,12 @@ public interface Interceptor {
                 args = { Connection.class })
 })
 public class QueryInterceptor implements Interceptor {
+    ...
+}
+```
+### 1.4 根据需求重写intercept、plugin、setProperties方法
+```java
+public class QueryInterceptor implements Interceptor {
     
     public Object intercept(Invocation invocation) throws Throwable {
         return invocation.proceed();
@@ -87,3 +94,4 @@ public class QueryInterceptor implements Interceptor {
     }
 }
 ```
+只是嵌套实现，并未真正重写
