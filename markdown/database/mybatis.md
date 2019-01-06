@@ -24,6 +24,39 @@ public interface Interceptor {
 }
 ```
 ### 1.3 配置拦截范围
+- @Intercepts 
+
+    标记了这是一个Interceptor
+- @Signature
+
+    ```java
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface Signature {
+        // 拦截对象，即上文的四大对象
+        Class<?> type();
+        // 拦截对象中的方法名
+        String method();
+        // 方法参数  
+        Class<?>[] args();  
+        String versionPattern() default VersionUtils.ANY;
+    }
+- Executor
+    ```java
+    public interface Executor {
+  
+        int update(MappedStatement var1, Object var2) throws SQLException;
+    
+        <E> List<E> query(MappedStatement var1, Object var2, RowBounds var3, ResultHandler var4, CacheKey var5, BoundSql var6) throws SQLException;
+    
+        <E> List<E> query(MappedStatement var1, Object var2, RowBounds var3, ResultHandler var4) throws SQLException;
+        
+        ...
+    }
+    ```
+拦截<E> List<E> query(MappedStatement var1, Object var2, RowBounds var3, ResultHandler var4, CacheKey var5, BoundSql var6)方法，
+实现如下代码
 ```java
 @Intercepts({
         @Signature(
@@ -54,36 +87,3 @@ public class QueryInterceptor implements Interceptor {
     }
 }
 ```
-- @Intercepts 
-
-    标记了这是一个Interceptor
-- @Signature
-
-    ```java
-    @Documented
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    public @interface Signature {
-        // 拦截对象，即上文的四大对象
-        Class<?> type();
-        // 拦截对象中的方法名
-        String method();
-        // 方法参数  
-        Class<?>[] args();  
-        String versionPattern() default VersionUtils.ANY;
-    }
-    ```
-    以第一个为例，拦截Executor.class的query()方法，方法参数为(MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class)
-    ```java
-    public interface Executor {
-  
-        int update(MappedStatement var1, Object var2) throws SQLException;
-    
-        <E> List<E> query(MappedStatement var1, Object var2, RowBounds var3, ResultHandler var4, CacheKey var5, BoundSql var6) throws SQLException;
-    
-        <E> List<E> query(MappedStatement var1, Object var2, RowBounds var3, ResultHandler var4) throws SQLException;
-        
-        ...
-    }
-    ```
-
