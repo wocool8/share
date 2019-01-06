@@ -27,7 +27,7 @@ public interface Interceptor {
 ### 1.3 配置拦截范围
 - @Intercepts 
 
-    标记了这是一个Interceptor
+    标记了这是一个Mybatis Interceptor
 - @Signature
 
     ```java
