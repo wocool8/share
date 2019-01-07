@@ -107,3 +107,21 @@ If you use (default) Spring Proxy AOP, then all AOP functionality provided by Sp
 if the call goes through the proxy. -- This is normally the case if the annotated method is invoked from another bean.
 ```
 ### 4.2 private 方法 @Transaction不生效
+```java
+@Override
+@Transactional
+private Integer saveRules(ChannelRuleDTO updateChannelRule, List<ChannelRuleDO> insertRules) {
+    int result = 0;
+    if (null != updateChannelRule && CollectionUtils.isNotEmpty(updateChannelRule.getIds()) && null != updateChannelRule.getRuleType()) {
+        int size = channelRuleDao.deleteByIds(updateChannelRule.getIds());
+        if (size != updateChannelRule.getIds().size()) {
+            log.error("逻辑删除失败，ids:{}", JSON.toJSONString(updateChannelRule.getIds()));
+            throw new RuntimeException();
+        }
+    }
+    if (CollectionUtils.isNotEmpty(insertRules)) {
+        result = channelRuleDao.batchInsert(insertRules);
+    }
+    return result;
+}
+```
