@@ -39,4 +39,21 @@
 
     事务串行化执行，隔离级别最高，牺牲并发性。可以解决并发事务的所有问题
 
-## 二 Spring 事物传播机制
+## 二 事物传播机制
+- PROPAGATION_REQUIRED：如果当前没有事务，就创建一个新事务，如果当前存在事务，就加入该事务，该设置是最常用的设置
+- PROPAGATION_SUPPORTS：支持当事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就以非事务执行
+- PROPAGATION_MANDATORY：支持当前事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就抛出异常
+- PROPAGATION_REQUIRES_NEW：创建新事务，无论当前存不存在事务，都创建新事务
+- PROPAGATION_NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起
+- PROPAGATION_NEVER：以非事务方式执行，如果当前存在事务，则抛出异常
+- PROPAGATION_NESTED：如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类似的操作
+
+## 三 @Transaction 
+### 3.1 默认设置
+- The propagation setting is PROPAGATION_REQUIRED.
+- The isolation level is ISOLATION_DEFAULT.
+- The transaction is read-write.
+- The transaction timeout defaults to the default timeout of the underlying transaction system, or to none if timeouts are not supported.
+- Any RuntimeException triggers rollback, and any checked Exception does not.
+### 3.2 其他设置
+点击[Spring Transactional Settings](https://docs.spring.io/spring/docs/5.1.3.RELEASE/spring-framework-reference/data-access.html#tx-propagation)

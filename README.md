@@ -42,12 +42,12 @@
 - [热key及秒杀](markdown/cache/cacheModel.md) 
 
 ## Database
-- [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
+- [Transaction](markdown/database/transaction.md)
 - [Index](markdown/database/index.md)
 - [Mysql index-merge](markdown/database/index-merge.md)
 - [DeadLock](https://github.com/NeuTemper/pool/blob/master/Database/deadlock.md)
+- [数据库连接池参数配置](markdown/database/dataSourceConnectedPool.md)
 - [Mysql Plugins](markdown/database/mybatis.md)
-- [Transaction](markdown/database/transaction.md)
 
 ## Network
 - [RESTFul](https://github.com/NeuTemper/pool/blob/master/design/restful.md)
