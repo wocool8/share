@@ -1,6 +1,6 @@
 ## Redis
-### [Redis五种数据结构及指令](/markdown/cache/redisDataStructrue.md)
-### [持久化方式](/markdown/cache/redisPersistence.md)
+- [Redis五种数据结构及指令](/markdown/cache/redisDataStructrue.md)
+- [持久化方式](/markdown/cache/redisPersistence.md)
 - Redis为什么这么快？redis采用多线程会有哪些问题？
 - Redis跳跃表的问题；
 - Redis单进程单线程的Redis如何能够高并发?
