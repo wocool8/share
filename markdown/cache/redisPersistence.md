@@ -6,7 +6,7 @@ Redis中数据存储模式有2种
 - persistence
 
     即为内存中的数据持久备份到磁盘文件，在服务重启后可以恢复，此模式下数据相对安全。
-### RDB(redis database)
+### 一 RDB(redis database)
 RDB是在某个时间点将数据写入一个临时文件，持久化结束后，用这个临时文件替换上次持久化的文件，通过配置redis在n秒内如果超过m个key被修改这执行一次RDB操作。
 这个操作就类似于在这个时间点来二进制的方式保存一次Redis的一次快照数据。所有这个持久化方法也通常叫做snapshots
  
@@ -54,16 +54,16 @@ rdbcompression yes
 - 实际只要重启redis服务即可完成（启动redis的server时会从dump.rdb中先同步数据）
 
 #### 客户端使用命令进行持久化save存储
-
-- ./redis-cli -h ip -p port save
-
-    在前台进行存储，由于redis是用一个主线程来处理所有 client的请求，这种方式会阻塞所有client请求。所以不推荐使用。
-- ./redis-cli -h ip -p port bgsave
-
-    在后台进行存储。我的client就在server这台服务器上，所以不需要连其他机器，直接./redis-cli bgsave
-
+在前台进行存储，由于redis是用一个主线程来处理所有 client的请求，这种方式会阻塞所有client请求。所以不推荐使用。
+```text
+./redis-cli -h ip -p port save
+```
+在后台进行存储。我的client就在server这台服务器上，所以不需要连其他机器，直接./redis-cli bgsave
+```text
+./redis-cli -h ip -p port bgsave
+```
 每次快照持久化都是将内存数据完整写入到磁盘一次，并不是增量的只同步脏数据。如果数据量大的话，而且写操作比较多，必然会引起大量的磁盘io操作，可能会严重影响性能。
-### AOF(append-only file)
+### 二 AOF(append-only file)
 AOF 则以协议文本的方式，将所有对数据库进行过写入的命令（及其参数）记录到 AOF 文件，以此达到记录数据库状态的目的，
 当server需要数据恢复时，可以直接replay此日志文件，即可还原所有的操作过程。AOF相对可靠，它和mysql中bin.log、apache.log、zookeeper中txn-log简直异曲同工
 
@@ -95,8 +95,9 @@ auto-aof-rewrite-min-size 64mb
 ##触发下一次rewrite，每一次aof记录的添加，都会检测当前aof文件的尺寸。  
 auto-aof-rewrite-percentage 100  
 ```
-### 总结
+### 三 总结
 OF和RDB各有优缺点，这是有它们各自的特点所决定：
 - AOF更加安全，可以将数据更加及时的同步到文件中，但是AOF需要较多的磁盘IO开支，AOF文件尺寸较大，文件内容恢复数度相对较慢。 
-- snapshot，安全性较差，它是“正常时期”数据备份以及master-slave数据同步的最佳手段，文件尺寸较小，恢复数度较快。
-可以通过配置文件来指定它们中的一种，或者同时使用它们(不建议同时使用)，或者全部禁用，在架构良好的环境中，master通常使用AOF，slave使用snapshot，主要原因是master需要首先确保数据完整性，它作为数据备份的第一选择；slave提供只读服务(目前slave只能提供读取服务)，它的主要目的就是快速响应客户端read请求；但是如果你的redis运行在网络稳定性差/物理环境糟糕情况下，建议你master和slave均采取AOF，这个在master和slave角色切换时，可以减少“人工数据备份”/“人工引导数据恢复”的时间成本
+- RDB安全性较差，它是“正常时期”数据备份以及master-slave数据同步的最佳手段，文件尺寸较小，恢复数度较快
+
+在架构良好的环境中，master通常使用AOF，slave使用snapshot，主要原因是master需要首先确保数据完整性，它作为数据备份的第一选择；slave提供只读服务(目前slave只能提供读取服务)，它的主要目的就是快速响应客户端read请求；但是如果你的redis运行在网络稳定性差/物理环境糟糕情况下，建议你master和slave均采取AOF，这个在master和slave角色切换时，可以减少“人工数据备份”/“人工引导数据恢复”的时间成本
