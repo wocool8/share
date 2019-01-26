@@ -187,12 +187,13 @@
 ---
 通常我们在本地环境开发会修改`jsf`别名及其他配置文件，此时如果我们想`checkout`到其他分支会出现如下问题
 
-![can  not checkout](../picture/git/cannotCheckout.PNG)
+![can  not checkout](../../picture/git/cannotCheckout.PNG)
+
 
 通常不应该提交修改别名代码，如果想要切换分支就要把修改的代码`revert`，此时可以使用stash把代码暂存
 然后checkout到别的分支出处理，当处理结束后使用`git stash pop` 把暂存的代码取回(如下图操作)
 
-![stash and pop](../picture/git/stash.PNG)
+![stash and pop](../../picture/git/stash.PNG)
 ## 四 解决merge冲突  
 ---
  
@@ -204,7 +205,7 @@
 指的是当前分支的`HEAD`与`feature1`分支合并发生冲突，可以直接编辑解决冲突，推荐使用idea的图形化页面解决
 在`Local Changes`选中标红文件然后右键选择`git`，然后选择`resolve conflicts`再双击需要解决的文件如下图
 
-![stash and pop](../picture/git/conflicts.PNG)
+![stash and pop](../../picture/git/conflicts.PNG)
 
 `但代码发生冲突一定要找到相关人一起解决，避免把别人代码合丢`
 
@@ -213,7 +214,7 @@
 ---
 revert也可以回滚代码（基于逆向提交的方式），但是会使得代码提交记录存在正向和逆向的版本记录，这段版本号是无用提交，所以采用reset（HEAD指向回滚的版本号）
 
-![stash and pop](../picture/git/reset.PNG)
+![stash and pop](../../picture/git/reset.PNG)
 
 将代码回滚到使用use gradle这个版本
 
@@ -225,24 +226,24 @@ revert也可以回滚代码（基于逆向提交的方式），但是会使得�
 ---
 `rebase` 分为`git rebase branchName` 和 `git rebase -i commit-id` 两种操作，本次主要介绍`-i`的方式
 
-![stash and pop](../picture/git/rebase.PNG)
+![stash and pop](../../picture/git/rebase.PNG)
 
 如上图由于本地`commit`记录比较乱，所以想要对提交记录进行`rebase`操作首先执行 `git rebase -i d653b689bb73441ba461775c8b1b3f1404c37cae`
 (版本号对应的是feature2 update这次提交)然后进入如下页面
 
-![stash and pop](../picture/git/pick.PNG)
+![stash and pop](../../picture/git/pick.PNG)
 
 通常使用`squash`使用上次提交的版本号
 
-![stash and pop](../picture/git/squash.PNG) 
+![stash and pop](../../picture/git/squash.PNG) 
 
 修改成如上图`:wq`保存，然后会进入下图
 
-![stash and pop](../picture/git/combination.PNG)
+![stash and pop](../../picture/git/combination.PNG)
 
 直接`:q`退出
 
-![stash and pop](../picture/git/rebaseResult.PNG)
+![stash and pop](../../picture/git/rebaseResult.PNG)
 
 操作过程中可能出现冲突，解决冲突后使用`git rebase -- continue`继续`rebase`操作，也可以使用`git rebase --skip`退出，
 `rebase操作一定要在feature分支上操作，不要在公共分支上进行rebase，否则有可能会操作不当搞乱代码库`
@@ -252,7 +253,7 @@ revert也可以回滚代码（基于逆向提交的方式），但是会使得�
 当两个人使用共同分支进行开发时，有可能出现部分提交需要上线，部分提交不需要上线的情况，此时`reset`会导致丢失代码，
 使用`cherry-pick`取回可以上线的提交版本，当前的提交记录如下图
 
-![stash and pop](../picture/git/cherrypick.PNG)
+![stash and pop](../../picture/git/cherrypick.PNG)
 
 想要在feature2分支上取回需求1的两次提交，进行如下操作
 
@@ -265,4 +266,4 @@ revert也可以回滚代码（基于逆向提交的方式），但是会使得�
      Date: Mon Jan 14 23:56:05 2019 +0800
      1 file changed, 3 insertions(+), 3 deletions(-)
 
-![stash and pop](../picture/git/cherrypickResult.PNG)
+![stash and pop](../../picture/git/cherrypickResult.PNG)
