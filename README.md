@@ -39,7 +39,7 @@
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)
 - [Guava](markdown/cache/guava.md) 
-- [Redis五种数据结构及指令](markdown/cache/redisDataStructrue.md)
+- [Redis](markdown/cache/redis.md)
 - [热key及秒杀](markdown/cache/cacheModel.md) 
 
 ## Database
