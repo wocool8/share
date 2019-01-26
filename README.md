@@ -29,6 +29,7 @@
 - [Abstract Factory](markdown/designpattern/abstractFactory.md)
 #### Structural Patterns
 - [Proxy](markdown/designpattern/proxy.md)
+- [Adapter](markdown/designpattern/adapter.md)
 #### Behavioral Patterns
 - [Strategy](markdown/designpattern/strategy.md)
 - [Template Method](markdown/designpattern/template.md)
