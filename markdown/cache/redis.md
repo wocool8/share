@@ -1,7 +1,7 @@
 ## Redis
 - [Redis五种数据结构及指令](/markdown/cache/redisDataStructrue.md)
 - [持久化方式](/markdown/cache/redisPersistence.md)
-- [采用单进程单线程为什么还这么快](/markdown/cache/redisSingleThread.md)
+- [单线程多路复用](/markdown/cache/redisSingleThread.md)
 - Redis跳跃表的问题；
 - Redis单进程单线程的Redis如何能够高并发?
 - Redis如何使用Redis实现分布式锁？
