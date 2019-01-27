@@ -23,3 +23,20 @@ However with Redis 4.0 we started to make Redis more threaded. For now this is l
 - 存在在加锁释放锁操作，会造成死锁
 
 ## 二 多路复用
+### 阻塞式IO
+![blockingIO](../../picture/io/blockingIO.png)
+当使用 read 或者 write 对某一个文件描述符（File Descriptor 以下简称 FD)进行读写时，如果当前 FD 不可读或不可写，整个 Redis 服务就不会对其它的操作作出响应，导致整个服务不可用
+### SELECT模型
+![select](../../picture/io/select.png)
+在 I/O 多路复用模型中，最重要的函数调用就是 select，该方法的能够同时监控多个文件描述符的可读可写情况，当其中的某些文件描述符可读或者可写时，select 方法就会返回可读以及可写的文件描述符个数
+### Reactor 设计模式
+Redis 服务采用 Reactor 的方式来实现文件事件处理器（每一个网络连接其实都对应一个文件描述符）
+![reactor](../../picture/io/reactor.png)
+文件事件处理器使用 I/O 多路复用模块同时监听多个 FD，当 accept、read、write 和 close 文件事件产生时，文件事件处理器就会回调 FD 绑定的事件处理器。
+
+虽然整个文件事件处理器是在单线程上运行的，但是通过 I/O 多路复用模块的引入，实现了同时对多个 FD 读写的监控，提高了网络通信模型的性能，同时也可以保证整个 Redis 服务实现的简单
+
+### I/O 多路复用模块
+![reactor](../../picture/io/epoll.jpg)
+Redis对多路复用函数的选择
+![多路复用函数](../../picture/io/多路复用函数.jpg)
