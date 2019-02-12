@@ -32,3 +32,4 @@ Redis无法像MySQL、MongoDB那样基于同步的点位在主库发生变化后
 在这个过程中Redis的内存体积越大以上每一个步骤的时间都会被拉长
 
 ## 二 哨兵模式(Sentinel)
+- [哨兵模式](https://www.jianshu.com/p/06ab9daf921d)
