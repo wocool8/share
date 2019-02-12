@@ -5,5 +5,5 @@
 - [分片](/markdown/cache/redisSharding.md)
 - [集群](/markdown/cache/redisCluster.md)
 - [事物](https://redis.io/topics/transactions)
-
+- [Redis和Memcached的区别](/markdown/cache/diff.md)
 

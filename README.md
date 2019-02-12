@@ -27,7 +27,6 @@
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)
 - [Guava](markdown/cache/guava.md)
-- Memercached
 - [Redis](markdown/cache/redis.md)
 - [热key及秒杀](markdown/cache/cacheModel.md) 
 - [缓存算法](markdown/cache/cacheAlgorithm.md)
