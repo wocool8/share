@@ -21,20 +21,8 @@
 - [Thread Pool](markdown/thread/threadPool.md)
 - [伪共享及解决方案](markdown/thread/pseudoShare.md)
 ## Design pattern 
-#### Creational Patterns
-- [Builder](markdown/designpattern/builder.md)
-- [Singleton](markdown/designpattern/singleton.md)
-- [Prototype](markdown/designpattern/prototype.md)
-- [Factory Method](markdown/designpattern/factoryMethod.md)
-- [Abstract Factory](markdown/designpattern/abstractFactory.md)
-#### Structural Patterns
-- [Proxy](markdown/designpattern/proxy.md)
-- [Adapter](markdown/designpattern/adapter.md)
-#### Behavioral Patterns
-- [Strategy](markdown/designpattern/strategy.md)
-- [Template Method](markdown/designpattern/template.md)
-- [Chain of Responsibility](markdown/designpattern/chainOfResponsibility.md)
-- [Observer](markdown/designpattern/observer.md)
+- [Design pattern ](markdown/designpattern/designpttern.md)
+
 ## Cache
 - [Cache Problems](markdown/cache/cache.md)
 - [Ehcache](markdown/cache/ehcache.md)
