@@ -20,3 +20,11 @@
 - Redis更偏向于在服务器端构建分布式存储
 
     [Redis集群](/markdown/cache/redisCluster.md)
+
+### 5、线程模型    
+- Memcached是多线程，非阻塞IO复用的网络模型 
+- Redis使用[单线程多路复用](/markdown/cache/redisSingleThread.md) 
+
+### 统计及正则表达式
+- Memcached不支持统计和key的正则表达式查询
+- Redis支持简单的统计，和key的正则表达式查询 
