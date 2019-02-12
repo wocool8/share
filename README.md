@@ -29,8 +29,11 @@
 - [Guava](markdown/cache/guava.md)
 - [Redis](markdown/cache/redis.md)
 - [热key及秒杀](markdown/cache/cacheModel.md) 
-- [缓存算法](markdown/cache/cacheAlgorithm.md)
 
+
+## Algorithm
+- [红黑树](markdown/algorithm/R-B-tree.md)
+- [缓存算法](markdown/algorithm/cacheAlgorithm.md)
 ## Database
 - [Transaction](markdown/database/transaction.md)
 - [Index](markdown/database/index.md)
