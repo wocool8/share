@@ -10,7 +10,7 @@
 - [Adapter](/markdown/designpattern/adapter.md)
 - Bradge
 - Flyweight
-- Facad
+- Facade
 - Composite
 - Decorator
 #### Behavioral Patterns
