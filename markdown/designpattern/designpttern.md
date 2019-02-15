@@ -13,3 +13,4 @@
 - [Template Method](/markdown/designpattern/template.md)
 - [Chain of Responsibility](/markdown/designpattern/chainOfResponsibility.md)
 - [Observer](/markdown/designpattern/observer.md)
+- [Iterator](/markdown/designpattern/iterator.md)
