@@ -5,6 +5,7 @@
 - [Reference](markdown/java/reference.md)
 - [Generics](markdown/java/generics.md)
 - [Hash](markdown/java/hash.md)
+- [Serializable & Externalizable](markdown/java/serializable.md)
 
 ## Jvm
 - [Class File](markdown/jvm/class.md)
