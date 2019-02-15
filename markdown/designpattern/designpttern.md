@@ -8,9 +8,19 @@
 #### Structural Patterns
 - [Proxy](/markdown/designpattern/proxy.md)
 - [Adapter](/markdown/designpattern/adapter.md)
+- Bradge
+- Flyweight
+- Facad
+- Composite
+- Decorator
 #### Behavioral Patterns
 - [Strategy](/markdown/designpattern/strategy.md)
 - [Template Method](/markdown/designpattern/template.md)
 - [Chain of Responsibility](/markdown/designpattern/chainOfResponsibility.md)
 - [Observer](/markdown/designpattern/observer.md)
 - [Iterator](/markdown/designpattern/iterator.md)
+- Interpreter
+- Command
+- Visitor
+- Medento
+- Mediator
