@@ -35,6 +35,7 @@
 ## Algorithm
 - [红黑树](markdown/algorithm/R-B-tree.md)
 - [缓存算法](markdown/algorithm/cacheAlgorithm.md)
+
 ## Database
 - [Transaction](markdown/database/transaction.md)
 - [Index](markdown/database/index.md)
@@ -45,6 +46,9 @@
 
 ## Network
 - [RESTFul](https://github.com/NeuTemper/pool/blob/master/design/restful.md)
+
+## Spring
+- [Autowired](markdown/spring/autowired.md)
 
 ## Distributed
 - [Zookeeper](markdown/distributed/zookeeper.md)
@@ -73,7 +77,6 @@
 - [Git](markdown/tool/git.md) 
 
 ## Other
-- [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
 - [规则引擎开源框架介绍](markdown/rule/rule.md)
 - [hystrix](markdown/distributed/hystrix.md)

@@ -78,6 +78,24 @@
         // ...
     }
     ```
+## @Qualifier
+Spring通常使用@Autowire根据类型自动注入，但是容器中可能存在两个相同类型的不同Bean，此时会抛出
+NoUniqueBeanDefinitionException
+```java
+/**
+ * Create a new {@code NoUniqueBeanDefinitionException}.
+ * @param type required type of the non-unique bean
+ * @param beanNamesFound the names of all matching beans (as a Collection)
+ */
+public NoUniqueBeanDefinitionException(Class<?> type, Collection<String> beanNamesFound) {
+    super(type, "expected single matching bean but found " + beanNamesFound.size() + ": " +
+			StringUtils.collectionToCommaDelimitedString(beanNamesFound));
+    this.numberOfBeansFound = beanNamesFound.size();
+    this.beanNamesFound = beanNamesFound;
+}
+```
+此时采用@Qualifier("beanName")指定注入bean    
+    
 ## @Resource
 @Resource是JDK1.6支持的注解， 默认根据名字注入，其次根据类型注入，名称可以通过name属性进行指定，如果没有指定name属性，
 当注解写在字段上时，默认取字段名，按照名称查找，如果注解写在setter方法上默认取属性名进行装配。
