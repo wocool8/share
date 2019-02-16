@@ -52,6 +52,7 @@
 
 ## Spring
 - [Autowired](markdown/spring/autowired.md)
+- [Autowired](markdown/spring/aopProxy.md)
 
 ## Distributed
 - [Zookeeper](markdown/distributed/zookeeper.md)

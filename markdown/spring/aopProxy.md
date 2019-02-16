@@ -137,7 +137,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport implements FactoryBean
 ```    
 #### 3.2.1 springboot
 在application.properties或者application.yml去设置如下属性
-```yaml
+```yml
 // application.yml
 spring:
      aop:
