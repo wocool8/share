@@ -68,16 +68,6 @@
             }
         }
     ```
-    - 如果我们想使用名称装配可以结合@Qualifier注解进行使用，以下代码来自于spring官方文档
-    ```java
-    public class MovieRecommender {  
-        @Autowired
-        @Qualifier("main")
-        private MovieCatalog movieCatalog;
-
-        // ...
-    }
-    ```
 ## @Qualifier
 Spring通常使用@Autowire根据类型自动注入，但是容器中可能存在两个相同类型的不同Bean，此时会抛出
 NoUniqueBeanDefinitionException
@@ -94,7 +84,16 @@ public NoUniqueBeanDefinitionException(Class<?> type, Collection<String> beanNam
     this.beanNamesFound = beanNamesFound;
 }
 ```
-此时采用@Qualifier("beanName")指定注入bean    
+如果我们想使用名称装配可以结合@Qualifier注解进行使用，以下代码来自于spring官方文档
+
+    ```java
+    public class MovieRecommender {  
+        @Autowired
+        @Qualifier("main")
+        private MovieCatalog movieCatalog;
+
+        // ...
+    }   
     
 ## @Resource
 @Resource是JDK1.6支持的注解， 默认根据名字注入，其次根据类型注入，名称可以通过name属性进行指定，如果没有指定name属性，
