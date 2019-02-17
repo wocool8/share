@@ -1,7 +1,32 @@
 # BeanFactory
 --
-spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
 ### 一 DefaultListableBeanFactory
+
+```java
+public class BeanFactoryTest {
+
+    @Test
+    public void testSimpleLoad() {
+        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactory.xml"));
+        CustomBean customBean = (CustomBean) beanFactory.getBean("customBean");
+    }
+}
+```
+XmlBeanFactory在Spring 3.1版本弃用
+```java
+ /* @see org.springframework.beans.factory.support.DefaultListableBeanFactory
+  * @see XmlBeanDefinitionReader
+  * @deprecated as of Spring 3.1 in favor of {@link DefaultListableBeanFactory} and
+  * {@link XmlBeanDefinitionReader}
+  */
+ @Deprecated
+ @SuppressWarnings({"serial", "all"})
+ public class XmlBeanFactory extends DefaultListableBeanFactory {
+     
+ }
+```
+
+DefaultListableBeanFactory是XmlBeanFactory加载Bean的核心，DefaultListableBeanFactory的层次结构图如下
 ![DefaultListableBeanFactory](../../picture/spring/DefaultListableBeanFactory.JPG)
 
 - AliasRegistry : 定义对Alias简单的增删改查操作
@@ -827,32 +852,9 @@ spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
     ```
     
     
-### 二 XMLBeanFactory
-```java
-public class BeanFactoryTest {
 
-    @Test
-    public void testSimpleLoad() {
-        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactory.xml"));
-        CustomBean customBean = (CustomBean) beanFactory.getBean("customBean");
-    }
-}
-```
-XmlBeanFactory在Spring 3.1版本弃用
-```java
- /* @see org.springframework.beans.factory.support.DefaultListableBeanFactory
-  * @see XmlBeanDefinitionReader
-  * @deprecated as of Spring 3.1 in favor of {@link DefaultListableBeanFactory} and
-  * {@link XmlBeanDefinitionReader}
-  */
- @Deprecated
- @SuppressWarnings({"serial", "all"})
- public class XmlBeanFactory extends DefaultListableBeanFactory {
-     
- }
-```
 
-### 三 ApplicationContext
+### 二 ApplicationContext
 
 ```java
 public class BeanFactoryTest {
