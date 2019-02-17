@@ -1,18 +1,6 @@
-# BeanFactory
---
-### 一 DefaultListableBeanFactory
+## DefaultListableBeanFactory
 
-```java
-public class BeanFactoryTest {
-
-    @Test
-    public void testSimpleLoad() {
-        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactory.xml"));
-        CustomBean customBean = (CustomBean) beanFactory.getBean("customBean");
-    }
-}
-```
-XmlBeanFactory在Spring 3.1版本弃用
+Spring通常基于XML进行配置
 ```java
  /* @see org.springframework.beans.factory.support.DefaultListableBeanFactory
   * @see XmlBeanDefinitionReader
@@ -851,18 +839,5 @@ DefaultListableBeanFactory是XmlBeanFactory加载Bean的核心，DefaultListable
    
     ```
     
-    
 
 
-### 二 ApplicationContext
-
-```java
-public class BeanFactoryTest {
-
-    @Test
-    public void testSimpleLoad() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("beanFactory.xml");
-        CustomBean customBean = (CustomBean) context.getBean("customBean");
-    }
-}
-```

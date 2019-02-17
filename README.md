@@ -51,12 +51,15 @@
 - [RESTFul](https://github.com/NeuTemper/pool/blob/master/design/restful.md)
 
 ## Spring
+
+- Bean的作用域和生命周期
+- [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
+- [bean的加载前篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%89%8D%E7%AF%87.md)
+- [bean的加载后篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%AF%87.md)
 - [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
-- [BeanFactory](markdown/spring/beanFactory.md)
 <!--
 1. Spring AOP的实现原理和场景？
-2. Spring bean的作用域和生命周期；
 3. Spring Boot比Spring做了哪些改进？ Spring 5比Spring4做了哪些改进；
 4. 如何自定义一个Spring Boot Starter？
 5. Spring IOC是什么？优点是什么？
