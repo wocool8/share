@@ -4,7 +4,7 @@ spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
 ## 常见的BeanFactory
 
 ### DefaultListableBeanFactory
-![DefaultListableBeanFactory](../../picture/spring/DefaultListableBeanFactory.PNG)
+![DefaultListableBeanFactory](../../picture/spring/DefaultListableBeanFactory.JPG)
 ### XMLBeanFactory
 ```java
 public class BeanFactoryTest {
