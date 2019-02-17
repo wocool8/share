@@ -53,6 +53,17 @@
 ## Spring
 - [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
+- [BeanFactory](markdown/spring/beanFactory.md)
+<!--
+1. Spring AOP的实现原理和场景？
+2. Spring bean的作用域和生命周期；
+3. Spring Boot比Spring做了哪些改进？ Spring 5比Spring4做了哪些改进；
+4. 如何自定义一个Spring Boot Starter？
+5. Spring IOC是什么？优点是什么？
+SpringMVC、动态代理、反射、AOP原理、事务隔离级别；
+-->
+
+
 
 ## Distributed
 - [Zookeeper](markdown/distributed/zookeeper.md)
@@ -81,7 +92,6 @@
 - [Git](markdown/tool/git.md) 
 
 ## Other
-- [AOP Proxy](markdown/spring/aopProxy.md)
 - [规则引擎开源框架介绍](markdown/rule/rule.md)
 - [hystrix](markdown/distributed/hystrix.md)
 
