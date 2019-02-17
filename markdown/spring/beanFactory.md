@@ -105,7 +105,8 @@ spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
      * integrated with {@link DefaultSingletonBeanRegistry}'s singleton management.
      */
     public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {}
-```    
+    ``` 
+   
 ### 二 XMLBeanFactory
 ```java
 public class BeanFactoryTest {
