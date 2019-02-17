@@ -1,9 +1,7 @@
 # BeanFactory
-spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
 --
-## 常见的BeanFactory
-
-### DefaultListableBeanFactory
+spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
+### 一 DefaultListableBeanFactory
 ![DefaultListableBeanFactory](../../picture/spring/DefaultListableBeanFactory.JPG)
 
 - AliasRegistry : 定义对Alias简单的增删改查操作
@@ -82,7 +80,7 @@ spring的核心是ICO，ICO的核心是容器，容器的基础是BeanFactory
     }
     ```    
     
-### XMLBeanFactory
+### 二 XMLBeanFactory
 ```java
 public class BeanFactoryTest {
 
@@ -107,7 +105,7 @@ XmlBeanFactory在Spring 3.1版本弃用
  }
 ```
 
-### ApplicationContext
+### 三 ApplicationContext
 
 ```java
 public class BeanFactoryTest {
