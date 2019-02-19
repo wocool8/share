@@ -34,7 +34,6 @@
 - [Redis](markdown/cache/redis.md)
 - [热key及秒杀](markdown/cache/cacheModel.md) 
 
-
 ## Algorithm
 - [红黑树](markdown/algorithm/R-B-tree.md)
 - [缓存算法](markdown/algorithm/cacheAlgorithm.md)
@@ -53,15 +52,13 @@
 ## Spring
 
 - [Bean Scope](markdown/spring/beanScope.md)
-<!--
-Bean生命周期
--->
 - [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
 - [bean的加载前篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%89%8D%E7%AF%87.md)
 - [bean的加载后篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%AF%87.md)
 - [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
 <!--
+Bean生命周期
 spring boot custom starter
 -->
 

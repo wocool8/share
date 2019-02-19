@@ -1,6 +1,7 @@
 ## Bean Scope 
 ---
 ### 作用域
+|scope|描述|
 |:-|:-|
 |singleton|IOC容器仅创建一个Bean实例，IOC容器每次返回的是同一个Bean实例|
 |prototype|IOC容器可以创建多个Bean实例，每次返回的都是一个新的实例|
