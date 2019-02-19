@@ -1,7 +1,5 @@
-# Bean Scope & Life Cycle
+## Bean Scope 
 ---
-## 一 Bean Scope
-
 ### 作用域
 |:-|:-|
 |singleton|IOC容器仅创建一个Bean实例，IOC容器每次返回的是同一个Bean实例|
@@ -111,5 +109,3 @@ public class CustomScopeConfigurer implements BeanFactoryPostProcessor, BeanClas
     }
 }
 ```
-
-## 二 Life Cycle
