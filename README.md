@@ -58,16 +58,14 @@
 - [bean的加载后篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%AF%87.md)
 - [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
+
 <!--
-Bean生命周期
-BeanPostProcessor、BeanFactoryPostProcessor
 spring boot custom starter
 -->
 
 <!--
 1. Spring AOP的实现原理和场景？
 3. Spring Boot比Spring做了哪些改进？ Spring 5比Spring4做了哪些改进；
-4. 如何自定义一个Spring Boot Starter？
 5. Spring IOC是什么？优点是什么？
 SpringMVC、动态代理、反射、AOP原理、事务隔离级别；
 -->

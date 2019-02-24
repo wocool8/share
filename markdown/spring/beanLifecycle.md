@@ -138,7 +138,7 @@ postProcessBeforeInstantiation方法，使得AOP生成的代理类会被实例�
 	}
 ```
 ### 2.2 进行常规的bean创建doCreateBean
-- [常规的bean创建doCreateBean](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%AF%87.md)
+[常规的bean创建doCreateBean](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%AF%87.md)
 ### 三 InitializationBean、init-method、DisposableBean、destroy-method
 ![InitializationCallbacks](../../picture/spring/InitializationCallbacks.JPG)
 如下代码在调用自定义初始化方法之前会先调用InitializationBean的afterPropertiesSet方法
@@ -177,5 +177,37 @@ postProcessBeforeInstantiation方法，使得AOP生成的代理类会被实例�
 		}
 	}
 ```
-DisposableBean、destroy-method同理不再赘述
+DisposableBean、destroy-method同理不再赘述，
+
+### 三 自定义实现
+```java
+public class BeanDemo implements InitializingBean, DisposableBean, BeanPostProcessor, BeanFactoryPostProcessor {
+    
+    // 实现InitializingBean方法
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+    }
+    // 实现DisposableBean方法
+    @Override
+    public void destroy() throws Exception {
+
+    }
+    // 实现BeanPostProcessor方法
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return null;
+    }
+    // 实现BeanPostProcessor方法
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return null;
+    }
+    // BeanFactoryPostProcessor
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+
+    }
+}
+```
 
