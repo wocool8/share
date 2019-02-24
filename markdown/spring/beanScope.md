@@ -72,8 +72,7 @@
     ```
 
 由于 CustomScopeConfigurer 实现了 BeanFactoryPostProcessor，SpringIoC容器允许BeanFactoryPostProcessor
-在容器实例化任何bean之前读取bean的定义(配置元数据)，并可以修改它,由于 CustomScopeConfigurer 实现了 BeanFactoryPostProcessor，
-SpringIoC容器允许BeanFactoryPostProcessor在容器实例化任何bean之前读取bean的定义(配置元数据)，并可以修改它,
+在容器实例化任何bean之前读取bean的定义(配置元数据)，并可以修改它
 
 ```java
 public class CustomScopeConfigurer implements BeanFactoryPostProcessor, BeanClassLoaderAware, Ordered {
