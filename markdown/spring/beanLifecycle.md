@@ -179,7 +179,7 @@ postProcessBeforeInstantiation方法，使得AOP生成的代理类会被实例�
 ```
 DisposableBean、destroy-method同理不再赘述，
 
-### 三 自定义实现
+### 四 自定义实现
 ```java
 public class BeanDemo implements InitializingBean, DisposableBean, BeanPostProcessor, BeanFactoryPostProcessor {
     

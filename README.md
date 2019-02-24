@@ -52,8 +52,8 @@
 ## Spring
 
 - [Bean Scope](markdown/spring/beanScope.md)
-- [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
 - [Life Cycle of Bean](markdown/spring/beanLifecycle.md)
+- [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
 - [bean的加载前篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%89%8D%E7%AF%87.md)
 - [bean的加载后篇.md](https://github.com/NeuTemper/pool/blob/master/Framework/Spring/bean%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%90%8E%E7%AF%87.md)
 - [Autowired](markdown/spring/autowired.md)
