@@ -347,16 +347,8 @@ private Object doGetObjectFromFactoryBean(final FactoryBean<?> factory, final St
 - 根据设置的class属性或者classname解析class 如果getClass有东西就直接返回 没有就找到classLoader然后反射的到class
 - 对override属性进行标记 验证
 prepareMethodOverride bean在实例化的时候如果检测存在methodOverrides属性 会动态的位当前bean生成代理并使用相应的拦截去为bean做增强处理 这个地方只是检车并标记
-- 实例化bean的前置处理 resolveBeforeInstantiation
-
-这里 留了一个短路逻辑
-```
-Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
-if (bean != null) {
-  return bean;
-}
-```
-aop是基于这里判断的，了解更多点击[Spring AOP 基于BeanPostProcessor实现](/markdown/spring/beanLifecycle.md)
+- 实例化bean的前置处理 resolveBeforeInstantiation，[基于BeanPostProcessor实现的AOP](/markdown/spring/beanLifecycle.md)是基础此处判断
+返回代理类
 
 
 
