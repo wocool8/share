@@ -8,7 +8,7 @@ Spring的IoC容器允许BeanFactoryPostProcessor在容器实例化任何其它�
 [自定义Bean的Scope](/markdown/spring/beanScope.md)就是基于BeanFactoryPostProcessor实现
 ### 二 BeanPostProcessor
 
-实现BeanPostProcessor接口可以在Bean(实例化之后)初始化的前后做一些自定义的操作，但是拿到的参数只有BeanDefinition实例和BeanDefinition的名称，也就是无法修改BeanDefinition元数据,这里说的Bean的初始化是：
+实现BeanPostProcessor接口可以在Bean初始化的前后做一些自定义的操作，但是拿到的参数只有BeanDefinition实例和BeanDefinition的名称，也就是无法修改BeanDefinition元数据,这里说的Bean的初始化是：
 
 - (1)bean实现了InitializingBean接口，对应的方法为afterPropertiesSet
 
