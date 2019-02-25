@@ -55,8 +55,8 @@
 - [Life Cycle of Bean](markdown/spring/beanLifecycle.md)
 - [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
 - [Cyclic Dependence](markdown/spring/cyclicDependency.md)
-- [bean的加载前篇.md](markdown/spring/bean的加载前篇.md)
-- [bean的加载后篇.md](markdown/spring/bean的加载后篇.md)
+- [从IOC容器中获取Bean](markdown/spring/loadBean.md)
+- [bean的加载后篇](markdown/spring/bean的加载后篇.md)
 - [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
 
