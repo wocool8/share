@@ -1,10 +1,4 @@
-# bean的加载
-
-上一节中 我们讲到了resolveBeforeInstantiation方法 当程序经历过这个方法之后，有两种情况。
-1. 如果创建了代理或者说重写了InstantiationAwareBeanPostProcessor的postProcessBeforeInstantiation方法并在该方法中改变了bean，则直接返回就可以了。上一文提到的短路逻辑
-2. 进行常规的bean创建doCreateBean
-
-## 创建bean
+# 进行常规的bean创建doCreateBean
 doCreateBean方法源码如下
 
 ```java
@@ -908,7 +902,3 @@ protected void invokeInitMethods(String beanName, final Object bean, RootBeanDef
         }  
     }  
 ```
-
-### 注册DisponableBean
-
-Spring中不仅提供了对于初始化方法的扩展入口，同样也提供了销毁方法的扩展入口，对于销毁方法的扩展，除了配置属性destroy-method方法外，还可以注册后处理器DestructionAwareBeanPostProcessor来统一处理bean的销毁方法

@@ -52,17 +52,16 @@
 ## Spring
 
 - [Bean Scope](markdown/spring/beanScope.md)
-- [Life Cycle of Bean](markdown/spring/beanLifecycle.md)
 - [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
 - [FactroyBean](markdown/spring/factoryBean.md)
 - [Cyclic Dependence](markdown/spring/cyclicDependency.md)
-- [从IOC容器中获取Bean](markdown/spring/loadBean.md)
-- [bean的加载后篇](markdown/spring/bean的加载后篇.md)
+- [加载Bean](markdown/spring/loadBean.md)
+- [创建Bean](markdown/spring/createBean.md)
+- [Life Cycle of Bean](markdown/spring/beanLifecycle.md)
 - [Autowired](markdown/spring/autowired.md)
 - [AOP Proxy](markdown/spring/aopProxy.md)
 
 <!--
-spring 如何解决循环依赖
 factory bean
 spring boot custom starter
 -->
