@@ -1,4 +1,4 @@
-# bean的加载 前篇
+# bean的加载
 
 ## spring的入门实例
 
@@ -185,10 +185,8 @@ protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredTy
 代码中涉及到的加载过程：
 
 - 转换bean名   
-  1. 去除FactoryBean的修饰符
+  1. 去除[FactoryBean](/markdown/spring/factoryBean.md)的修饰符
   2. 如果是通过alias指定的bean名 取到最终bean名
-
-
 - 尝试从缓存中加载bean实例 如果加载不成功则从singletonFactories中加载 原因：避免循环依赖
 spring中创建bean的原则是不等bean创建完成就将创建bean的ObjectFactory提前放到缓存中，一旦下一个bean创建时需要依赖上一个bean则直接使用ObjectFactory
 - bean的实例化 getObjectForBeanInstance 最重要的方法
@@ -196,32 +194,8 @@ spring中创建bean的原则是不等bean创建完成就将创建bean的ObjectFa
 - 如果缓存中没有数据只能到父类工厂中去加载
 - 将GenericBeanDefinition转换成RootBeanDefinition
 - 先加载其依赖
-- 针对不同的scope进行bean的创建 五种 **
+- 针对不同的[scope](/markdown/spring/beanScope.md)进行bean的创建
 - 类型转换  将返回的bean转换成用户需要的类型 requiredType决定
-
-https://blog.csdn.net/zghwaicsdn/article/details/50910384 有张图可以看
-
-### FactoryBean的使用
-一般情况下spring利用反射实例化对应bean 但是某种情况下用户可以通过实现给定的接口定制实例化bean的逻辑
-
-```java
-public interface FactoryBean<T> {
-
-	@Nullable
-	T getObject() throws Exception;
-
-	@Nullable
-	Class<?> getObjectType();
-
-	default boolean isSingleton() {
-		return true;
-	}
-
-}
-```
-用户自定义的类可以通过实现接口 覆写getObject方法自定义bean的实例化方式 注意：此时getBean方法返回的不是FactoryBean本身 而是FactoryBean.getObject()返回的对象
-
-beanFactory和FactoryBean的区别：https://www.cnblogs.com/aspirant/p/9082858.html
 
 ### 缓存中获取单例bean
 ```java

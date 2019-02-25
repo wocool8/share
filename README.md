@@ -54,6 +54,7 @@
 - [Bean Scope](markdown/spring/beanScope.md)
 - [Life Cycle of Bean](markdown/spring/beanLifecycle.md)
 - [DefaultListableBeanFactory](markdown/spring/defaultListableBeanFactory.md)
+- [FactroyBean](markdown/spring/factoryBean.md)
 - [Cyclic Dependence](markdown/spring/cyclicDependency.md)
 - [从IOC容器中获取Bean](markdown/spring/loadBean.md)
 - [bean的加载后篇](markdown/spring/bean的加载后篇.md)
