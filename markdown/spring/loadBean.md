@@ -131,24 +131,10 @@ protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredTy
 
       // 通过制定scope的方式实例化
       else {
-        String scopeName = mbd.getScope();
-        final Scope scope = this.scopes.get(scopeName);
-        if (scope == null) {
-          throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
-        }
-        try {
-          Object scopedInstance = scope.get(beanName, () -> {
-            beforePrototypeCreation(beanName);
-            try {
-              return createBean(beanName, mbd, args);
-            }
-            finally {
-              afterPrototypeCreation(beanName);
-            }
-          });
-          bean = getObjectForBeanInstance(scopedInstance, name, beanName, mbd);
-        }
-        catch (IllegalStateException ex) {
+```         
+[通过自定义scope的方式实例化](/markdown/spring/beanScope.md)
+```java 
+      } catch (IllegalStateException ex) {
           throw new BeanCreationException(beanName,
               "Scope '" + scopeName + "' is not active for the current thread; consider " +
               "defining a scoped proxy for this bean if you intend to refer to it from a singleton",
