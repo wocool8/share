@@ -207,19 +207,20 @@ spring中创建bean的原则是不等bean创建完成就将创建bean的ObjectFa
 	}
 ```
 
-实现的逻辑大致先从缓存（map）中拿，再从earlySingletonObjects中拿 如果还没有就通过singletonFactory.getObejct()拿  基本就是反射, 然后放缓存
+- 1、实现的逻辑大致先从缓存（map）中拿，
+- 2、再从earlySingletonObjects中拿 
+- 3、如果还没有就通过singletonFactory.getObejct()拿(基本就是反射, 然后放缓存)
 
-### [getObjectForBeanInstance](/markdown/spring/factoryBean.md)
+### [getObjectForBeanInstance是从FactoryBean中获取instance](/markdown/spring/factoryBean.md)
 
 
 ### 获取单例getSingleton
 具体代码不贴了 主要的逻辑
-
-- 锁住 检查缓存是否加载过
-- 如果没加载 记录beanName为正在加载 据说便可以对循环依赖进行检测 ？ 不懂
-- 调用ObjectFactory的getObject方法实例化bean(老套路)
-- 进行后处理 移除缓存中正在加载的状态
-- 将加载的结果加缓存
+- 1、锁住 检查缓存是否加载过
+- 2、如果没加载 记录beanName为正在加载 据说便可以对循环依赖进行检测
+- 3、调用ObjectFactory的getObject方法实例化bean(老套路)
+- 4、进行后处理 移除缓存中正在加载的状态
+- 5、将加载的结果加缓存
 
 ### singletonFactory中定义的getObject方法的实现
 真正的实现 return createBean(beanName, mbd, args); 在这里
