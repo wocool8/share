@@ -2,7 +2,6 @@
 ---
 ## FactoryBean的使用
 一般情况下spring利用反射实例化对应bean 但是某种情况下用户可以通过实现给定的接口定制实例化bean的逻辑
-
 ```java
 public interface FactoryBean<T> {
 
@@ -15,14 +14,19 @@ public interface FactoryBean<T> {
 	default boolean isSingleton() {
 		return true;
 	}
-
 }
 ```
 用户自定义的类可以通过实现接口 覆写getObject方法自定义bean的实例化方式 
-注意：此时getBean方法返回的不是FactoryBean本身 而是FactoryBean.getObject()返回的对象
-
-
-
+- 1、此时getBean方法返回的不是FactoryBean本身 而是FactoryBean.getObject()返回的对象
+- 2、获取factoryBean使用&beanName
+```java
+    ConfigurableApplicationContext beanFactory = new ClassPathXmlApplicationContext("beanFactory.xml");
+    NameBean nameBean = (NameBean) beanFactory.getBean("name");
+    // 获取FactoryBean
+    FactoryBean nameFactoryBean = (FactoryBean) beanFactory.getBean("&name");
+    // 从FactoryBean获取实例
+    NameBean nameBeanInstance = (NameBean) nameFactoryBean.getObject();
+```
 ## Beanfactory的getBean()方法中调用getObjectForBeanInstance获取实例
 返回的工厂bean中定义的factory-method方法中返回的bean
 首先是一些准备工作：
