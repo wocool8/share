@@ -132,7 +132,9 @@ protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredTy
       // 通过制定scope的方式实例化
       else {
 ```         
-[通过自定义scope的方式实例化](/markdown/spring/beanScope.md)
+ 
+   [通过自定义scope的方式实例化](/markdown/spring/beanScope.md)
+        
 ```java 
       } catch (IllegalStateException ex) {
           throw new BeanCreationException(beanName,
@@ -207,56 +209,8 @@ spring中创建bean的原则是不等bean创建完成就将创建bean的ObjectFa
 
 实现的逻辑大致先从缓存（map）中拿，再从earlySingletonObjects中拿 如果还没有就通过singletonFactory.getObejct()拿  基本就是反射, 然后放缓存
 
-### getObjectForBeanInstance
-返回的工厂bean中定义的factory-method方法中返回的bean
-首先是一些准备工作：
+### [getObjectForBeanInstance](/markdown/spring/factoryBean.md)
 
-- 对FactoryBean的正确性进行验证
-- 对非FactoryBean不做任何处理
-- 对bean进行转换
-- 将Factory中解析bean的操作委托个getObjectFromFactoryBean 然后又委托给doGetObjectFromFactoryBean
-
-所以真正的实现在doGetObjectFromFactoryBean中
-```java
-private Object doGetObjectFromFactoryBean(final FactoryBean<?> factory, final String beanName)
-    throws BeanCreationException {
-
-  Object object;
-  try {
-    if (System.getSecurityManager() != null) {
-      AccessControlContext acc = getAccessControlContext();
-      try {
-        object = AccessController.doPrivileged((PrivilegedExceptionAction<Object>) factory::getObject, acc);
-      }
-      catch (PrivilegedActionException pae) {
-        throw pae.getException();
-      }
-    }
-    else {
-      object = factory.getObject();
-    }
-  }
-  catch (FactoryBeanNotInitializedException ex) {
-    throw new BeanCurrentlyInCreationException(beanName, ex.toString());
-  }
-  catch (Throwable ex) {
-    throw new BeanCreationException(beanName, "FactoryBean threw exception on object creation", ex);
-  }
-
-  // Do not accept a null value for a FactoryBean that's not fully
-  // initialized yet: Many FactoryBeans just return null then.
-  if (object == null) {
-    if (isSingletonCurrentlyInCreation(beanName)) {
-      throw new BeanCurrentlyInCreationException(
-          beanName, "FactoryBean which is currently in creation returned null from getObject");
-    }
-    object = new NullBean();
-  }
-  return object;
-}
-```
-其实就是调用FactoryBean的getObject方法 没错 就是上面讲的那个 可以自定义的内个
-但是 getObjectFromFactoryBean这个方法在调用后并没有直接返回 又做了一些后处理
 
 ### 获取单例getSingleton
 具体代码不贴了 主要的逻辑

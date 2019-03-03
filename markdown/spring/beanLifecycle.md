@@ -138,7 +138,7 @@ postProcessBeforeInstantiation方法，使得AOP生成的代理类会被实例�
 	}
 ```
 ### 2.2 进行常规的bean创建doCreateBean
-[常规的bean创建doCreateBean](/markdown/spring/bean的加载前篇.md)
+[常规的bean创建doCreateBean](/markdown/spring/createBean.md)
 ### 三 InitializationBean、init-method、DisposableBean、destroy-method
 ![InitializationCallbacks](../../picture/spring/InitializationCallbacks.JPG)
 如下代码在调用自定义初始化方法之前会先调用InitializationBean的afterPropertiesSet方法
